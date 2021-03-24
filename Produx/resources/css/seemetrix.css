@@ -1,0 +1,221 @@
+/* Source: http://snipplr.com/view/10979/css-cross-browser-word-wrap */
+.wordwrap { 
+   white-space: pre-wrap;      /* CSS3 */   
+   white-space: -moz-pre-wrap; /* Firefox */    
+   white-space: -pre-wrap;     /* Opera <7 */   
+   white-space: -o-pre-wrap;   /* Opera 7 */    
+   word-wrap: break-word;      /* IE */
+}
+
+#sm-top-username {
+    position: relative;
+    padding: 15px 5px 5px 5px; 
+    width: 100%; 
+    left: 0px;  
+    max-height:55px;
+    color:#fff; 
+    font-size:16px;
+}
+
+.sm-logo-img {
+    width: 46px;
+    height:30px;
+}
+
+.sm-logo-brand { margin-left:12px; }
+
+/* COMMON */
+.sm-div-disabled {
+    pointer-events: none;
+    opacity: 0.4;    
+}
+
+.sm-btn-add-device-row {
+    margin-bottom: 15px;
+}
+
+/* DASHBOARD */
+.sm-dashboard-info-box {
+    display: block;
+    min-height: 90px;
+    background: #fff;
+    width: 100%;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    border-radius: 2px;
+    margin-bottom: 15px;
+}
+
+.sm-dashboard-info-box-content {
+    text-align: center;
+    padding: 22px 6px 6px;
+}
+
+.sm-dashboard-info-box-text {
+    text-transform: uppercase;
+}
+
+.sm-dashboard-info-box-number {
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+
+/***** SUPPORT *****/
+.sm-support-attach {
+    height: 80px;
+    border-bottom: solid 1px #ccc;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.sm-support-attach img {
+    height: 54px;
+    margin-top: 2px;
+    margin-left: 25px;
+    margin-bottom: 4px;
+}
+
+.sm-btn-attach-del {}
+
+.sm-issue-status-pending { color:#f00; }
+.sm-issue-status-processes { color:#00f; }
+.sm-issue-status-closed { color:#008d4c; }
+
+.sm-issue-category { color:#777; }
+
+.sm-show-issue { cursor:pointer; }
+
+@media screen and (min-width: 768px) {
+  iframe{
+    /* 768px - 230px(sidebar)*/
+    min-width: 538px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+  iframe{
+    /* 992px - 230px(sidebar) */
+    min-width: 762px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+  iframe{
+    /* 1200px - 230px(sidebar) */
+    min-width: 970px;
+    }
+}
+
+/* PROFILE */
+
+/* ÐžÑˆÐ¸Ð±ÐºÐ¸ ÐºÑ€Ð°ÑÐ½Ð¾Ð³Ð¾ Ñ†Ð²ÐµÑ‚Ð° Ð² Ñ„Ð¾Ñ€Ð¼Ðµ Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ Ð¿Ñ€Ð¾Ñ„Ð¸Ð»Ñ */
+.sm-account-form-group > ul.errorlist > li, ul.errorlist.nonfield > li, form#support > ul.errorlist > li {
+    color: #F00;
+    font-weight: bold;
+    list-style-type: none;
+}
+
+/* Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ðµ django-ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ð¹ Ð¿Ð¾Ð´ Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐ¾Ð¼ Ð±ÐµÐ· Ð¼Ð°Ñ€ÐºÐµÑ€Ð° */
+.sm-messages {
+    list-style-type: none;
+    -webkit-padding-start: 10px;
+    padding-left: 10px;
+}
+
+/* Billing messages for starter.html */
+.sm-trial-msg {
+    padding: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.sm-trial-msg-content {
+    min-height:100%;
+    background-color:rgba(255,0,0, 0.38);
+    border: dashed rgba(255, 0, 0, 0.51);
+    padding: 15px 25px;
+    color: rgb(180, 8, 9);
+    font-size: 16px;
+    font-weight:bolder;
+    text-align:center;
+    text-transform:uppercase;
+
+    line-height:34px;
+}
+
+/* Modals */
+
+#modal-success-body, #modal-error-body, #modal-warning-body {
+    font-size: 17px;
+}
+
+/* React */
+
+/*
+.div-table {
+    display: table;
+    width: 100%;
+}
+
+.div-row {
+    display: table-row;
+}
+
+.div-cell {
+    display: table-cell;
+}
+
+.div-cell-35 {
+    display: table-cell;
+    width: 35%;
+    text-align: right;
+}
+
+.div-cell-65 {
+    display: table-cell;
+    width: 65%;
+    color: red;
+    text-align: left;
+}*/
+
+.dev-group-action-results-list {
+    list-style-type: none;
+    padding-left: 0px;
+    -webkit-padding-start: 0px;
+}
+
+.text-cut {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.device-group-action-result-name {
+    text-align: right;
+}
+
+.device-group-action-result-error {
+    text-align: left;
+    color: "#ca195a";
+}
+
+#paypal-button-container {
+    margin-top: 7pt;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.show-payment-form-btn {
+    margin: -5pt 0 0 10pt;
+}
+
+/* like bg-* but with custom color */
+.bg-yellow-logo {
+    background: #fac41c;
+    color: #fff !important;
+}
