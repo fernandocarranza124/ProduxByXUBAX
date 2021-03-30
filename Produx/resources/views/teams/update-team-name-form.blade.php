@@ -1,10 +1,10 @@
 <x-jet-form-section submit="updateTeamName">
     <x-slot name="title">
-        {{ __('Team Name') }}
+        {{ __('Nombre del grupo') }}
     </x-slot>
 
     <x-slot name="description">
-        {{ __('The team\'s name and owner information.') }}
+        {{ __('Información general del grupo.') }}
     </x-slot>
 
     <x-slot name="form">
@@ -24,7 +24,7 @@
 
         <!-- Team Name -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="name" value="{{ __('Team Name') }}" />
+            <x-jet-label for="name" value="{{ __('Nombre del grupo') }}" />
 
             <x-jet-input id="name"
                         type="text"
@@ -39,11 +39,11 @@
     @if (Gate::check('update', $team))
         <x-slot name="actions">
             <x-jet-action-message class="mr-3" on="saved">
-                {{ __('Saved.') }}
+                {{ __('Guardado.') }}
             </x-jet-action-message>
 
             <x-jet-button>
-                {{ __('Save') }}
+                {{ __('Guardar') }}
             </x-jet-button>
         </x-slot>
     @endif
