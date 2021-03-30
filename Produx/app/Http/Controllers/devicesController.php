@@ -27,11 +27,11 @@ class devicesController extends Controller
         }else{
             // es admin -> muestra todos los dispositivos de ese grupo
             $dispositivosDeUsuariosEnGrupo = TeamUser::select('devices.*','team_user.*')
-                                                    ->join('devices','team_user.user_id','=','devices.id_user')
+                                                    ->join('devices','team_user.user_id','=','devices.user_id')
                                                     ->where('team_user.team_id','=',Auth::user()->current_team_id)
                                                     ->get();
             // $dispositivosPropios = TeamUser::select('devices.*', 'team_user.*')
-            $dispositivosPropios = Device::where('id_user','=',Auth::user()->id)->get();
+            $dispositivosPropios = Device::where('user_id','=',Auth::user()->id)->get();
             // dd($dispositivosDeUsuariosEnGrupo);
          return view('devices', compact('dispositivosDeUsuariosEnGrupo','dispositivosPropios'))->render();   
         }

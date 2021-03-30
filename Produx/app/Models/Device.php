@@ -15,6 +15,6 @@ class Device extends Model
         'nombre',
         'categoria',
         'nombreAccion',
-        'id_user',
+        'user_id',
     ];
 }
