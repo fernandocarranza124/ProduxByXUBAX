@@ -5,7 +5,11 @@
         </h2>
 
     </x-slot>
-    <x-agregar-dispositivo-modal />
+    {{--             dd($user->hasTeamPermission($team, 'create-product'));
+ --}}
+    @if($user->hasTeamPermission($team, 'create-product'))
+        <x-agregar-dispositivo-modal />
+    @endif
     <div class="py-12" style="padding-top: 1rem;padding-left: 2rem;padding-right:2rem;">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
@@ -21,13 +25,16 @@
                         </tr>
                     </thead>
                     <tbody id="tableDevices">
-                        @foreach($dispositivosPropios as $device)
-
-                            <x-show-devices :device="$device"  />
-                        @endforeach
-                        @foreach($dispositivosDeUsuariosEnGrupo as $device)
-                            <x-show-devices :device="$device"  />
-                        @endforeach
+                        @isset($dispositivosPropios)
+                            @foreach($dispositivosPropios as $device)
+                                <x-show-devices :device="$device"  />
+                            @endforeach
+                        @endisset
+                        @isset($dispositivosDeUsuariosEnGrupo)
+                            @foreach($dispositivosDeUsuariosEnGrupo as $device)
+                                <x-show-devices :device="$device"  />
+                            @endforeach
+                        @endisset
                         
                     </tbody>
                 </table>

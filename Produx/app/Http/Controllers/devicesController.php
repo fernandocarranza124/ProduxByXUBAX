@@ -22,10 +22,14 @@ class devicesController extends Controller
         $user = TeamUser::all()->where('team_id','=',Auth::user()->current_team_id)->where('user_id', '=',Auth::user()->id);
         if(count($user) != 0){
             // no es admin -> muestra solo sus dispositivos
-            
-            dd("no es admin");
+            $team= Team::findOrFail(Auth::user()->current_team_id);
+            $user = Auth::user();
+            $dispositivosPropios = Device::where('user_id','=',Auth::user()->id)->get();
+            return view('devices', compact('team','user','dispositivosPropios'))->render();      
         }else{
             // es admin -> muestra todos los dispositivos de ese grupo
+            $team= Team::findOrFail(Auth::user()->current_team_id);
+            $user = Auth::user();
             $dispositivosDeUsuariosEnGrupo = TeamUser::select('devices.*','team_user.*')
                                                     ->join('devices','team_user.user_id','=','devices.user_id')
                                                     ->where('team_user.team_id','=',Auth::user()->current_team_id)
@@ -33,13 +37,8 @@ class devicesController extends Controller
             // $dispositivosPropios = TeamUser::select('devices.*', 'team_user.*')
             $dispositivosPropios = Device::where('user_id','=',Auth::user()->id)->get();
             // dd($dispositivosDeUsuariosEnGrupo);
-         return view('devices', compact('dispositivosDeUsuariosEnGrupo','dispositivosPropios'))->render();   
+            return view('devices', compact('team','user','dispositivosPropios','dispositivosDeUsuariosEnGrupo'))->render();  
         }
-        // $devices=Device::all();
-        // dd($devices);
-        
-
-        // return view('devices',compact('devices'));
     }
 
     /**
@@ -60,17 +59,15 @@ class devicesController extends Controller
      */
     public function store(Request $request)
     {
-        $nombre = $request->input('nombre');
-        $nombreAccion = $request->input('nombreAccion');
-        $categoria = $request->input('categoria');
-        $pin = $request->input('PIN');
+        // dd($request->input('ubicacion'));
+        // Agregar insercion a etiquetas
         $Device = new Device;
-            $Device->nombre=$nombre;
-            $Device->nombreAccion=$nombreAccion;
-            $Device->categoria=$categoria;
-            $Device->pin=$pin;
-            $Device->estado="Online";
-            $Device->id_user=Auth::user()->id;
+            $Device->nombre=$request->input('nameDevice');
+            $Device->categoria_id=$request->input('categoria');
+            $Device->pin_id=$request->input('PIN');
+            $Device->upc=$request->input('UPC');
+            $Device->user_id=Auth::user()->id;
+            $Device->estado='Online';
         $Device->save();
         return $Device->id;
     }

@@ -51,17 +51,46 @@ class JetstreamServiceProvider extends ServiceProvider
     {
         Jetstream::defaultApiTokenPermissions(['read']);
 
-        Jetstream::role('admin', __('Administrator'), [
-            'create',
-            'read',
-            'update',
-            'delete',
-        ])->description(__('Administrator users can perform any action.'));
+        Jetstream::role('administrador', __('Administrador'), [
+            'create-product',
+            'read-product',
+            'update-product',
+            'delete-product',
+            'create-categoria',
+            'read-categoria',
+            'update-categoria',
+            'delete-categoria',
+            'create-member',
+            'read-member',
+            'update-member',
+            'delete-member',
+        ])->description(__('Los Administradores pueden ejecutar cualquier accion.'));
+
+        Jetstream::role('creador', __('Creador'), [
+            'create-product',
+            'read-product',
+            'update-product',
+            'create-categoria',
+            'read-categoria',
+            'update-categoria',
+            'create-member',
+            'read-member',
+            'update-member',
+        ])->description(__('Los creadores tienen el permiso de ver, crear y actualizar dispositivos, categorias y miembros del equipo.'));
 
         Jetstream::role('editor', __('Editor'), [
-            'read',
-            'create',
-            'update',
-        ])->description(__('Editor users have the ability to read, create, and update.'));
+            'read-product',
+            'update-product',
+            'read-categoria',
+            'update-categoria',
+            'read-member',
+            'update-member',
+        ])->description(__('Los editores tienen el permiso de very actualizar dispositivos, categorias y miembros del equipo.'));
+
+        Jetstream::role('monitor', __('Monitorista'), [
+            'read-product',
+            'read-categoria',
+            'read-member',
+        ])->description(__('Los monitores unicamente tienen el permiso de ver dispositivos, categorias y miembros del equipo.'));
     }
 }
