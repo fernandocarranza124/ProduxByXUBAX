@@ -5,7 +5,7 @@
         </h2>
 
     </x-slot>
-    {{-- <x-agregar-dispositivo-modal /> --}}
+    {{-- <x-agregar-usuario-modal /> --}}
     <div class="py-12" style="padding-top: 1rem;padding-left: 2rem;padding-right:2rem;">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
@@ -22,7 +22,19 @@
                     </thead>
                     <tbody id="tableDevices">
                         @foreach($users as $user)
-                            <x-show-users :user="$user"  />
+                            @if(auth()->user()->hasTeamPermission($team, 'update-member'))
+                                {{-- Puede editar --}}
+                                @php 
+                                    $user->udpate = True;
+                                @endphp
+                            @endif
+                            @if(auth()->user()->hasTeamPermission($team, 'delete-member'))
+                                {{-- Puede borrar --}}
+                                @php 
+                                    $user->delete = True;
+                                @endphp
+                            @endif
+                            <x-show-users :user="$user" />
                         @endforeach
                     </tbody>
                 </table>

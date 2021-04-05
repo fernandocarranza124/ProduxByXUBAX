@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
     
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Team;
 use App\Models\teamUser;
 use Spatie\Permission\Models\Role;
 use DB;
@@ -21,8 +23,9 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $users = User::orderBy('id','DESC')->paginate(5);
+        $team = Team::findOrFail(Auth::user()->current_team_id);
         // $teams = TeamUser::where('user_id','=',)
-        return view('users',compact('users'))->with('i', ($request->input('page', 1) - 1) * 5);
+        return view('users',compact('users','team'))->with('i', ($request->input('page', 1) - 1) * 5);
     }
     
     /**

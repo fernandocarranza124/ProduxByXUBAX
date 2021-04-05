@@ -17,6 +17,8 @@ class ShowUsers extends Component
     public $current_team_id;
     public $roles;
     public $teams;
+    public $delete=false;
+    public $update=false;
     public function __construct($user)
     {
         $this->name=$user->name;
@@ -25,6 +27,12 @@ class ShowUsers extends Component
         $this->current_team_id=$user->current_team_id;
         $this->roles=$user->getRoleNames();
         $this->teams=$user->allTeams();
+        if($user->update == True){
+            $this->update=True;
+        }
+        if($user->delete == True){
+            $this->delete=True;
+        }
     }
 
     /**
