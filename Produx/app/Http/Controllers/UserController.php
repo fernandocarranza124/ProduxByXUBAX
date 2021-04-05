@@ -22,9 +22,19 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::orderBy('id','DESC')->paginate(5);
         $team = Team::findOrFail(Auth::user()->current_team_id);
-        // $teams = TeamUser::where('user_id','=',)
+        $users = $team->users;
+        
+        // Obtiene el dueño del grupo y lo añade
+        $user = User::findOrFail($team->user_id);
+        $users->push($user);
+
+        // Obtiene el mismo usuario logeado actualmente y lo añade
+        $user = Auth::user();
+        $users->push($user);
+
+        // Elimina los registros repetidos
+        $users = $users->unique();
         return view('users',compact('users','team'))->with('i', ($request->input('page', 1) - 1) * 5);
     }
     

@@ -1,4 +1,49 @@
-<div>
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <div x-data="{ showModal1: false, showModal2: false, showModal3: false }" :class="{'overflow-y-hidden': showModal1 || showModal2 || showModal3}">
+    
+    <div class="grid grid-cols-3">
+        <div class="lg:col-span-1 md:col-span-3 xs:col-span-3 ">
+            <button
+                class="bg-blue-700 font-semibold text-white p-2 w-80 rounded-full hover:bg-blue-400 focus:outline-none focus:ring shadow-lg hover:shadow-none transition-all duration-300 m-2 align-items: flex-end;" 
+                @click="showModal2 = true">
+                Agregar usuario
+            </button>
+        </div>
+        <div class="lg:col-span-2 md:col-span-0 xs:col-span-0 "></div>
+        
+    
+        
+    </div>
+      <div
+          class="fixed inset-0 w-full h-full z-20 bg-black bg-opacity-50 duration-300 overflow-y-auto"
+          x-show="showModal2"
+          x-transition:enter="transition duration-300"
+          x-transition:enter-start="opacity-0"
+          x-transition:enter-end="opacity-100"
+          x-transition:leave="transition duration-300"
+          x-transition:leave-start="opacity-100"
+          x-transition:leave-end="opacity-0"
+        >
+      <div class="relative sm:w-3/4 md:w-1/2 lg:w-1/3 mx-2 sm:mx-auto my-10 opacity-100">
+        <div
+          class="relative bg-white shadow-lg rounded-lg text-gray-900 z-20"
+          @click.away="showModal2 = false"
+          x-show="showModal2"
+          x-transition:enter="transition transform duration-300"
+          x-transition:enter-start="scale-0"
+          x-transition:enter-end="scale-100"
+          x-transition:leave="transition transform duration-300"
+          x-transition:leave-start="scale-100"
+          x-transition:leave-end="scale-0"
+        >
+          <header class="flex flex-col justify-center items-center p-3 text-blue-600">
+            <h2 class="font-semibold text-2xl">Agregar dispositivo</h2>
+          </header>
+            <main class="p-3 text-center">
+            <div>
     @if (Gate::check('addTeamMember', $team))
         <x-jet-section-border />
 
@@ -28,14 +73,14 @@
                     </div>
 
                     <!-- Role -->
-                    @if (count($this->roles) > 0)
+                    @if (count($roles) > 0)
                         <div class="col-span-6 lg:col-span-4">
                             <x-jet-label for="role" value="{{ __('Rol') }}" />
                             <x-jet-input-error for="role" class="mt-2" />
 
                             <div class="relative z-0 mt-1 border border-gray-200 rounded-lg cursor-pointer">
                                 
-                                @foreach ($this->roles as $index => $role)
+                                @foreach ($roles as $index => $role)
                                     <button type="button" class="relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue {{ $index > 0 ? 'border-t border-gray-200 rounded-t-none' : '' }} {{ ! $loop->last ? 'rounded-b-none' : '' }}"
                                                     wire:click="$set('addTeamMemberForm.role', '{{ $role->key }}')">
                                         <div class="{{ isset($addTeamMemberForm['role']) && $addTeamMemberForm['role'] !== $role->key ? 'opacity-50' : '' }}">
@@ -149,7 +194,7 @@
                                     @endif
 
                                     <!-- Leave Team -->
-                                    @if ($this->user->id === $user->id)
+                                    @if ($user->id === $user->id)
                                         <button class="cursor-pointer ml-6 text-sm text-red-500" wire:click="$toggle('confirmingLeavingTeam')">
                                             {{ __('Leave') }}
                                         </button>
@@ -177,7 +222,7 @@
 
         <x-slot name="content">
             <div class="relative z-0 mt-1 border border-gray-200 rounded-lg cursor-pointer">
-                @foreach ($this->roles as $index => $role)
+                @foreach ($roles as $index => $role)
                     <button type="button" class="relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue {{ $index > 0 ? 'border-t border-gray-200 rounded-t-none' : '' }} {{ ! $loop->last ? 'rounded-b-none' : '' }}"
                                     wire:click="$set('currentRole', '{{ $role->key }}')">
                         <div class="{{ $currentRole !== $role->key ? 'opacity-50' : '' }}">
@@ -255,3 +300,46 @@
         </x-slot>
     </x-jet-confirmation-modal>
 </div>
+
+            </main>
+            <input type="text" name="" value="{{route('Devices.store')}}" id="route" hidden="">
+          <footer class="flex justify-center bg-transparent">
+            {{-- <button onclick="agregarDispositivo()" 
+              class="bg-blue-600 font-semibold text-white py-3 w-full rounded-b-md hover:bg-blue-700 focus:outline-none focus:ring shadow-lg hover:shadow-none transition-all duration-300"
+              @click="showModal2 = false">
+              Guardar
+            </button> --}}
+            <button type="submit" 
+              class="bg-blue-600 font-semibold text-white py-3 w-full rounded-b-md hover:bg-blue-700 focus:outline-none focus:ring shadow-lg hover:shadow-none transition-all duration-300"
+              @click="showModal2 = false">
+              Guardar
+            </button>
+          </footer>
+        </div>
+      </div>
+      </form>
+    </div>
+    </div>
+    <script>
+      function agregarDispositivo(){
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        var Nombre = $('#name').val();
+        var NombreAccion = $('#actionName').val();
+        var Categoria = $('#categoria').val();
+        var PIN = $('#PIN').val();  
+        var Ruta = $('#route').val();  
+        $.ajax({
+        url: Ruta,
+        type: 'post',
+        data: {_token: CSRF_TOKEN,nombre: Nombre,nombreAccion: NombreAccion,categoria: Categoria, PIN: PIN},
+        success: function(response){
+          alert ($('#tableDevices').val());
+        }
+      });
+      }
+      
+
+
+      
+
+    </script>

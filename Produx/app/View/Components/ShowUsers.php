@@ -15,7 +15,7 @@ class ShowUsers extends Component
     public $id;
     public $email;
     public $current_team_id;
-    public $roles;
+    public $rol;
     public $teams;
     public $delete=false;
     public $update=false;
@@ -25,14 +25,19 @@ class ShowUsers extends Component
         $this->email=$user->email;
         $this->id=$user->id;
         $this->current_team_id=$user->current_team_id;
-        $this->roles=$user->getRoleNames();
+        $this->rol=$user->teamRole;
         $this->teams=$user->allTeams();
+        // dd($user->update);
         if($user->update == True){
             $this->update=True;
         }
         if($user->delete == True){
             $this->delete=True;
         }
+        if($this->rol=="Owner"){
+            $this->delete=False;
+        }
+        
     }
 
     /**
