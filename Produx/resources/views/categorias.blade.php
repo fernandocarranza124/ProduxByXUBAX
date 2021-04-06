@@ -10,7 +10,7 @@
     @if($user->hasTeamPermission($team, 'create-categoria'))
         <x-agregar-categoria-modal />
     @else 
-        {{'no'}}
+        
     @endif
     <div class="py-12" style="padding-top: 1rem;padding-left: 2rem;padding-right:2rem;">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -28,7 +28,24 @@
                     <tbody id="tableCategorias">
                         @isset($categorias)
                             @foreach($categorias as $categoria)
-                                <x-show-categoria :categoria="$categoria"  />
+                                @if(auth()->user()->hasTeamPermission($team, 'update-categoria'))
+                                    {{-- Puede editar --}}
+                                    @php 
+                                        $categoria->update = True;
+                                    @endphp
+                                @endif
+                                @if(auth()->user()->hasTeamPermission($team, 'delete-categoria'))
+                                    {{-- Puede borrar --}}
+                                    @php 
+                                        $categoria->delete = True;
+                                    @endphp
+                                @endif
+                                @php
+                                    $categoria->teamRole = $user->teamRole($team)->name;
+                                    // dd($teams);
+                                    
+                                @endphp
+                                <x-show-categoria :categoria="$categoria" :teams="$teams" :users="$users" />
                                 
                             @endforeach
                         @endisset

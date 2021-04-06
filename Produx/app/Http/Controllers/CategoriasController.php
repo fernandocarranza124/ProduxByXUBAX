@@ -24,10 +24,22 @@ class CategoriasController extends Controller
         $user = Auth::user();
         // dd($team->allUsers());
         $Miembros = $team->allUsers();
-        $categorias = Categoria::where('team_id','=',Auth::user()->current_team_id)->get();
-        // dd($categorias);
+        $categorias = Categoria::where('team_id','=',Auth::user()->current_team_id)
+                                ->join('teams','categorias.team_id','=','teams.id')
+                                ->join('users', 'categorias.user_id','=','users.id')
+                                ->get(['categorias.id','categorias.nombre','categorias.user_id','categorias.team_id','categorias.created_at','teams.name as teamName','users.name as ownerName']);
+        $teams = $user->teams;
+        $ownedTeams = $user->ownedTeams;
+        foreach ($ownedTeams as $team) {
+            $teams->push($team);    
+        }
+        $teams = $teams->unique();
+        $users = $team->allUsers();
+        // $nompreEquipo = Team::findOrFail($categorias);
+        $team= Team::findOrFail(Auth::user()->current_team_id);
+        // dd($user->teamRole($team));
         
-        return view('categorias', compact('team','user','categorias'))->render();  
+        return view('categorias', compact('team','user','categorias','teams','users'))->render();  
     }
 
     /**
@@ -100,6 +112,8 @@ class CategoriasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Categoria::find($id)->delete();
+        return redirect()->route('Categorias.index')
+                        ->with('success','Categoria eliminada con exito');
     }
 }

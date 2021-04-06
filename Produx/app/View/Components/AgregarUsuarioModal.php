@@ -15,8 +15,7 @@ class AgregarUsuarioModal extends Component
     public $roles;
     public function __construct($team)
     {
-        $this->team = $team;
-        $this->roles = [];
+        
     }
 
     /**

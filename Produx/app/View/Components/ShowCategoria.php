@@ -18,14 +18,25 @@ class ShowCategoria extends Component
     public $team;
     public $owner_id;
     public $owner;
-    public function __construct($categoria)
+    public $update;
+    public $delete;
+    public $teamRole;
+    public $teams;
+    public $users;
+    public function __construct($categoria, $teams, $users)
     {
+        
+        $this->teams = $teams;
+        $this->users = $users;
         $this->nombre = $categoria->nombre;
         $this->id = $categoria->id;
         $this->team_id = $categoria->team_id;
-        $this->team = $categoria->team;
-        $this->owner_id = $categoria->owner_id;
-        $this->owner = $categoria->owner;
+        $this->team = $categoria->teamName;
+        $this->owner_id = $categoria->user_id;
+        $this->owner = $categoria->ownerName;
+        $this->update = $categoria->update;
+        $this->delete = $categoria->delete;
+        $this->teamRole = $categoria->teamRole;
     }
 
     /**
