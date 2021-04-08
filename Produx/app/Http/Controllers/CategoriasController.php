@@ -34,9 +34,10 @@ class CategoriasController extends Controller
             $teams->push($team);    
         }
         $teams = $teams->unique();
-        $users = $team->allUsers();
+        
         // $nompreEquipo = Team::findOrFail($categorias);
         $team= Team::findOrFail(Auth::user()->current_team_id);
+        $users = $team->allUsers();
         // dd($user->teamRole($team));
         
         return view('categorias', compact('team','user','categorias','teams','users'))->render();  
@@ -101,7 +102,13 @@ class CategoriasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $categoria = Categoria::findOrFail($id);
+        $categoria->nombre = $request->nameCategoria;
+        // $categoria->user_id = $request->idUser;
+        $categoria->team_id = $request->idGrupo;
+        $categoria->save();
+        return redirect()->route('Categorias.index')
+                        ->with('success','Categoria eliminada con exito');
     }
 
     /**

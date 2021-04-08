@@ -12,6 +12,8 @@ use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
 use Illuminate\Support\Arr;
+use Laravel\Jetstream\Jetstream;
+
     
 class UserController extends Controller
 {
@@ -22,8 +24,11 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+
+        $roles = $this->getRolesProperty();
         $team = Team::findOrFail(Auth::user()->current_team_id);
         $users = $team->users;
+        
         
         // Obtiene el dueño del grupo y lo añade
         $user = User::findOrFail($team->user_id);
@@ -35,7 +40,12 @@ class UserController extends Controller
 
         // Elimina los registros repetidos
         $users = $users->unique();
-        return view('users',compact('users','team'))->with('i', ($request->input('page', 1) - 1) * 5);
+        return view('users',compact('users','team','roles'))->with('i', ($request->input('page', 1) - 1) * 5);
+
+    }
+    public function getRolesProperty()
+    {
+        return array_values(Jetstream::$roles);
     }
     
     /**
@@ -55,6 +65,10 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function invitar(Request $request){
+        dd("llega");
+    }
+
     public function store(Request $request)
     {
         $this->validate($request, [

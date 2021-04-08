@@ -42,6 +42,18 @@
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ml-3 relative">
+                        @if (!isset(Auth::user()->currentTeam->name))
+                            @php
+                                Auth::user()->currentTeam = Auth::user()->allTeams()->first();
+                                // dd(Auth::user());
+                            @endphp    
+                        @else
+                            
+                        @endif
+                        
+                            
+                        
+                        
                         <x-jet-dropdown align="right" width="60">
                             <x-slot name="trigger">
                                 <span class="inline-flex rounded-md">

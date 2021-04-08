@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Device;
 use App\Models\TeamUser;
 use App\Models\Team;
+use App\Models\Categoria;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -20,15 +21,17 @@ class devicesController extends Controller
     public function index()
     {
         $user = TeamUser::all()->where('team_id','=',Auth::user()->current_team_id)->where('user_id', '=',Auth::user()->id);
+        $team= Team::findOrFail(Auth::user()->current_team_id);
+        $categorias = Categoria::where('team_id','=',Auth::user()->current_team_id)->get();
+        // dd($categorias);
         if(count($user) != 0){
             // no es admin -> muestra solo sus dispositivos
-            $team= Team::findOrFail(Auth::user()->current_team_id);
+            
             $user = Auth::user();
             $dispositivosPropios = Device::where('user_id','=',Auth::user()->id)->get();
             return view('devices', compact('team','user','dispositivosPropios'))->render();      
         }else{
             // es admin -> muestra todos los dispositivos de ese grupo
-            $team= Team::findOrFail(Auth::user()->current_team_id);
             $user = Auth::user();
             $dispositivosDeUsuariosEnGrupo = TeamUser::select('devices.*','team_user.*')
                                                     ->join('devices','team_user.user_id','=','devices.user_id')

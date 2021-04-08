@@ -40,73 +40,73 @@
           <header class="flex flex-col justify-center items-center p-3 text-blue-600">
             <h2 class="font-semibold text-2xl">Modificar categoria</h2>
           </header>
+          <form action="{{route('Categorias.update', $id)}}" method="POST" accept-charset="utf-8" style="width: auto">
           <main class="p-3 text-center">
               @php
                 //   dd(URL::route('Categorias.update',$id));
               @endphp
-            <form action="{{ URL::route('Categorias.update',$id)}}" method="POST" accept-charset="utf-8" style="width: auto">
+            
                 @method('PUT')
                 @csrf
-            <div class="grid lg:grid-cols-1 gap-6">
-              {{-- <form action="{{route('Categorias.store')}}" method="post" accept-charset="utf-8"> --}}
+                <div class="grid lg:grid-cols-1 gap-6">
+                  {{-- <form action="{{route('Categorias.store')}}" method="post" accept-charset="utf-8"> --}}
               
-                {{-- Campo Nombre --}}
-                <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
+                    {{-- Campo Nombre --}}
+                    <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
                     
-                  <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
-                    <p>
-                      <label for="nameCategoria" class="bg-white text-gray-600 px-1"> Nombre de la Categoria</label>
-                    </p>
-                  </div>
-                  <p>
-                    <input id="nameCategoria" name="nameCategoria" autocomplete="false" tabindex="0" type="text" class="py-1 px-1 text-gray-900 outline-none block h-full w-full" value="{{$nombre}}">
-                  </p>
-                </div>
-                <br>
-                {{-- Campo Grupo --}}
-                <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
-                    
-                    <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
-                      <p>
-                        <label for="idGrupo" class="bg-white text-gray-600 px-1"> Pertenece al grupo</label>
-                      </p>
+                      <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
+                        <p>
+                        <label for="nameCategoria" class="bg-white text-gray-600 px-1"> Nombre de la Categoria</label>
+                        </p>
+                      </div>
+                        <p>
+                          <input id="nameCategoria" name="nameCategoria" autocomplete="false" tabindex="0" type="text" class="py-1 px-1 text-gray-900 outline-none block h-full w-full" value="{{$nombre}}">
+                        </p>
                     </div>
-                    <p>
-                      {{-- <input id="idGrupo" name="idGrupo" autocomplete="false" tabindex="0" type="text" class="py-1 px-1 text-gray-900 outline-none block h-full w-full"> --}}
-                      <select name="idGrupo" id="idGrupo" class="py-1 px-1 text-gray-900 outline-none block h-full w-full">
-                          @foreach ($teams as $team)
-                            <option value="{{$team->id}}">{{$team->name}}</option>
-                          @endforeach
-                      </select>
-                    </p>
-                  </div>
-                  <br>
-                {{-- Campo Dueño --}}
-                <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
-                    
-                    <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
-                      <p>
-                        <label for="idUser" class="bg-white text-gray-600 px-1"> Pertenece al usuario</label>
-                      </p>
+                    <br>
+                    {{-- Campo Grupo --}}
+                    <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
+                        
+                        <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
+                          <p>
+                            <label for="idGrupo" class="bg-white text-gray-600 px-1"> Pertenece al grupo</label>
+                          </p>
+                        </div>
+                        <p>
+                          {{-- <input id="idGrupo" name="idGrupo" autocomplete="false" tabindex="0" type="text" class="py-1 px-1 text-gray-900 outline-none block h-full w-full"> --}}
+                          <select name="idGrupo" id="idGrupo" class="py-1 px-1 text-gray-900 outline-none block h-full w-full">
+                              @foreach ($teams as $team)
+                                <option value="{{$team->id}}">{{$team->name}}</option>
+                              @endforeach
+                          </select>
+                        </p>
+                      </div>
+                      <br>
+                      {{-- Campo Dueño --}}
+                      {{-- <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
+                          
+                          <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
+                            <p>
+                              <label for="idUser" class="bg-white text-gray-600 px-1"> Pertenece al usuario</label>
+                            </p>
+                          </div>
+                          <p> --}}
+                            {{-- <input id="idGrupo" name="idGrupo" autocomplete="false" tabindex="0" type="text" class="py-1 px-1 text-gray-900 outline-none block h-full w-full"> --}}
+                            {{-- <select name="idUser" id="idUser" class="py-1 px-1 text-gray-900 outline-none block h-full w-full">
+                                @foreach ($users as $user)
+                                  @if ($user->id == $ownerId )
+                                  <option value="{{$user->id}}" selected="">{{$user->name}}</option>    
+                                  @else
+                                  <option value="{{$user->id}}">{{$user->name}}</option>
+                                  @endif
+                                @endforeach
+                            </select>
+                          </p>
+                        </div>
+                        <br> --}}
                     </div>
-                    <p>
-                      {{-- <input id="idGrupo" name="idGrupo" autocomplete="false" tabindex="0" type="text" class="py-1 px-1 text-gray-900 outline-none block h-full w-full"> --}}
-                      <select name="idUser" id="idUser" class="py-1 px-1 text-gray-900 outline-none block h-full w-full">
-                          @foreach ($users as $user)
-                            @if ($user->id == $ownerId )
-                            <option value="{{$user->name}}" selected="">{{$user->name}}</option>    
-                            @else
-                            <option value="{{$user->name}}">{{$user->name}}</option>
-                            @endif
-                          @endforeach
-                      </select>
-                    </p>
-                  </div>
-                  <br>
-              </div>
-            </form>
-            </main>
-            <input type="text" name="" value="{{route('Categorias.update')}}" id="route" hidden="">
+                </main>
+            <input type="text" name="" value="" id="route" hidden="">
             
           <footer class="flex justify-center bg-transparent">
             {{-- <button onclick="agregarDispositivo()" 
@@ -120,6 +120,7 @@
               Guardar
             </button>
           </footer>
+        </form>
         </div>
       </div>
       </form>
