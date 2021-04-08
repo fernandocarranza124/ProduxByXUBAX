@@ -43,62 +43,108 @@
             <h2 class="font-semibold text-2xl">Agregar dispositivo</h2>
           </header>
           <main class="p-3 text-center">
-            <div class="grid lg:grid-cols-2 gap-6">
+            <div class="grid lg:grid-cols-1 gap-6">
               <form action="{{route('Devices.store')}}" method="post" accept-charset="utf-8">
               @csrf
               
-      <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
-        <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
-          <p>
-            <label for="name" class="bg-white text-gray-600 px-1">Nombre</label>
-          </p>
-        </div>
-        <p>
-          <input id="name" name="nombre" autocomplete="false" tabindex="0" type="text" class="py-1 px-1 text-gray-900 outline-none block h-full w-full">
-        </p>
-      </div>
-      <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
-        <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
-          <p>
-            <label for="actionName" class="bg-white text-gray-600 px-1">Nombre de su accion</label>
-          </p>
-        </div>
-        <p>
-          <input id="actionName" name="nombreAccion" autocomplete="false" tabindex="0" type="text" class="py-1 px-1 outline-none block h-full w-full">
-        </p>
-      </div>
-      <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
-        <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
-          <p>
-            <label for="categoria" class="bg-white text-gray-600 px-1">Categoria</label>
-          </p>
-        </div>
-        <p>
-            <select name="categoria" class="py-1 px-1 outline-none block h-full w-full">
-                <option value="Lift&Learn">Lift&Learn</option>
-                <option value="Place&Learn">Place&Learn</option>
-                <option value="Move&Learn">Move&Learn</option>
-            </select>
-          {{-- <input id="categoria" autocomplete="false" tabindex="0" type="text" class="py-1 px-1 outline-none block h-full w-full"> --}}
-        </p>
-      </div>
-      <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
-        <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
-          <p>
-            <label for="PIN" class="bg-white text-gray-600 px-1">PIN</label>
-          </p>
-        </div>
-        <p>
-          <input id="PIN" autocomplete="false" tabindex="0" type="text" class="py-1 px-1 outline-none block h-full w-full" name="PIN">
-          <input type="text" name="" value="{{route('Devices.store')}}" id="route">
-        </p>
-      </div>
-    </div>
-          </main>
+                <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
+                  <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
+                    <p>
+                      <label for="nameDevice" class="bg-white text-gray-600 px-1">Nombre</label>
+                    </p>
+                  </div>
+                  <p>
+                    <input id="nameDevice" name="nameDevice" autocomplete="false" tabindex="0" type="text" class="py-1 px-1 text-gray-900 outline-none block h-full w-full">
+                  </p>
+                </div>
+                <br>
+                <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
+                  <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
+                    <p>
+                      <label for="categoria" class="bg-white text-gray-600 px-1">Categoria</label>
+                    </p>
+                  </div>
+                  <p>
+                    <select name="categoria" class="py-1 px-1 outline-none block h-full w-full" id="categoria">
+                      <option value="1">Clase A rojo</option>
+                      <option value="2">Clase B Negro</option>
+                      <option value="3">SUV azul marino</option>
+                  </select>
+                  </p>
+                </div>
+                <br>
+                <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
+                  <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
+                    <p>
+                      <label for="categoria" class="bg-white text-gray-600 px-1">Ubicacion</label>
+                    </p>
+                  </div>
+                  <p>
+                    <div class="block">
+                      <span class="text-gray-700">Etiquetas</span>
+                      <div class="mt-2">
+                        <div>
+                          <label class="inline-flex items-center">
+                            <input type="checkbox" class="form-checkbox" name="ubicaciones[]" id="ubicacion" value="Cajuela">
+                            <span class="ml-2">Cajuela</span>
+                          </label>
+                        </div>
+                        <div>
+                          <label class="inline-flex items-center">
+                            <input type="checkbox" class="form-checkbox" name="ubicaciones[]" id="ubicacion" value="Puerta">
+                            <span class="ml-2">Puerta</span>
+                          </label>
+                        </div>
+                        <div>
+                          <label class="inline-flex items-center">
+                            <input type="checkbox" class="form-checkbox" name="ubicaciones[]" id="ubicacion" value="Cofre">
+                            <span class="ml-2">Cofre</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    {{-- <input id="categoria" autocomplete="false" tabindex="0" type="text" class="py-1 px-1 outline-none block h-full w-full"> --}}
+                  </p>
+                </div>
+                <br>
+                <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
+                  <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
+                    <p>
+                      <label for="UPC" class="bg-white text-gray-600 px-1">UPC</label>
+                    </p>
+                  </div>
+                  <p>
+                    <input id="UPC" autocomplete="false" tabindex="0" type="text" class="py-1 px-1 outline-none block h-full w-full" name="UPC">
+                  </p>
+                </div>
+                <br>
+                <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
+                  <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
+                    <p>
+                      <label for="PIN" class="bg-white text-gray-600 px-1">PIN</label>
+                    </p>
+                  </div>
+                  <p>
+                    <select name="PIN" class="py-1 px-1 outline-none block h-full w-full" id="pin">
+                      <option value="194456">Clave 1</option>
+                      <option value="178561">Clave 2</option>
+                      <option value="217896">Clave 3</option>
+                  </select>
+                  </p>
+                </div>
+                <br>
+              </div>
+            </main>
+            <input type="text" name="" value="{{route('Devices.store')}}" id="route" hidden="">
           <footer class="flex justify-center bg-transparent">
-            <button onclick="agregarDispositivo()" 
+            {{-- <button onclick="agregarDispositivo()" 
               class="bg-blue-600 font-semibold text-white py-3 w-full rounded-b-md hover:bg-blue-700 focus:outline-none focus:ring shadow-lg hover:shadow-none transition-all duration-300"
-              @click="showModal2 = false"           >
+              @click="showModal2 = false">
+              Guardar
+            </button> --}}
+            <button type="submit" 
+              class="bg-blue-600 font-semibold text-white py-3 w-full rounded-b-md hover:bg-blue-700 focus:outline-none focus:ring shadow-lg hover:shadow-none transition-all duration-300"
+              @click="showModal2 = false">
               Guardar
             </button>
           </footer>

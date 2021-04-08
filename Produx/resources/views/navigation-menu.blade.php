@@ -26,12 +26,34 @@
                         {{ __('Dispositivos') }}
                     </x-jet-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-jet-nav-link href="{{ route('users.index') }}" >
+                        {{ __('Usuarios') }}
+                    </x-jet-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-jet-nav-link href="{{ route('Categorias.index') }}" >
+                        {{ __('Categorias') }}
+                    </x-jet-nav-link>
+                </div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ml-3 relative">
+                        @if (!isset(Auth::user()->currentTeam->name))
+                            @php
+                                Auth::user()->currentTeam = Auth::user()->allTeams()->first();
+                                // dd(Auth::user());
+                            @endphp    
+                        @else
+                            
+                        @endif
+                        
+                            
+                        
+                        
                         <x-jet-dropdown align="right" width="60">
                             <x-slot name="trigger">
                                 <span class="inline-flex rounded-md">

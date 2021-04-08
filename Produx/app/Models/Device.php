@@ -14,7 +14,8 @@ class Device extends Model
         'estado',
         'nombre',
         'categoria',
-        'nombreAccion',
-        'id_user',
+        'pin',
+        'upc',
+        'user_id',
     ];
 }
