@@ -8,7 +8,7 @@
     {{--             dd($user->hasTeamPermission($team, 'create-product'));
  --}}
     @if($user->hasTeamPermission($team, 'create-product'))
-        <x-agregar-dispositivo-modal />
+        <x-agregar-dispositivo-modal :categorias="$categorias" :etiquetas="$etiquetas" />
     @endif
     <div class="py-12" style="padding-top: 1rem;padding-left: 2rem;padding-right:2rem;">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

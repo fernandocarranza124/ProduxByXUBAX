@@ -4,19 +4,16 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class AgregarDispositivoModal extends Component
+class AgregarEtiquetaModal extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public $etiquetas;
-    public $categorias;
-    public function __construct($etiquetas, $categorias)
+    public function __construct()
     {
-        $this->etiquetas = $etiquetas;
-        $this->categorias = $categorias;
+        //
     }
 
     /**
@@ -26,6 +23,6 @@ class AgregarDispositivoModal extends Component
      */
     public function render()
     {
-        return view('components.agregar-dispositivo-modal');
+        return view('components.agregar-etiqueta-modal');
     }
 }

@@ -7,6 +7,8 @@ use App\Models\Device;
 use App\Models\TeamUser;
 use App\Models\Team;
 use App\Models\Categoria;
+use App\Models\Etiqueta;
+use App\Models\Etiquetas_Pivote;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -35,12 +37,19 @@ class devicesController extends Controller
             $user = Auth::user();
             $dispositivosDeUsuariosEnGrupo = TeamUser::select('devices.*','team_user.*')
                                                     ->join('devices','team_user.user_id','=','devices.user_id')
+                                                    ->join('categorias','devices.categoria_id','=','categorias.id')
                                                     ->where('team_user.team_id','=',Auth::user()->current_team_id)
                                                     ->get();
+                                                                
             // $dispositivosPropios = TeamUser::select('devices.*', 'team_user.*')
-            $dispositivosPropios = Device::where('user_id','=',Auth::user()->id)->get();
-            // dd($dispositivosDeUsuariosEnGrupo);
-            return view('devices', compact('team','user','dispositivosPropios','dispositivosDeUsuariosEnGrupo'))->render();  
+            $dispositivosPropios = Device::select('devices.*','categorias.nombre as categoriaNombre')
+                                    ->where('devices.user_id','=',Auth::user()->id)
+                                    ->join('categorias','devices.categoria_id','=','categorias.id')
+                                    ->get();
+            dd($dispositivosPropios);
+
+            $etiquetas = Etiqueta::where('team_id','=',Auth::user()->current_team_id)->get();
+            return view('devices', compact('team','user','dispositivosPropios','dispositivosDeUsuariosEnGrupo','categorias','etiquetas'))->render();  
         }
     }
 
@@ -72,7 +81,16 @@ class devicesController extends Controller
             $Device->user_id=Auth::user()->id;
             $Device->estado='Online';
         $Device->save();
-        return $Device->id;
+        
+        foreach ($request->etiquetas as $etiqueta) {
+            $etiqueta_Dispositivo = new Etiquetas_Pivote;
+            $etiqueta_Dispositivo->device_id = $Device->id;
+            $etiqueta_Dispositivo->etiqueta_id = $etiqueta;
+            $etiqueta_Dispositivo->save();
+        }
+
+        
+        return redirect()->route(('Devices.index'));
     }
 
     /**

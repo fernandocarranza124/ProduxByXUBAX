@@ -66,9 +66,9 @@
                   </div>
                   <p>
                     <select name="categoria" class="py-1 px-1 outline-none block h-full w-full" id="categoria">
-                      <option value="1">Clase A rojo</option>
-                      <option value="2">Clase B Negro</option>
-                      <option value="3">SUV azul marino</option>
+                      @foreach ($categorias as $categoria)
+                      <option value="{{$categoria->id}}">{{$categoria->nombre}}</option>    
+                      @endforeach
                   </select>
                   </p>
                 </div>
@@ -76,31 +76,31 @@
                 <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
                   <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
                     <p>
-                      <label for="categoria" class="bg-white text-gray-600 px-1">Ubicacion</label>
+                      <label for="categoria" class="bg-white text-gray-600 px-1">Etiquetas</label>
                     </p>
                   </div>
                   <p>
                     <div class="block">
-                      <span class="text-gray-700">Etiquetas</span>
                       <div class="mt-2">
-                        <div>
-                          <label class="inline-flex items-center">
-                            <input type="checkbox" class="form-checkbox" name="ubicaciones[]" id="ubicacion" value="Cajuela">
-                            <span class="ml-2">Cajuela</span>
-                          </label>
-                        </div>
-                        <div>
-                          <label class="inline-flex items-center">
-                            <input type="checkbox" class="form-checkbox" name="ubicaciones[]" id="ubicacion" value="Puerta">
-                            <span class="ml-2">Puerta</span>
-                          </label>
-                        </div>
-                        <div>
-                          <label class="inline-flex items-center">
-                            <input type="checkbox" class="form-checkbox" name="ubicaciones[]" id="ubicacion" value="Cofre">
-                            <span class="ml-2">Cofre</span>
-                          </label>
-                        </div>
+                        @foreach ($etiquetas as $etiqueta)
+                          <div class="inline-block" >
+                            <label class="inline-flex items-center">
+                              <input type="checkbox" class="form-checkbox inline-block" name="etiquetas[]" id="etiquetas" value="{{$etiqueta->id}}">
+                              &nbsp;&nbsp;
+                                <span class="rounded-full py-0 px-1..." style="background-color: #{{$etiqueta->color}}">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="px-1 inline-block" width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                                  </svg>
+                                  <span class="ml-2 font-medium">{{$etiqueta->nombre}}&nbsp;</span>
+                                  <button>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="px-1 inline-block" width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                    </svg>
+                                  </button>
+                                </span>
+                            </label>
+                          </div>
+                        @endforeach
                       </div>
                     </div>
                     {{-- <input id="categoria" autocomplete="false" tabindex="0" type="text" class="py-1 px-1 outline-none block h-full w-full"> --}}
@@ -126,7 +126,7 @@
                   </div>
                   <p>
                     <select name="PIN" class="py-1 px-1 outline-none block h-full w-full" id="pin">
-                      <option value="194456">Clave 1</option>
+                      <option value="1">Clave 1</option>
                       <option value="178561">Clave 2</option>
                       <option value="217896">Clave 3</option>
                   </select>

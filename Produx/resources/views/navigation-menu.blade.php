@@ -17,23 +17,28 @@
                     </x-jet-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('dashboard') }}" >
-                        {{ __('Acciones') }}
+                    <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                        {{ __('Analiticos') }}
                     </x-jet-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('Devices.index') }}" >
+                    <x-jet-nav-link href="{{ route('Devices.index') }}" :active="request()->routeIs('Devices.index')">
                         {{ __('Dispositivos') }}
                     </x-jet-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('users.index') }}" >
+                    <x-jet-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
                         {{ __('Usuarios') }}
                     </x-jet-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('Categorias.index') }}" >
+                    <x-jet-nav-link href="{{ route('Categorias.index') }}" :active="request()->routeIs('Categorias.index')">
                         {{ __('Categorias') }}
+                    </x-jet-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-jet-nav-link href="{{ route('Etiquetas.index') }}" :active="request()->routeIs('Etiquetas.index')">
+                        {{ __('Etiquetas') }}
                     </x-jet-nav-link>
                 </div>
             </div>
@@ -173,6 +178,21 @@
             <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-jet-responsive-nav-link>
+            <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                {{ __('Analiticos') }}
+            </x-jet-responsive-nav-link>
+            <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('Devices.index')">
+                {{ __('Dispositivos') }}
+            </x-jet-responsive-nav-link>
+            <x-jet-responsive-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
+                {{ __('Usuarios') }}
+            </x-jet-responsive-nav-link>
+            <x-jet-responsive-nav-link href="{{ route('Categorias.index') }}" :active="request()->routeIs('Categorias.index')">
+                {{ __('Categorias') }}
+            </x-jet-responsive-nav-link>
+            <x-jet-responsive-nav-link href="{{ route('Etiquetas.index') }}" :active="request()->routeIs('Etiquetas.index')">
+                {{ __('Etiquetas') }}
+            </x-jet-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -223,12 +243,12 @@
 
                     <!-- Team Settings -->
                     <x-jet-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}" :active="request()->routeIs('teams.show')">
-                        {{ __('Configuracion equipo') }}
+                        {{ __('Configuracion del grupo') }}
                     </x-jet-responsive-nav-link>
 
                     @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
                         <x-jet-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
-                            {{ __('Create New Team') }}
+                            {{ __('Crear nuevo grupo') }}
                         </x-jet-responsive-nav-link>
                     @endcan
 
@@ -236,7 +256,7 @@
 
                     <!-- Team Switcher -->
                     <div class="block px-4 py-2 text-xs text-gray-400">
-                        {{ __('Switch Teams') }}
+                        {{ __('Cambiar de grupo') }}
                     </div>
 
                     @foreach (Auth::user()->allTeams() as $team)

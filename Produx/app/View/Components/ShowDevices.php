@@ -23,12 +23,12 @@ class ShowDevices extends Component
         $this->nombreAccion = $device->nombreAccion;
         $this->pin = $device->pin;
         $this->id_user = $device->id_user; 
-
+        dd($device);
         if($this->estado == "Online"){
             $this->colorEstado = "green";
         }else if($this->estado == "Offline"){
             $this->colorEstado = "red";
-        }else{
+        }else{     
             $this->colorEstado = "blue";
         }
 

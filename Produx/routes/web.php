@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\devicesController;
-// 
 
+// 
+use App\Http\Controllers\devicesController;
+use App\Http\Controllers\EtiquetasController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -46,5 +47,6 @@ Route::group(['middleware' => ['auth']], function() {
 
 
     Route::resource('products', ProductController::class);
+    Route::resource('Etiquetas', EtiquetasController::class);
     Route::resource('Categorias', CategoriasController::class);
 });
