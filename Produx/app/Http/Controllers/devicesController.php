@@ -46,7 +46,7 @@ class devicesController extends Controller
                                     ->where('devices.user_id','=',Auth::user()->id)
                                     ->join('categorias','devices.categoria_id','=','categorias.id')
                                     ->get();
-            dd($dispositivosPropios);
+            // dd($dispositivosPropios);
 
             $etiquetas = Etiqueta::where('team_id','=',Auth::user()->current_team_id)->get();
             return view('devices', compact('team','user','dispositivosPropios','dispositivosDeUsuariosEnGrupo','categorias','etiquetas'))->render();  

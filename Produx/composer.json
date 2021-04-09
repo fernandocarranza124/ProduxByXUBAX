@@ -19,6 +19,7 @@
         "laravel/ui": "^3.2",
         "laravelcollective/html": "^6.2",
         "livewire/livewire": "^2.0",
+        "nesbot/carbon": "^2.46",
         "spatie/laravel-permission": "^4.0"
     },
     "require-dev": {

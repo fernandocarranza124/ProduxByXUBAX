@@ -19,10 +19,13 @@ class ShowDevices extends Component
         $this->estado = $device->estado;
         $this->id = $device->id;
         $this->nombre = $device->nombre;
-        $this->categoria = $device->categoria;
+        $this->categoria = $device->categoriaNombre;
         $this->nombreAccion = $device->nombreAccion;
         $this->pin = $device->pin;
         $this->id_user = $device->id_user; 
+        $timestamp = strtotime($device->created_at);
+        $day = date('M', $timestamp);
+        dd($day);
         dd($device);
         if($this->estado == "Online"){
             $this->colorEstado = "green";
