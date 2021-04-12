@@ -42,6 +42,13 @@
           <header class="flex flex-col justify-center items-center p-3 text-blue-600">
             <h2 class="font-semibold text-2xl">Agregar dispositivo</h2>
           </header>
+          @if($pins->isEmpty())
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <strong class="font-bold">No tienes codigos disponibles.</strong>
+              <br>
+              <span class="block sm:inline">Para obtener mas contacta a tu provedor mediante el correo: hola@xubax.com .</span>
+            </div>
+          @else
           <main class="p-3 text-center">
             <div class="grid lg:grid-cols-1 gap-6">
               <form action="{{route('Devices.store')}}" method="post" accept-charset="utf-8">
@@ -73,7 +80,7 @@
                   </p>
                 </div>
                 <br>
-                <div class="border focus-within:border-blue-500 focus-within:text-blue-500 transition-all duration-500 relative rounded p-1">
+                <div class="border  transition-all duration-500 relative rounded p-1">
                   <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
                     <p>
                       <label for="categoria" class="bg-white text-gray-600 px-1">Etiquetas</label>
@@ -82,22 +89,16 @@
                   <p>
                     <div class="block">
                       <div class="mt-2">
-                        @foreach ($etiquetas as $etiqueta)
+                        @foreach ($etiquetas as $tag)
                           <div class="inline-block" >
                             <label class="inline-flex items-center">
-                              <input type="checkbox" class="form-checkbox inline-block" name="etiquetas[]" id="etiquetas" value="{{$etiqueta->id}}">
-                              &nbsp;&nbsp;
-                                <span class="rounded-full py-0 px-1..." style="background-color: #{{$etiqueta->color}}">
-                                  <svg xmlns="http://www.w3.org/2000/svg" class="px-1 inline-block" width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
-                                  </svg>
-                                  <span class="ml-2 font-medium">{{$etiqueta->nombre}}&nbsp;</span>
-                                  <button>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="px-1 inline-block" width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
-                                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                                    </svg>
-                                  </button>
-                                </span>
+                              <span class="rounded bg-{{$tag->color}} py-1 px-3 text-xs font-bold">
+                              <input type="checkbox" class="form-checkbox inline-block" name="etiquetas[]" id="etiquetas" value="{{$tag->id}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="px-1 inline-block" width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                                </svg>
+                                    {{$tag->nombre}}
+                              </span>
                             </label>
                           </div>
                         @endforeach
@@ -126,9 +127,9 @@
                   </div>
                   <p>
                     <select name="PIN" class="py-1 px-1 outline-none block h-full w-full" id="pin">
-                      <option value="1">Clave 1</option>
-                      <option value="178561">Clave 2</option>
-                      <option value="217896">Clave 3</option>
+                      @foreach ($pins as $pin)
+                        <option value="{{$pin->id}}">{{$pin->pin}}</option>    
+                      @endforeach
                   </select>
                   </p>
                 </div>
@@ -148,6 +149,7 @@
               Guardar
             </button>
           </footer>
+          @endif
         </div>
       </div>
       </form>

@@ -61,9 +61,11 @@ class EtiquetasController extends Controller
      */
     public function store(Request $request)
     {
+        
+        
         $etiqueta = new Etiqueta;
             $etiqueta->nombre =  $request->nameEtiqueta;
-            $etiqueta->color =   $this->random_color();
+            $etiqueta->color =   $this->random_color($etiqueta->nombre);
             $etiqueta->user_id = Auth::user()->id;
             $etiqueta->team_id = Auth::user()->current_team_id;
             $etiqueta->save();
@@ -71,12 +73,22 @@ class EtiquetasController extends Controller
         return redirect()->route(('Etiquetas.index'));
     }
 
-    public function random_color_part() {
-        return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
-    }
     
-    public function random_color() {
-        return $this->random_color_part() . $this->random_color_part() . $this->random_color_part();
+    
+    public function random_color($nombre) {
+        $colors = array("red","yellow","green","blue","indigo","purple","pink");
+        $colores = array("rojo","amarillo","verde","azul","indigo","morado","rosa");
+        $gradientes = array("100","200","300","400","500","600","700");
+        $indice = 0;
+        foreach($colores as $color) {
+            if (stripos($nombre,$color) !== false){
+                return ($colors[$indice]."-".$gradientes[rand(0,6)]);
+            }
+            $indice++; 
+            
+        }
+        return ($colors[rand(0,6)]."-".$gradientes[rand(0,8)]);
+        
     }
     
     

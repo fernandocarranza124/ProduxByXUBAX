@@ -10,6 +10,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoriasController;
+use App\Http\Controllers\DashboardController;
 // 
 
 
@@ -29,7 +30,8 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
+    // return view('dashboard');
+    return redirect()->route(('Dashboard.index'));
 })->name('dashboard');
 
 
@@ -39,6 +41,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => ['auth']], function() {
+    Route::resource('Dashboard', DashboardController::class);
     Route::resource('Devices', devicesController::class);
     Route::resource('roles', RoleController::class);
     

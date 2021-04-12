@@ -1,13 +1,19 @@
 <tr class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
     <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
         <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase" >Nombre</span>
-        <span class="rounded-full py-0 px-10..." style="background-color: #{{$color}}">
+        {{-- <span class="rounded-full py-0 px-10..." style="background-color: #{{$color}}"> --}}
             {{-- <p style="background-color: #{{$color}}"> --}}
-                <svg xmlns="http://www.w3.org/2000/svg" class="px-1 inline-block" width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                {{-- <svg xmlns="http://www.w3.org/2000/svg" class="px-1 inline-block" width="24" height="24" viewBox="0 0 20 20" fill="currentColor"> --}}
+                    {{-- <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /> --}}
+                {{-- </svg> --}}
+                {{-- &nbsp;&nbsp;{{$nombre}}&nbsp;&nbsp; --}}
+            {{-- </p> --}}
+        {{-- </span> --}}
+        <span class="rounded bg-{{$color}} py-1 px-3 text-xs font-bold">
+            <svg xmlns="http://www.w3.org/2000/svg" class="px-1 inline-block" width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
                 </svg>
-                &nbsp;&nbsp;{{$nombre}}&nbsp;&nbsp;
-            {{-- </p> --}}
+                {{$nombre}}
         </span>
     </td>
     <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">

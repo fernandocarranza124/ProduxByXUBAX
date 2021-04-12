@@ -9,6 +9,7 @@ use App\Models\Team;
 use App\Models\Categoria;
 use App\Models\Etiqueta;
 use App\Models\Etiquetas_Pivote;
+use App\Models\Pin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -22,8 +23,16 @@ class devicesController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        $teams = $user->teams;
+        $ownedTeams = $user->ownedTeams;
+        foreach ($ownedTeams as $team) {
+            $teams->push($team);    
+        }
+        $teams = $teams->unique();
         $user = TeamUser::all()->where('team_id','=',Auth::user()->current_team_id)->where('user_id', '=',Auth::user()->id);
         $team= Team::findOrFail(Auth::user()->current_team_id);
+        $users = $team->allUsers();
         $categorias = Categoria::where('team_id','=',Auth::user()->current_team_id)->get();
         // dd($categorias);
         if(count($user) != 0){
@@ -49,7 +58,19 @@ class devicesController extends Controller
             // dd($dispositivosPropios);
 
             $etiquetas = Etiqueta::where('team_id','=',Auth::user()->current_team_id)->get();
-            return view('devices', compact('team','user','dispositivosPropios','dispositivosDeUsuariosEnGrupo','categorias','etiquetas'))->render();  
+            // Obtiene las etiquetas del cada uno de los dispositivos
+            foreach ($dispositivosPropios as $dispositivo) {
+                $allTags = Etiquetas_Pivote::where('device_id','=',$dispositivo->id)
+                                                ->join('etiquetas','etiquetas_dispositivo.etiqueta_id','=','etiquetas.id')
+                                                ->get();
+                $dispositivo->allTags = $allTags;
+            }
+
+            $PinsAvailable = Pin::where('team_id','=',Auth::user()->current_team_id)
+                                    ->where('active','=','0')
+                                    ->get();
+            
+            return view('devices', compact('team','user','dispositivosPropios','dispositivosDeUsuariosEnGrupo','categorias','etiquetas','teams','users','PinsAvailable'))->render();  
         }
     }
 
@@ -80,7 +101,13 @@ class devicesController extends Controller
             $Device->upc=$request->input('UPC');
             $Device->user_id=Auth::user()->id;
             $Device->estado='Online';
+            $Device->pin_id=$request->PIN;
         $Device->save();
+        $pin = Pin::findOrFail($request->PIN);
+            $pin->active = 1;
+            $pin->save();
+        
+
         
         foreach ($request->etiquetas as $etiqueta) {
             $etiqueta_Dispositivo = new Etiquetas_Pivote;
@@ -122,9 +149,103 @@ class devicesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function random_color($nombre) {
+        $colors = array("red","yellow","green","blue","indigo","purple","pink");
+        $colores = array("rojo","amarillo","verde","azul","indigo","morado","rosa");
+        $gradientes = array("100","200","300","400","500","600","700");
+        $indice = 0;
+        foreach($colores as $color) {
+            if (stripos($nombre,$color) !== false){
+                return ($colors[$indice]."-".$gradientes[rand(0,6)]);
+            }
+            $indice++; 
+            
+        }
+        return ($colors[rand(0,6)]."-".$gradientes[rand(0,8)]);
+        
+    }
+
     public function update(Request $request, $id)
     {
-        //
+        $Device = $this->updateDevice($id, $request);
+        $this->updateTagsChanged($Device, $request) ;
+        $this->createAndLinkNewTags($request, $id);
+        return redirect()->route(('Devices.index'));
+        
+    }
+    public function createAndLinkNewTags($request, $id){
+        $nuevasEtiquetas = explode(',',$request->addEtiquetas);
+        foreach ($nuevasEtiquetas as $etiquetaNombre) {
+            // Crear etiqueta
+                // Comprueba si existe una con el mismo nombre
+                    if(!$this->tagNameExist($etiquetaNombre, $id)){
+                        $etiqueta = new Etiqueta;
+                        $etiqueta->nombre = $etiquetaNombre;
+                        $etiqueta->user_id = Auth::user()->id;
+                        $etiqueta->team_id = Auth::user()->current_team_id;
+                        $etiqueta->color = $this->random_color($etiquetaNombre);
+                        $etiqueta->save();
+                        // Una vez creada la etiqueta se vincula
+                        $relation = new Etiquetas_Pivote;
+                        $relation->device_id = $id;
+                        $relation->etiqueta_id =$etiqueta->id ;
+                        $relation->save();
+                    }
+                    
+            
+
+        }
+    }
+    public function tagNameExist($tagName, $id){
+        
+        $etiqueta = Etiqueta::where('nombre','=',$tagName)->get();
+        
+        if($etiqueta->isEmpty()){
+            return false;
+        }else{
+            // Si ya existe, crea las relaciones
+            
+            $tag = $etiqueta->first();
+            
+            // Revisa si ya existe la relacion
+            $relation = Etiquetas_Pivote::where('device_id','=',$id)
+                                    ->where('etiqueta_id','=',$tag->id)
+                                    ->get();
+            if($relation->isEmpty()){
+                $relation = new Etiquetas_Pivote;
+                        $relation->device_id = $id;
+                        $relation->etiqueta_id =$tag->id ;
+                        $relation->save();    
+            }
+            return true;
+            
+        }
+
+    }
+    public function updateTagsChanged($Device, $request){
+        $etiquetasViejas = Etiquetas_Pivote::where('device_id','=',$Device->id)->get();
+            $viejas = array();
+            foreach ($etiquetasViejas as $vieja) {
+                $viejas[] = $vieja->etiqueta_id;
+            }
+        $etiquetasViejas = $viejas;
+        $etiquetasNuevas = $request->etiquetas;
+        $result = array_diff($etiquetasViejas, $etiquetasNuevas);
+        foreach ($result as $etiquetaId) {
+            $this->unLinkTag($etiquetaId);
+        }
+    }
+    public function unLinkTag($id){
+        $relation=Etiquetas_Pivote::where('etiqueta_id','=',$id);
+        $relation->delete();
+    }
+    public function updateDevice($id, $request){
+        $Device = Device::findOrFail($id);
+            $Device->nombre = $request->nameDevice;
+            $Device->categoria_id = $request->idCategoria;
+            $Device->nombre = $request->nameDevice;
+        $Device->save();
+        return $Device;
     }
 
     /**
@@ -136,7 +257,11 @@ class devicesController extends Controller
     public function destroy($id)
     {
         $device=Device::findOrFail($id);
+            $pin = Pin::findOrFail($device->pin_id);
+            $pin->active = 0;
+            $pin->save();
         $device->delete();
+        
         return redirect()->route(('Devices.index'));
     }
 }

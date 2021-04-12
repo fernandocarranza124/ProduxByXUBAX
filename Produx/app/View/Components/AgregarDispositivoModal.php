@@ -13,10 +13,12 @@ class AgregarDispositivoModal extends Component
      */
     public $etiquetas;
     public $categorias;
-    public function __construct($etiquetas, $categorias)
+    public $pins;
+    public function __construct($etiquetas, $categorias, $pins)
     {
         $this->etiquetas = $etiquetas;
         $this->categorias = $categorias;
+        $this->pins = $pins;
     }
 
     /**
