@@ -11,8 +11,11 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 @php
                     // dd($DispositivosTotal);
+                    // $dispositivos = 4;
+                    
                 @endphp
-                <x-general-dashboard :NumDispositivos="$DispositivosTotal" />
+                <x-general-dashboard :dispositivos="$dispositivos" :acciones="$acciones" />
+                {{-- <x-show-categoria :categoria="$categoria" :teams="$teams" :users="$users" /> --}}
             </div>
         </div>
     </div>
