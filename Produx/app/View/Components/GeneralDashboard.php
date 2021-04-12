@@ -11,9 +11,10 @@ class GeneralDashboard extends Component
      *
      * @return void
      */
-    public function __construct()
+    public $NumDispositivos;
+    public function __construct($NumDispositivos)
     {
-        //
+        $this->NumDispositivos = $NumDispositivos;
     }
 
     /**

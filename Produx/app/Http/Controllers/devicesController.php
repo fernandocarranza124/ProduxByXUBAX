@@ -40,7 +40,18 @@ class devicesController extends Controller
             
             $user = Auth::user();
             $dispositivosPropios = Device::where('user_id','=',Auth::user()->id)->get();
-            return view('devices', compact('team','user','dispositivosPropios'))->render();      
+            $etiquetas = Etiqueta::where('team_id','=',Auth::user()->current_team_id)->get();
+            // Obtiene las etiquetas del cada uno de los dispositivos
+            foreach ($dispositivosPropios as $dispositivo) {
+                $allTags = Etiquetas_Pivote::where('device_id','=',$dispositivo->id)
+                                                ->join('etiquetas','etiquetas_dispositivo.etiqueta_id','=','etiquetas.id')
+                                                ->get();
+                $dispositivo->allTags = $allTags;
+            }
+            $PinsAvailable = Pin::where('team_id','=',Auth::user()->current_team_id)
+                                    ->where('active','=','0')
+                                    ->get();
+                                    return view('devices', compact('team','user','dispositivosPropios','categorias','etiquetas','teams','users','PinsAvailable'))->render();  
         }else{
             // es admin -> muestra todos los dispositivos de ese grupo
             $user = Auth::user();
@@ -60,6 +71,12 @@ class devicesController extends Controller
             $etiquetas = Etiqueta::where('team_id','=',Auth::user()->current_team_id)->get();
             // Obtiene las etiquetas del cada uno de los dispositivos
             foreach ($dispositivosPropios as $dispositivo) {
+                $allTags = Etiquetas_Pivote::where('device_id','=',$dispositivo->id)
+                                                ->join('etiquetas','etiquetas_dispositivo.etiqueta_id','=','etiquetas.id')
+                                                ->get();
+                $dispositivo->allTags = $allTags;
+            }
+            foreach ($dispositivosDeUsuariosEnGrupo as $dispositivo) {
                 $allTags = Etiquetas_Pivote::where('device_id','=',$dispositivo->id)
                                                 ->join('etiquetas','etiquetas_dispositivo.etiqueta_id','=','etiquetas.id')
                                                 ->get();
