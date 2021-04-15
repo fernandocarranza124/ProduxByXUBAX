@@ -84,7 +84,7 @@ class DashboardController extends Controller
                     }else{
                         $tiempoFinal = $iteracion->created_at;
                         
-                        $diff = $diff + $tiempoInicial->diffInSeconds($tiempoFinal);
+                        // $diff = $diff + $tiempoInicial->diffInSeconds($tiempoFinal);
                         $tiempoFinal = $tiempoInicial = 0;
                         
                         
@@ -113,11 +113,11 @@ class DashboardController extends Controller
         }
         
         $acciones = collect();
-        $acciones->accionesTotales =  ($accionesTotales)/2;
-        $acciones->accionesPorDia =  $accionesDia/2;
-        $acciones->accionesPorMes = $accionesMes/2;
-        $acciones->accionesPorHora = $accionesHora/2;
-        $acciones->promedio = $diff/$contador;
+        $acciones->accionesTotales =  (Int)(($accionesTotales)/2);
+        $acciones->accionesPorDia =  (Int)($accionesDia/2);
+        $acciones->accionesPorMes = (Int)($accionesMes/2);
+        $acciones->accionesPorHora = (Int)($accionesHora/2);
+        $acciones->promedio = (Int)($diff/$contador);
         return $acciones;
     }
 

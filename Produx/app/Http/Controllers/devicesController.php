@@ -178,7 +178,7 @@ class devicesController extends Controller
             $indice++; 
             
         }
-        return ($colors[rand(0,6)]."-".$gradientes[rand(0,8)]);
+        return ($colors[rand(0,6)]."-".$gradientes[rand(0,6)]);
         
     }
 

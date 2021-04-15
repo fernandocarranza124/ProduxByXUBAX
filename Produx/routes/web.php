@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Route;
 
 // 
@@ -11,7 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\DashboardController;
-// 
+//
 
 
 /*
@@ -52,4 +53,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('products', ProductController::class);
     Route::resource('Etiquetas', EtiquetasController::class);
     Route::resource('Categorias', CategoriasController::class);
+
+    
+
 });
+Route::get('/Api/LiftAndLearn/getDevice/{idCategoria}', [ApiController::class, 'getIdDevicesByCategoria']);
+Route::get('/Api/LiftAndLearn/getPIN/{idDevice}', [ApiController::class, 'getPinsByIdDevices']);
+Route::get('/Api/LiftAndLearn/action/{tipo}/{pin}', [ApiController::class, 'insertActionByPin']);
+Route::get('/Api/LiftAndLearn/getDataset/{idCategoria}', [ApiController::class, 'getDatasetByCategoria']);
+Route::get('/Api/LiftAndLearn/getAction/{idDevice}', [ApiController::class, 'getActionByDevice']);
+
+
