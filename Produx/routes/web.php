@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AnaliticosController;
 //
 
 
@@ -53,6 +54,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('products', ProductController::class);
     Route::resource('Etiquetas', EtiquetasController::class);
     Route::resource('Categorias', CategoriasController::class);
+    Route::resource('Analiticos', AnaliticosController::class);
 
     
 
