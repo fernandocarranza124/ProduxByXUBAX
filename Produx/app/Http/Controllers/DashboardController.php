@@ -25,6 +25,7 @@ class DashboardController extends Controller
             $user = Auth::user();
             $dispositivosPropios = Device::where('user_id','=',Auth::user()->id)->get();
             $dispositivos = ($dispositivosPropios->count());
+            
             $acciones = $this->getActionsByDates($dispositivosPropios);
         }else{
             // es admin -> muestra todos los dispositivos de ese grupo
@@ -42,13 +43,24 @@ class DashboardController extends Controller
                                     ->get();
             
             $dispositivos = ($dispositivosPropios->count()) + ($dispositivosDeUsuariosEnGrupo->count());
+            
             $accionesDeUsuariosEnGrupo = $this->getActionsByDates($dispositivosDeUsuariosEnGrupo);
 
             $acciones = $this->getActionsByDates($dispositivosPropios);
+            // dd($accionesDeUsuariosEnGrupo);
             $acciones->accionesTotales =$acciones->accionesTotales + $accionesDeUsuariosEnGrupo->accionesTotales;
             $acciones->accionesPorDia = $acciones->accionesPorDia + $accionesDeUsuariosEnGrupo->accionesPorDia;
             $acciones->accionesPorMes = $acciones->accionesPorMes + $accionesDeUsuariosEnGrupo->accionesPorMes;
             $acciones->accionesPorHora = $acciones->accionesPorHora + $accionesDeUsuariosEnGrupo->accionesPorHora;
+            $acciones->productosEnMano = $acciones->productosEnMano + $accionesDeUsuariosEnGrupo->productosEnMano;
+            $acciones->productosEnAnaquel = $acciones->productosEnAnaquel + $accionesDeUsuariosEnGrupo->productosEnAnaquel;
+            $acciones->productosRobados = $acciones->productosRobados + $accionesDeUsuariosEnGrupo->productosRobados;
+            if($acciones->productoMayorInteraccionDia->NumeroInteracciones < $accionesDeUsuariosEnGrupo->productoMayorInteraccionDia->NumeroInteracciones){
+             $acciones->productoMayorInteraccionDia = $accionesDeUsuariosEnGrupo->productoMayorInteraccionDia;   
+            }
+            
+
+            
         }
         
         
@@ -57,7 +69,7 @@ class DashboardController extends Controller
     }
     public function getActionsByDates($dispositivos){
         date_default_timezone_set ("America/Mexico_City");
-
+        
         $accionesTotales=0;
         $accionesHora=0;
         $accionesDia=0;
@@ -75,11 +87,29 @@ class DashboardController extends Controller
         $tiempoFinal = 0;
         $diff = 0; 
         $contador=1;
+
+        $productoEnMano = 0;
+        $productoEnAnaquel = 0;
+        $productoMayorDia = collect();
+        $productoMayorDia->device = null;
+        $productoMayorDia->NumeroInteracciones = null;
+        $productoMayorMes = collect();
+        $productoMayorMes->device = null;
+        $productoMayorMes->NumeroInteracciones = null;
         foreach ($dispositivos as $device) {
+            
             $accion = Accion::where('device_id','=',$device->id)->get();
+            $ultimaAccion = Accion::where('device_id','=',$device->id)->orderByDesc('created_at')->first();
+            if($ultimaAccion->tipo == 1){
+                $productoEnMano++;
+            }else{
+                $productoEnAnaquel++;
+            }
                 foreach($accion as $iteracion){
+                    
                     if($iteracion->tipo == 0){
                         $tiempoInicial = $iteracion->created_at;
+                        
                         $contador++;
                     }else{
                         $tiempoFinal = $iteracion->created_at;
@@ -104,6 +134,28 @@ class DashboardController extends Controller
                             ->where('device_id','=',$device->id)
                             ->get();
             
+                            
+            if($productoMayorDia->count() > 0){
+                $productoMayorDia->device = $device->nombre;
+                $productoMayorDia->NumeroInteracciones = $accionPorDia->count()/2;
+                $productoMayorDia->NumeroInteracciones = (Int)$productoMayorDia->NumeroInteracciones;
+                
+            }else if($accionPorDia->count() > $productoMayorDia->NumeroInteracciones){
+                $productoMayorDia->device = $device->nombre;
+                $productoMayorDia->NumeroInteracciones = $accionPorDia->count()/2;
+                $productoMayorDia->NumeroInteracciones = (Int)$productoMayorDia->NumeroInteracciones;
+            }
+
+            if($productoMayorMes->count() > 0){
+                $productoMayorMes->device = $device->nombre;
+                $productoMayorMes->NumeroInteracciones = $accionPorMes->count()/2;
+                $productoMayorMes->NumeroInteracciones = (Int)$productoMayorMes->NumeroInteracciones;
+                
+            }else if($accionPorMes->count() > $productoMayorMes->NumeroInteracciones){
+                $productoMayorMes->device = $device->nombre;
+                $productoMayorMes->NumeroInteracciones = $accionPorMes->count()/2;
+                $productoMayorMes->NumeroInteracciones = (Int)$productoMayorMes->NumeroInteracciones;
+            }
         
             
             $accionesTotales = $accionesTotales + $accion->count(); 
@@ -118,6 +170,12 @@ class DashboardController extends Controller
         $acciones->accionesPorMes = (Int)($accionesMes/2);
         $acciones->accionesPorHora = (Int)($accionesHora/2);
         $acciones->promedio = (Int)($diff/$contador);
+        $acciones->productosEnMano = $productoEnMano;
+        $acciones->productosEnAnaquel = $productoEnAnaquel;
+        $acciones->productosRobados = 0;
+        $acciones->productoMayorInteraccionDia = $productoMayorDia;
+        $acciones->productoMayorInteraccionMes = $productoMayorMes;
+        
         return $acciones;
     }
 

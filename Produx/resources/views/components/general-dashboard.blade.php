@@ -16,7 +16,7 @@
         // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
         $('html, body').animate({
           scrollTop: $(hash).offset().top
-        }, 800, function(){
+        }, 1200, function(){
      
           // Add hash (#) to URL when done scrolling (default click behavior)
           window.location.hash = hash;
@@ -44,71 +44,113 @@
     </div>
   </div>
 </div>
+  </div>
+</div>
+</div>
+
 
 <div class="p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-5 items-stretch" >
     <!--Card 1-->
-    <div class=" md:col-span-3 lg:col-span-2 md:w-full  sm:max-w-full md:max-w-full md:flex-auto sm:h-full">
-      <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+    <div class=" md:col-span-1 lg:col-span-1 md:w-full  sm:max-w-full md:max-w-full md:flex-auto sm:h-full lg:h-full md:h-full xl:h-full shadow-lg">
+      <div class="border-r border-b border-l border-white lg:border-1-1 lg:border-t lg:border-white bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal shadow">
         <div class="mb-8">
-          <div class="text-gray-900 font-bold text-xl mb-4">TODAS LAS ACCIONES</div>
-          <p class="text-gray-700 text-base">{{$acciones->accionesTotales}}</p>
+          <div class="text-gray-900 font-bold text-xl mb-4 text-center">INTERACCIONES TOTALES</div>
+          <p class="text-gray-700 text-base text-center"><strong>{{$acciones->accionesTotales}}</strong></p>
         </div>
       </div>
     </div>
     <!--Card 1-->
-    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto">
-      <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto sm:h-full lg:h-full md:h-full xl:h-full shadow-lg">
+      <div class="border-r border-b border-l border-white lg:border-1-1 lg:border-t lg:border-white bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
         <div class="mb-8">
-          <div class="text-gray-900 font-bold text-xl mb-4">ACCIONES DURANTE ESTA HORA</div>
-          <p class="text-gray-700 text-base">{{$acciones->accionesPorHora}}</p>
+          <div class="text-gray-900 font-bold text-xl mb-4 text-center">INTERACCIONES DE LA ULTIMA HORA</div>
+          <p class="text-gray-700 text-base text-center"><strong>{{$acciones->accionesPorHora}}</strong></p>
         </div>
       </div>
     </div>
-    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto">
-      <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto sm:h-full lg:h-full md:h-full xl:h-full shadow-lg">
+      <div class="border-r border-b border-l border-white lg:border-1-1 lg:border-t lg:border-white bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal sm:h-full lg:h-full md:h-full xl:h-full">
         <div class="mb-8">
-          <div class="text-gray-900 font-bold text-xl mb-4">ACCIONES DURANTE ESTE DÍA</div>
-          <p class="text-gray-700 text-base">{{$acciones->accionesPorDia}}</p>
+          <div class="text-gray-900 font-bold text-xl mb-4 text-center">INTERACCIONES DEL DÍA</div>
+          <p class="text-gray-700 text-base text-center"><strong>{{$acciones->accionesPorDia}}</strong></p>
         </div>
       </div>
     </div>
-    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto">
-      <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto sm:h-full lg:h-full md:h-full xl:h-full shadow-lg">
+      <div class="border-r border-b border-l border-white lg:border-1-1 lg:border-t lg:border-white bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal sm:h-full lg:h-full md:h-full xl:h-full">
         <div class="mb-8">
-          <div class="text-gray-900 font-bold text-xl mb-4">ACCIONES DURANTE ESTE MES</div>
-          <p class="text-gray-700 text-base">{{$acciones->accionesPorMes}}</p>
+          <div class="text-gray-900 font-bold text-xl mb-4 text-center">INTERACCIONES DEL MES</div>
+          <p class="text-gray-700 text-base text-center"><strong>{{$acciones->accionesPorMes}}</strong></p>
         </div>
       </div>
     </div>
-    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto">
-      <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto shadow-lg">
+      <div class="border-r border-b border-l border-white lg:border-1-1 lg:border-t lg:border-white bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal sm:h-full lg:h-full md:h-full xl:h-full">
         <div class="mb-8">
-          <div class="text-gray-900 font-bold text-xl mb-4">DISPOSITIVOS CONECTADOS</div>
-          <p class="text-gray-700 text-base">N/A</p>
+          <div class="text-gray-900 font-bold text-xl mb-4 text-center" >TIEMPO PROMEDIO DE INTERACCION</div>
+          <p class="text-gray-700 text-base text-center"><strong> N/A</strong></p>
         </div>
       </div>
     </div>
-    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto">
-      <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto shadow-lg">
+      <div class="border-r border-b border-l border-white lg:border-1-1 lg:border-t lg:border-white bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal sm:h-full lg:h-full md:h-full xl:h-full">
         <div class="mb-8">
-          <div class="text-gray-900 font-bold text-xl mb-4">TODOS LOS DISPOSITIVOS</div>
-          <p class="text-gray-700 text-base">{{$dispositivos}}</p>
+          <div class="text-gray-900 font-bold text-xl mb-4 text-center">PRODUCTOS EN MANO</div>
+          <p class="text-gray-700 text-base text-center"><strong>{{$acciones->productosEnMano}}</strong></p>
         </div>
       </div>
     </div>
-    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto">
-      <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto shadow-lg">
+      <div class="border-r border-b border-l border-white lg:border-1-1 lg:border-t lg:border-white bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal sm:h-full lg:h-full md:h-full xl:h-full">
         <div class="mb-8">
-          <div class="text-gray-900 font-bold text-xl mb-4">PROMEDIO DE TIEMPO EN ACCIONES CONCLUIDAS</div>
-          <p class="text-gray-700 text-base">N/A</p>
+          <div class="text-gray-900 font-bold text-xl mb-4 text-center">PRODUCTOS EN ANAQUEL</div>
+          <p class="text-gray-700 text-base text-center"><strong>{{$acciones->productosEnAnaquel}}</strong></p>
+        </div>
+      </div>
+    </div>
+    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto shadow-lg">
+      <div class="border-r border-b border-l border-white lg:border-1-1 lg:border-t lg:border-white bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal sm:h-full lg:h-full md:h-full xl:h-full">
+        <div class="mb-8">
+          <div class="text-gray-900 font-bold text-xl mb-4 text-center">PRODUCTOS VENDIDOS/ROBADOS</div>
+          <p class="text-gray-700 text-base text-center"><strong>{{$acciones->productosRobados}}</strong></p>
+        </div>
+      </div>
+    </div> 
+    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto shadow-lg">
+      <div class="border-r border-b border-l border-white lg:border-1-1 lg:border-t lg:border-white bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal sm:h-full lg:h-full md:h-full xl:h-full">
+        <div class="mb-8">
+          <div class="text-gray-900 font-bold text-xl mb-4 text-center">PRODUCTO CON MAYOR INTERACCION DURANTE EL DIA</div>
+          <p class="text-gray-700 text-base text-center"><strong>{{$acciones->productoMayorInteraccionDia->device}}</strong></p><br>
+          <p class="text-gray-700 text-base text-center"><strong>{{$acciones->productoMayorInteraccionDia->NumeroInteracciones}}</strong></p>
+        </div>
+      </div>
+    </div>
+    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto shadow-lg">
+      <div class="border-r border-b border-l border-white lg:border-1-1 lg:border-t lg:border-white bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal sm:h-full lg:h-full md:h-full xl:h-full">
+        <div class="mb-8">
+          <div class="text-gray-900 font-bold text-xl mb-4 text-center" >PRODUCTO CON MAYOR INTERACCION DURANTE EL MES</div>
+          <p class="text-gray-700 text-base text-center"><strong>{{$acciones->productoMayorInteraccionMes->device}}</strong></p><br>
+          <p class="text-gray-700 text-base text-center"><strong>{{$acciones->productoMayorInteraccionMes->NumeroInteracciones}}</strong></p>
+        </div>
+      </div>
+    </div>
+    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto shadow-lg">
+      <div class="border-r border-b border-l border-white lg:border-l-1 lg:border-t lg:border-white bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal sm:h-full lg:h-full md:h-full xl:h-full">
+        <div class="mb-8">
+          <div class="text-gray-900 font-bold text-xl mb-4 text-center">PROMEDIO DE TIEMPO EN ACCIONES CONCLUIDAS</div>
+          <p class="text-gray-700 text-base text-center"><strong> N/A</strong></p>
+        </div>
+      </div>
+    </div>
+    <div class=" sm:max-w-full md:max-w-1/4 md:flex-auto shadow-lg">
+      <div class="border border-white lg:border-l-1 lg:border-t lg:border-white bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal sm:h-full lg:h-full md:h-full xl:h-full">
+        <div class="mb-8">
+          <div class="text-gray-900 font-bold text-xl mb-4 text-center">PROMEDIO DE TIEMPO EN ACCIONES CONCLUIDAS</div>
+          <p class="text-gray-700 text-base text-center">N/A</p>
         </div>
       </div>
     </div>
     
   </div>
-</div>
-
-
-        
-        
+</div>  
 </div>
