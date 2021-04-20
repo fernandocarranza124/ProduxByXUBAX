@@ -8,7 +8,10 @@
 </section>
 
 <section class="flex flex-row flex-wrap mx-auto">
-    <x-chart-info-analiticos  />    
-    <x-chart-info-analiticos  />    
-    <x-chart-info-analiticos  />    
+    @php
+        
+    @endphp
+    <x-chart-info-analiticos :year="$year" :user="$user" titulo="OTS_Watchers" />    
+    <x-chart-info-analiticos :year="$year" :user="$user" titulo="OTS_Semanal" />    
+    {{-- <x-chart-info-analiticos :year="$year" :user="$user" titulo="OTS_diario" />     --}}
 </section>

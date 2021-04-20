@@ -11,9 +11,12 @@ class GeneralAnaliticos extends Component
      *
      * @return void
      */
-    public function __construct()
+    public $year;
+    public $user; 
+    public function __construct($year, $user)
     {
-        //
+        $this->year = $year;
+        $this->user = $user;
     }
 
     /**

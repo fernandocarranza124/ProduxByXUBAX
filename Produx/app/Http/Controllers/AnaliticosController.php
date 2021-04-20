@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AnaliticosController extends Controller
 {
@@ -13,7 +16,17 @@ class AnaliticosController extends Controller
      */
     public function index()
     {
-        return view ('analiticos');
+        $year = ['2015','2016','2017','2018','2019','2020','2021'];
+
+        $user = [];
+        foreach ($year as $key => $value) {
+            $user[] = User::where(DB::raw("DATE_FORMAT(created_at, '%Y')"),$value)->count();
+        }
+    	// return view('chartjs')->with('year',json_encode($year,JSON_NUMERIC_CHECK))->with('user',json_encode($user,JSON_NUMERIC_CHECK));
+        // $year =(json_encode($year));
+        // dd($year);
+        // $user =(json_encode($user, JSON_NUMERIC_CHECK));
+        return view ('analiticos',compact('year', 'user'))->with('year',json_encode($year,JSON_NUMERIC_CHECK))->with('user',json_encode($user,JSON_NUMERIC_CHECK));
     }
 
     /**

@@ -1,4 +1,5 @@
 <x-app-layout>
+    
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Analiticos') }}
@@ -9,14 +10,17 @@
     padding-top: 1rem;padding-left: 2rem;padding-right:2rem;">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                
                 @php
                     // dd($DispositivosTotal);
                     // $dispositivos = 4;
-                    
                 @endphp
-                <x-general-analiticos  />
+                <x-general-analiticos :year="$year" :user="$user" />
                 
             </div>
         </div>
     </div>
 </x-app-layout>
+@push('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+    

@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AnaliticosController;
+use App\Http\Controllers\LineChartController;
 //
 
 
@@ -49,7 +50,7 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::resource('users', UserController::class);
     // Route::post('/user/invite', [UserController::class, 'invite'])->name('users.invitar');
-
+    Route::post('/line-chart', [LineChartController::class, 'lineChart'])->name('linechart');
 
     Route::resource('products', ProductController::class);
     Route::resource('Etiquetas', EtiquetasController::class);

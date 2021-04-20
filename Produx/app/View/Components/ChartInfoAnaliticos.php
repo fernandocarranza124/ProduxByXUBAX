@@ -11,9 +11,14 @@ class ChartInfoAnaliticos extends Component
      *
      * @return void
      */
-    public function __construct()
+    public $year;
+    public $user; 
+    public $titulo;
+    public function __construct($year, $user, $titulo)
     {
-        //
+        $this->year = $year;
+        $this->user = $user;
+        $this->titulo = $titulo;
     }
 
     /**
