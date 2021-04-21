@@ -1,9 +1,9 @@
 <x-app-layout>
-    <x-slot name="header">
+    {{-- <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
         </h2>
-    </x-slot>
+    </x-slot> --}}
 
     <div class="py-12" style="
     padding-top: 1rem;padding-left: 2rem;padding-right:2rem;">
@@ -20,3 +20,10 @@
         </div>
     </div>
 </x-app-layout>
+<script>
+    window.onload = function() {
+        
+        // $("a").click();
+        
+    }
+</script>
