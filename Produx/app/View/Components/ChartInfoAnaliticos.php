@@ -11,13 +11,16 @@ class ChartInfoAnaliticos extends Component
      *
      * @return void
      */
-    public $year;
-    public $user; 
+    // {{-- Recibir id, tipo de grafica, nombre de la grafica en lava y titulo --}}
+    public $divId;
+    public $tipoDeGrafica; 
+    public $nombreDeGraficaLava;
     public $titulo;
-    public function __construct($year, $user, $titulo)
+    public function __construct($id , $tipoDeGrafica, $nombreDeGraficaLava, $titulo)
     {
-        $this->year = $year;
-        $this->user = $user;
+        $this->divId = $id;
+        $this->tipoDeGrafica = $tipoDeGrafica;
+        $this->nombreDeGraficaLava = $nombreDeGraficaLava;
         $this->titulo = $titulo;
     }
 

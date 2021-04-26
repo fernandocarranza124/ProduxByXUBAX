@@ -24,8 +24,28 @@
         
     
     <hr class="border-gray-300" />
-      <p class="flex flex-row flex-wrap w-full px-4 py-2 overflow-hidden text-3xl text-center text-gray-700">
-        10
+    @if ($color == "true" && $extra == "%")
+        @if ($valor > 80)
+            @php
+            $color = "green-700";
+            @endphp       
+        
+        @elseif ($valor > 60)
+            @php
+            $color = "yellow-700";
+            @endphp            
+        @elseif ($valor > 80)
+            @php
+            $color = "red-700";
+            @endphp            
+        @elseif ($valor > 0)
+            @php
+                $color = "red-700";
+            @endphp       
+        @endif
+    @endif
+      <p class="w-full px-4 py-2 overflow-hidden text-3xl text-center text-{{$color}}">
+        {{$valor}} {{$extra}}
       </p>
       {{-- <hr class="border-gray-300" /> --}}
     </div>

@@ -141,7 +141,7 @@
               PRODUCTOS EN ANAQUEL
             </span>
           </div>
-          <p class="text-gray-700 text-2 nmi1 xl text-center"><strong>{{$acciones->productosEnAnaquel}}</strong></p>
+          <p class="text-gray-700 text-2xl nmi1 xl text-center"><strong>{{$acciones->productosEnAnaquel}}</strong></p>
         </div>
       </div>
     </div>

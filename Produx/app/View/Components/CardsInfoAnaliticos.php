@@ -13,10 +13,30 @@ class CardsInfoAnaliticos extends Component
      */
     public $titulo;
     public $icono;
-    public function __construct( $titulo, $icono )
+    public $valor;
+    public $extra;
+    public $color;
+    public function __construct( $titulo, $icono, $valor, $extra, $color )
     {
         $this->titulo = $titulo;
         $this->icono = $icono;
+        $this->valor = $valor;
+        $this->color = $color;
+        $this->extra = $extra;
+        if($extra == "minutos" && $valor > 100 ){
+            // Se transforma a horas
+            $valor = (int)$valor / 60;
+            
+            $this->valor = number_format((float)$valor, 2, '.', '');
+            $this->extra = "horas";
+            
+            if($valor > 100 ){
+                // Se transforma a dias
+                $valor = (int)($valor / 24);
+                $this->valor = $valor;
+                $this->extra = "dias";
+            }
+        }
 
     }
 

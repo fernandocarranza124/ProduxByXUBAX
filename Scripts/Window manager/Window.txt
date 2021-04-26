@@ -1,0 +1,102 @@
+                          WINDOW version 1.5
+                           September 7th, 2004
+
+			    by Steve Kemp
+
+                    e-mail: steve@steve.org.uk
+                  http://www.steve.org.uk/
+
+
+1. ABOUT
+========
+  Window is a simple program that allows you to hide, the main window
+ of any program on your machine.  All you need to do to hide a window
+ is know the text that is in the title bar of the window - This is as
+ simple as looking at it.
+
+2. USAGE
+========
+   To hide a program, just run WINDOW.EXE and pass the Title Text of the
+  program that you would like to hide.  For example, to hide a copy of
+  Telnet just run it like this
+
+   Window Telnet
+
+   Or if you have several copies of Telnet running, hide them all like this
+ 
+   WINDOW "Telnet*"
+
+
+3. Other options
+================
+  Window supports several command line options, here is a list of them
+  [Now all args are recognised regardless of case]
+
+    Option =   Result
+   ===========================================================
+    /SHOW       =   Show a hidden window
+    /HIDE       =   Hide a window
+    /TOP        =   Toggle the 'Window Always on Top' flag
+    /MAX        =   Maximize a window
+    /MIN        =   Iconize a window
+    /LIST       =   List all windows currently visible .
+    /LISTALL    =   List all windows, hidden and visible. *
+    /LISTHIDDEN =   List only hidden windows.
+    /KILL       =   Close the given window. **
+    /?          =   Show usage info
+
+  The window title that you specify may be an exact title, or possibly
+ a wildcard expression.
+  The wildcard expressions may contain the special characters '*', and
+ '?'. 
+  The '*' character will match any number of characters, and the '?' will
+ match a single character.
+
+  So rather than have to use:-
+
+    Window Notepad - Untitled.txt
+
+  It is possible to use:-
+  
+    Window "Notepad*"
+
+  If using the special meta-characters you must put the term in quotes,
+ or the Win 95 / NT command processor will attempt to expand them into
+ filenames.
+  In this, updated version, full regular expressions are recognised.
+
+
+4. MISC
+=======
+  If you would like to have a certain window always hidden on startup, just
+ create an icon for Window and place that icon in your StartUp group.  Make
+ certain that you put the Title Text of the window you wish to hide on the
+ command line of that icon's properties.
+
+  You can show a hidden window by running Window like this:
+
+  WINDOW.EXE /SHOW "Telnet*"
+
+  Hiding an already hidden window or showing an already visible window has no
+ effect.
+
+(*)  Listall command suggested, and contributed by David Berlioz.
+
+(**) This may not work - some programs will insist on bringing up a 
+     dialog "Really Quit".
+
+5. ABOUT
+========
+
+  Window was written, and compiled under Visual C+ v4.  Its source code
+ is included, should you be interested in how the program works, or if
+ you would like to improve / modify the app.
+  If you like the program please send me an email...  After all I'm not
+ asking for money, and I currently have a job!
+
+--------------------------------------------------------------------------
+
+WINDOW is distributed under the GNU public license, and may be freely
+distributed / modified as long as this information is distributed
+unchanged.
+

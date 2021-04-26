@@ -1,36 +1,45 @@
-<section class="flex flex-row flex-wrap mx-auto">
-    <x-cards-info-analiticos titulo="Productos totales" icono="chip" />    
-    <x-cards-info-analiticos titulo="Productos con interaccion" icono="chip" />    
-    <x-cards-info-analiticos titulo="Porcentaje de interacciones" icono="stick" />    
-    <x-cards-info-analiticos titulo="Tiempo en anaquel" icono="clock" />    
-    <x-cards-info-analiticos titulo="Tiempo en mano" icono="clock" />    
-    <x-cards-info-analiticos titulo="Porcentaje de tiempo" icono="stick" />    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+    // Add smooth scrolling to all links
+    
+        // Store hash
+        var hash = "#analiticos";
+        // Using jQuery's animate() method to add smooth page scroll
+        // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+        $('html, body').animate({
+          scrollTop: $("#analiticos").offset().top
+        }, 1200, function(){
+     
+          // Add hash (#) to URL when done scrolling (default click behavior)
+          window.location.hash = hash;
+        });
+       // End if
+    });
+  
+  </script>
+  <a href="#analiticos" ></a>
+<section class="flex flex-row flex-wrap mx-auto" id="analiticos">
+  {{-- @php
+    dd($infos);  
+  @endphp --}}
+    
+    <x-cards-info-analiticos titulo="Productos totales" icono="chip" :valor="$infos->productosTotales" extra="" color="" />    
+    <x-cards-info-analiticos titulo="Productos con interaccion" icono="chip" :valor="$infos->productosConInteraccion" extra="" color="" />    
+    <x-cards-info-analiticos titulo="Porcentaje de interacciones" icono="stick" :valor="$infos->porcentajeInteracciones" extra="%" color="true" />    
+    <x-cards-info-analiticos titulo="Tiempo en anaquel" icono="clock" :valor="$infos->tiempoEnAnaquel" extra="minutos" color="" />    
+    <x-cards-info-analiticos titulo="Tiempo en mano" icono="clock" :valor="$infos->tiempoEnMano" extra="minutos" color="" />    
+    <x-cards-info-analiticos titulo="Porcentaje de tiempo" icono="stick" :valor="$infos->porcentajeDeTiempo" extra="%" color="true" />    
 </section>
 
 <section class="flex flex-row flex-wrap mx-auto">
     @php
         
     @endphp
-    <x-chart-info-analiticos :year="$year" :user="$user" titulo="OTS_Watchers" />    
-    <x-chart-info-analiticos :year="$year" :user="$user" titulo="OTS_Semanal" />    
-    <div class="transition-all duration-150 flex w-full px-2 py-6 md:w-1/1 lg:w-1/3 h-1/3 ">
-        <div class="flex flex-col items-stretch min-h-full pb-4 mb-6 transition-all duration-150 bg-white rounded-lg shadow-lg hover:shadow-2xl w-full" >
-        <hr class="border-gray-300" />
-        <div class="flex items-center text-center">
-            <svg fill="true"  viewBox="0 0 21 21" class="w-8 h-8 text-gray-400">
-                    <path d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /> 
-            </svg>
-            <div class="ml-4 text-sm text-gray-600 leading-7 font-semibold">VS</div>
-        </div>
-        <hr class="border-gray-300" />
-        <div class="row">
-            <div id="pop_div"></div>
-       </div> 
-          {{-- <hr class="border-gray-300" /> --}}
-        </div>
-      </div>
+    <x-chart-info-analiticos id="Productos con mas interacciones" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="TopMasInteracciones" titulo="5 productos con mayor interaccion" />    
+    <x-chart-info-analiticos id="ProductosInteraccionesDiasDeLaSemana" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="ProductosInteraccionesDiasDeLaSemana" titulo="Interacciones durante los dias de la semana" />    
+    <x-chart-info-analiticos id="ProductosInteraccionesHorasAlDia" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="ProductosInteraccionesHorasAlDia" titulo="Interacciones durante las horas del dia" />    
+    <x-chart-info-analiticos id="levantamientos" tipoDeGrafica="PieChart" nombreDeGraficaLava="levantamientosVSReposo" titulo="levantamientosVSReposo" />    
     
-
-    <?= Lava::render('PieChart', 'levantamientosVSReposo', 'pop_div') ?>   
-    {{-- <x-chart-info-analiticos :year="$year" :user="$user" titulo="OTS_diario" />     --}}
+    
 </section>

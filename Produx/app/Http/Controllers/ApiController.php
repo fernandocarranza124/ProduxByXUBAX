@@ -61,7 +61,7 @@ class ApiController extends Controller
             $accion->device_id=$idDevice->id;
             $accion->tipo = $tipo;
             $accion->save();
-        return "ok";
+        return $idDevice->nombre;
     }
     public function getDatasetByCategoria($idCategoria){
         $dispositivos = Device::where('categoria_id','=',$idCategoria)->get();

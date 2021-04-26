@@ -7,5 +7,7 @@
 			"path": "..\\..\\telcel"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
 }

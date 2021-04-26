@@ -104,11 +104,14 @@ class DashboardController extends Controller
 
             $accion = Accion::where('device_id', '=', $device->id)->get();
             $ultimaAccion = Accion::where('device_id', '=', $device->id)->orderByDesc('created_at')->first();
-            if ($ultimaAccion->tipo == 1) {
-                $productoEnMano++;
-            } else {
-                $productoEnAnaquel++;
+            if ($ultimaAccion != null) {
+                if ($ultimaAccion->tipo == 1) {
+                    $productoEnMano++;
+                } else {
+                    $productoEnAnaquel++;
+                }    
             }
+            
             foreach ($accion as $iteracion) {
 
                 if ($iteracion->tipo == 0) {
@@ -181,12 +184,22 @@ class DashboardController extends Controller
         }
         
         $sumaInteraccionConcluida = ($sumaInteraccionConcluida->plus(0, 0, 0, 0, 0, 0, $diff / ($contador / 2))->cascade()->forHumans());
+        if($sumaInteraccionConcluida == "1 segundo"){
+            $sumaInteraccionConcluida = "0 segundos";
+        }
+        $numeroDispositivos = $dispositivos->count();
+        
         $acciones = collect();
         $acciones->accionesTotales =  (int)(($accionesTotales) / 2);
         $acciones->accionesPorDia =  (int)($accionesDia / 2);
         $acciones->accionesPorMes = (int)($accionesMes / 2);
         $acciones->accionesPorHora = (int)($accionesHora / 2);
-        $acciones->promedio = (int)($diff / $contador);
+        if ($numeroDispositivos > 0 ) {
+            $acciones->promedio = (int)(($diff/$numeroDispositivos) / ($contador/$numeroDispositivos));    
+        }else{
+            $acciones->promedio = 0;
+        }
+        
         $acciones->productosEnMano = $productoEnMano;
         $acciones->productosEnAnaquel = $productoEnAnaquel;
         $acciones->productosRobados = 0;
