@@ -27,6 +27,8 @@ class AnaliticosController extends Controller
     {   
         $tiempoEnMano = 0;
         $tiempoEnAnaquel = 0;
+        $PrimerAccionGeneral = null;
+        $UltimaAccionGeneral = null;
         $total = 0;
         $diff = 0;
         $contador = 0;
@@ -180,8 +182,9 @@ class AnaliticosController extends Controller
                             if ($tiempoInicial) {
                                 $diferencia = $tiempoInicial->diffInMinutes($tiempoFinal);
                                 $diferenciaSegundos = $tiempoInicial->diffInSeconds($tiempoFinal);
-                                $diff = $diff +  $diferencia;
+                                $diff = $diff +  $diferenciaSegundos;
                                 $dayOfTheWeek = $tiempoInicial->dayOfWeek;
+                                // echo $diff."-\-\-".$tiempoInicial->diffInSeconds($tiempoFinal)."///// ".$tiempoInicial."---".$tiempoFinal."<br>";
                                 
                             switch ($dayOfTheWeek) {
                                 case 0:
@@ -225,24 +228,26 @@ class AnaliticosController extends Controller
                             $fechaBase = Carbon::parse("2021-".$mes."-".$dia)->toDateString();
                             $from = $fechaBase."T00:00:00.00";
                             $to   = $fechaBase."T23:59:59.999";
-                            $PrimerAccionEnDia = Accion::whereBetween('created_at', [$from, $to])
-                                            ->orderBy('created_at','ASC')
-                                            ->first(); 
-                            if($PrimerAccionEnDia != null){
-                                
-                                $UltimaAccionEnDia = Accion::whereBetween('created_at', [$from, $to])
-                                            ->orderBy('created_at','DESC')
-                                            ->first();
-                                if(
-                                    $PrimerAccionEnDia !=""
-                                    ){      
-                                        $diferencia = ($PrimerAccionEnDia->created_at->diffInMinutes($UltimaAccionEnDia->created_at));
-                                        $total = $total + $diferencia;
-                                        
-                                }else{
-                                    $total = $total + 0;
+                            $PrimerAccionEnDia = Accion::whereBetween('created_at', [$from, $to])->orderBy('created_at','ASC')
+                            ->first(); 
+                            if($PrimerAccionGeneral == null){
+                                if($PrimerAccionEnDia != null){
+                                    $UltimaAccionEnDia = Accion::whereBetween('created_at', [$from, $to])
+                                                ->orderBy('created_at','DESC')
+                                                ->first();
+                                    if(
+                                        $PrimerAccionEnDia !=""
+                                        ){      
+                                            $diferencia = ($PrimerAccionEnDia->created_at->diffInSeconds($UltimaAccionEnDia->created_at));
+                                            $total = $total + $diferencia;
+                                            
+                                    }else{
+                                        $total = $total + 0;
+                                    }
                                 }
-                            }       
+                            }
+                                            
+                                   
                         }
                     }
                     
@@ -262,21 +267,39 @@ class AnaliticosController extends Controller
             
             
         }
+        // dd($total);
         
-        $rows = collect([
-            ['Tiempo en mano', $diff],
-            ['Tiempo en anaquel', $total],
-        ]);
         $infos = collect();
         $infos->productosTotales =  (int)(($productosTotales));
+        $rows = collect([
+            ['Minutos en mano', $diff],
+            ['Minutos en anaquel', $total],
+        ]);
         $infos->productosConInteraccion =  (int)(($productosConInteraccion));
         $infos->porcentajeInteracciones =  (int)(($productosConInteraccion*100)/ $productosTotales);
-        $infos->tiempoEnAnaquel =  (int)($rows[1][1]);
-        $infos->tiempoEnMano =  (int)(($rows[0][1]));
+        if($infos->productosConInteraccion == 0){
+            $infos->tiempoEnAnaquel = 0;    
+            $infos->tiempoEnMano = 0;
+        }else {
+        $infos->tiempoEnAnaquel =  (int)(($rows[1][1])/$infos->productosTotales);
+        $infos->tiempoEnMano =  (int)(($rows[0][1])/$infos->productosConInteraccion);
+        $infos->tiempoEnAnaquel = ($infos->tiempoEnAnaquel)-($infos->tiempoEnMano);
+        }
         if($infos->tiempoEnAnaquel != 0 ){
             $infos->porcentajeDeTiempo =  (int)(($infos->tiempoEnMano*100)/ $infos->tiempoEnAnaquel);
         }else{
             $infos->porcentajeDeTiempo =  0;
+        }
+        if((($infos->tiempoEnAnaquel)-($infos->tiempoEnMano))> 0 ){
+            $rows = collect([
+                ['Minutos en mano', $infos->tiempoEnMano],
+                ['Minutos en anaquel', ($infos->tiempoEnAnaquel)],
+            ]);
+        }else {
+            $rows = collect([
+                ['Minutos en mano', $infos->tiempoEnMano],
+                ['Minutos en anaquel', 0],
+            ]);
         }
         
         // dd($infos);
@@ -311,7 +334,7 @@ class AnaliticosController extends Controller
         foreach ($weekMap as $day) {
             $arreglo = [$day];    
             for ($i=0; $i < $index ; $i++) { 
-                array_push($arreglo, $rows[$i][$weekMap[$indexWeekDay]]["Mano"]);   
+                array_push($arreglo, (($rows[$i][$weekMap[$indexWeekDay]]["Mano"])/60) );   
             }
             
             $indexWeekDay++;
@@ -320,6 +343,7 @@ class AnaliticosController extends Controller
         $grafica->setDateTimeFormat('l');
         Lava::ColumnChart('TiemposDiasDeLaSemana', $grafica, [
             'title' => 'Tiempos de interaccion durante los dias de la semana',
+            'colors'=> ['#123EAB', '#009999', '#FF7400', '#FFAB00', '#744E00'],
             'titleTextStyle' => [
                 'color'    => '#eb6b2c',
                 'fontSize' => 14
@@ -345,7 +369,7 @@ class AnaliticosController extends Controller
         $grafica->addStringColumn('Interaccion')
                                 ->addNumberColumn('Tiempo');
                                 foreach ($rows as $row) {
-                                    $grafica->addRow([$row[0]  ,$row[1]]);
+                                    $grafica->addRow([$row[0]  ,($row[1]/60)]);
                                 }
         Lava::PieChart('levantamientosVSReposo', $grafica, [
                         'colors'=> ['#2d6b22', '#8ab446', '#ec8f6e', '#f3b49f', '#f6c7b6'],
@@ -357,12 +381,13 @@ class AnaliticosController extends Controller
                         'hAxis' => [
                             'title'=>'Minutos'
                         ],
-                        'height' => 280,
+                        'height' => 300,
                         'pieSliceText' => 'value',
                         'is3D'   => true,
                         'slices' => [
                             
-                        ]
+                        ],
+                        'legend' => 'bottom'
                         // ['offset' => 0.2],
                         // ['offset' => 0.25],
                         // ['offset' => 0.3]
@@ -385,17 +410,18 @@ class AnaliticosController extends Controller
         }
         Lava::ColumnChart('TopMasInteracciones', $grafica, [
             'title' => 'Productos con mayor interacción',
+            'colors'=> [ '#5F6B6D'],
             'titleTextStyle' => [
                 'color'    => '#eb6b2c',
                 'fontSize' => 14
             ],
             'vAxis' => [
-                'title'=>'Minutos'
+                'title'=>'Interacciones'
             ],
             'hAxis' => [
                 'title'=>'Productos'
             ],
-            'height' => 280,
+            'height' => 300,
             'pieSliceText' => 'value',
             'is3D'   => true,
             'slices' => [
@@ -443,6 +469,7 @@ class AnaliticosController extends Controller
         
         Lava::ColumnChart('ProductosInteraccionesDiasDeLaSemana', $grafica, [
             'title' => 'Interacciones durante los dias de la semana',
+            'colors'=> ['#01B8AA', '#374649', '#FD625E', '#F2C80F', '#5F6B6D'],
             'titleTextStyle' => [
                 'color'    => '#eb6b2c',
                 'fontSize' => 14
@@ -501,7 +528,7 @@ class AnaliticosController extends Controller
             // ->addRow(['14', 1030, 54,456]);
         
         Lava::ColumnChart('ProductosInteraccionesHorasAlDia', $grafica, [
-            
+            'colors'=> ['#01B8AA', '#374649', '#FD625E', '#F2C80F', '#5F6B6D'],
             'vAxis' => [
                 'title'=>'Interacciones'
             ],

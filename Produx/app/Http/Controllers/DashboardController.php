@@ -64,7 +64,6 @@ class DashboardController extends Controller
 
 
         return view('dashboard', compact('dispositivos', 'acciones'));
-        return view('devices', compact('team', 'user', 'dispositivosPropios', 'dispositivosDeUsuariosEnGrupo', 'categorias', 'etiquetas', 'teams', 'users', 'PinsAvailable'))->render();
     }
     public function getActionsByDates($dispositivos)
     {
@@ -114,17 +113,20 @@ class DashboardController extends Controller
             
             foreach ($accion as $iteracion) {
 
-                if ($iteracion->tipo == 0) {
+                if ($iteracion->tipo == 1) {
                     $tiempoInicial = $iteracion->created_at;
 
-                    $contador++;
-                } else if ($iteracion->tipo == 1) {
+                    
+                } else if ($iteracion->tipo == 0) {
                     $tiempoFinal = $iteracion->created_at;
                     if ($tiempoInicial) {
                         // echo ($diff." iteracion ".$contador);
                         // echo ("<br>");
+                        // echo $diff."-\-\-\-".$tiempoInicial->diffInSeconds($tiempoFinal)."///// ".$tiempoInicial."---".$tiempoFinal."<br>";
                         $diff = $diff +  $tiempoInicial->diffInSeconds($tiempoFinal);
+                        $contador++;
                     }
+                    
 
                     // dd($diff);
                     $tiempoFinal = $tiempoInicial = 0;
@@ -182,7 +184,8 @@ class DashboardController extends Controller
         if($accionesMes != 0){
             $porcentajeMes = ($vendidosPorMes/$accionesMes);    
         }
-        
+        // echo ($diff."<strong>".$contador."</strong><br>");
+
         $sumaInteraccionConcluida = ($sumaInteraccionConcluida->plus(0, 0, 0, 0, 0, 0, $diff / ($contador / 2))->cascade()->forHumans());
         if($sumaInteraccionConcluida == "1 segundo"){
             $sumaInteraccionConcluida = "0 segundos";
