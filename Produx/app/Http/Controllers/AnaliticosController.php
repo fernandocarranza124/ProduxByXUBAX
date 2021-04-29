@@ -38,6 +38,7 @@ class AnaliticosController extends Controller
         $DispositivosDiasDeLaSemana = collect();
         $DispositivosHorasDelDia = collect();
         $MinutosDiasDeLaSemana = collect();
+        $MinutosHorasDelDia = collect();
         $masLevantados = array( ['dispositivo' => null, 'cantidad' => 0], 
                                     ['dispositivo' => null, 'cantidad' => 0],
                                     ['dispositivo' => null, 'cantidad' => 0],
@@ -76,6 +77,13 @@ class AnaliticosController extends Controller
                         "Sab"=>["Mano"=>0, "Anaquel"=>0]
                     ];
                     $interaccionesHorasDelDia = [
+                        "Nombre" => $device->nombre,
+                        "00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,
+                        "06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                        "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,
+                        "18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0
+                    ];
+                    $TiempoHorasDelDia = [
                         "Nombre" => $device->nombre,
                         "00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,
                         "06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
@@ -184,6 +192,7 @@ class AnaliticosController extends Controller
                                 $diferenciaSegundos = $tiempoInicial->diffInSeconds($tiempoFinal);
                                 $diff = $diff +  $diferenciaSegundos;
                                 $dayOfTheWeek = $tiempoInicial->dayOfWeek;
+                                $hourOfTheDay = $tiempoInicial->hour;
                                 // echo $diff."-\-\-".$tiempoInicial->diffInSeconds($tiempoFinal)."///// ".$tiempoInicial."---".$tiempoFinal."<br>";
                                 
                             switch ($dayOfTheWeek) {
@@ -212,6 +221,87 @@ class AnaliticosController extends Controller
                                     break;                                
                                 default:
                                 $TiemposDiasDeLaSemana['Dom']['Mano']++;
+                                    break;
+                            }
+                            $hourOfTheDay = strval($hourOfTheDay);
+                            switch ($hourOfTheDay) {
+                                case ('00'):
+                                    $TiempoHorasDelDia['00'] =$TiempoHorasDelDia['00'] + $diferenciaSegundos ;
+                                    break;
+                                case ('01'):
+                                    $TiempoHorasDelDia['01'] =$TiempoHorasDelDia['01'] + $diferenciaSegundos ;
+                                    break;
+                                case '02':
+                                    $TiempoHorasDelDia['02'] =$TiempoHorasDelDia['02'] + $diferenciaSegundos ;
+                                    break;
+                                case '03':
+                                    $TiempoHorasDelDia['03'] =$TiempoHorasDelDia['03'] + $diferenciaSegundos ;
+                                    break;
+                                case '04':
+                                    $TiempoHorasDelDia['04'] =$TiempoHorasDelDia['04'] + $diferenciaSegundos ;
+                                    break;
+                                case '05':
+                                    $TiempoHorasDelDia['05'] =$TiempoHorasDelDia['05'] + $diferenciaSegundos ;
+                                    break;
+                                case ('06'):
+                                    $TiempoHorasDelDia['06'] =$TiempoHorasDelDia['06'] + $diferenciaSegundos ;
+                                    break;
+                                case ('07'):
+                                    $TiempoHorasDelDia['07'] =$TiempoHorasDelDia['07'] + $diferenciaSegundos ;
+                                    break;
+                                case '08':
+                                    $TiempoHorasDelDia['08'] =$TiempoHorasDelDia['08'] + $diferenciaSegundos ;
+                                    break;
+                                case '09':
+                                    $TiempoHorasDelDia['09'] =$TiempoHorasDelDia['09'] + $diferenciaSegundos ;
+                                    break;
+                                case '10':
+                                    $TiempoHorasDelDia['10'] =$TiempoHorasDelDia['10'] + $diferenciaSegundos ;
+                                    break;
+                                case '11':
+                                    $TiempoHorasDelDia['11'] =$TiempoHorasDelDia['11'] + $diferenciaSegundos ;
+                                    break;
+                                case '12':
+                                    $TiempoHorasDelDia['12'] =$TiempoHorasDelDia['12'] + $diferenciaSegundos ;
+                                    break;
+                                case ('13'):
+                                    $TiempoHorasDelDia['13'] =$TiempoHorasDelDia['13'] + $diferenciaSegundos ;
+                                    break;
+                                case ('14'):
+                                    $TiempoHorasDelDia['14'] =$TiempoHorasDelDia['14'] + $diferenciaSegundos ;
+                                    break;
+                                case ("15"):
+                                    $TiempoHorasDelDia['15'] =$TiempoHorasDelDia['15'] + $diferenciaSegundos ;
+                                    break;
+                                case '16'|| '16':
+                                    $TiempoHorasDelDia['16'] =$TiempoHorasDelDia['16'] + $diferenciaSegundos ;
+                                    break;
+                                case '17' || '17':
+                                    $TiempoHorasDelDia['17'] =$TiempoHorasDelDia['17'] + $diferenciaSegundos ;
+                                    break;
+                                case '18' || '18':
+                                    $TiempoHorasDelDia['18'] =$TiempoHorasDelDia['18'] + $diferenciaSegundos ;
+                                    break;
+                                case ('19'||'19'):
+                                    $TiempoHorasDelDia['19'] =$TiempoHorasDelDia['19'] + $diferenciaSegundos ;
+                                    break;
+                                case ('20'|| '20'):
+                                    $TiempoHorasDelDia['20'] =$TiempoHorasDelDia['20'] + $diferenciaSegundos ;
+                                    break;
+                                case '21'||'21':
+                                    $TiempoHorasDelDia['21'] =$TiempoHorasDelDia['21'] + $diferenciaSegundos ;
+                                    break;
+                                case '22'|| '22':
+                                    $TiempoHorasDelDia['22'] =$TiempoHorasDelDia['22'] + $diferenciaSegundos ;
+                                    break;
+                                case '23' || '23':
+                                    $TiempoHorasDelDia['23'] =$TiempoHorasDelDia['23'] + $diferenciaSegundos ;
+                                    break;
+                                case '24' || '24':
+                                    $TiempoHorasDelDia['24'] =$TiempoHorasDelDia['24'] + $diferenciaSegundos ;
+                                    break;
+                                default:
+                                $TiempoHorasDelDia['00'] =$TiempoHorasDelDia['00'] + $diferenciaSegundos ;
                                     break;
                             }
 
@@ -256,6 +346,7 @@ class AnaliticosController extends Controller
                     $MinutosDiasDeLaSemana[$indexDiasDeSemana] = $TiemposDiasDeLaSemana;
                     $DispositivosDiasDeLaSemana[$indexDiasDeSemana] = $interaccionesDiasDeLaSemana;
                     $DispositivosHorasDelDia[$indexDiasDeSemana] = $interaccionesHorasDelDia;
+                    $MinutosHorasDelDia[$indexDiasDeSemana] = $TiempoHorasDelDia;
                     $indexDiasDeSemana++;
                     
                 }
@@ -268,7 +359,6 @@ class AnaliticosController extends Controller
             
         }
         // dd($total);
-        
         $infos = collect();
         $infos->productosTotales =  (int)(($productosTotales));
         $rows = collect([
@@ -308,6 +398,7 @@ class AnaliticosController extends Controller
         $this->HorasGrafica($DispositivosHorasDelDia);
         $this->TiempoMano_TiempoAnaquel($rows);
         $this->TiempoManoSemanaGrafica($MinutosDiasDeLaSemana);
+        $this->TiempoManoHorasGrafica($MinutosHorasDelDia);
         return view ('analiticos',compact('infos'));
     }
 
@@ -342,7 +433,7 @@ class AnaliticosController extends Controller
         }
         $grafica->setDateTimeFormat('l');
         Lava::ColumnChart('TiemposDiasDeLaSemana', $grafica, [
-            'title' => 'Tiempos de interaccion durante los dias de la semana',
+            // 'title' => 'Tiempos de interaccion durante los dias de la semana',
             'colors'=> ['#123EAB', '#009999', '#FF7400', '#FFAB00', '#744E00'],
             'titleTextStyle' => [
                 'color'    => '#eb6b2c',
@@ -373,7 +464,7 @@ class AnaliticosController extends Controller
                                 }
         Lava::PieChart('levantamientosVSReposo', $grafica, [
                         'colors'=> ['#2d6b22', '#8ab446', '#ec8f6e', '#f3b49f', '#f6c7b6'],
-                        'title' => 'Tiempo en mano - Tiempo en anaquel',
+                        // 'title' => 'Tiempo en mano - Tiempo en anaquel',
                         // 'legend' => 'in',
                         'vAxis' => [
                             'title'=>'Minutos'
@@ -396,21 +487,22 @@ class AnaliticosController extends Controller
     }
     public function TopProductosGrafica($rows){
         $grafica = Lava::DataTable();
-            $grafica->addStringColumn('dispositivo')->addNumberColumn('Interacciones');
-        // foreach ($rows as $row) {
-        //     $grafica->addRow([$row['dispositivo']  ,$row['cantidad']]);
-        // }
-        for ($i=0; $i <count($rows) ; $i++) { 
-            if ($rows[$i]['dispositivo'] != null) {
-                $grafica->addRow([
-                    $rows[$i]['dispositivo'],
-                    (int)((int)($rows[$i]['cantidad'])/2) ]);    
-            }
-            
+            $grafica->addNumberColumn('Interacciones');
+            $index = 0;
+        foreach ($rows as $row) {
+            $grafica->addNumberColumn($row['dispositivo']);
+            $index++;
         }
+        $arreglo = [];    
+                for ($i=0; $i < $index ; $i++) { 
+                    array_push($arreglo, $rows[$i]['cantidad']);   
+                }
+         
+                $grafica->addRow($arreglo);
+                // dd($grafica);
         Lava::ColumnChart('TopMasInteracciones', $grafica, [
-            'title' => 'Productos con mayor interacción',
-            'colors'=> [ '#5F6B6D'],
+            // 'title' => 'Productos con mayor interacción',
+            'colors'=> ['#01B8AA', '#374649', '#FD625E', '#F2C80F', '#5F6B6D'],
             'titleTextStyle' => [
                 'color'    => '#eb6b2c',
                 'fontSize' => 14
@@ -427,7 +519,7 @@ class AnaliticosController extends Controller
             'slices' => [
                 
             ],
-            'legend' => 'in',
+            'legend' => 'bottom',
         ]);
     }
     public function DiasDeLaSemanaGrafica($rows){
@@ -468,7 +560,7 @@ class AnaliticosController extends Controller
             // ->addRow(['Dom', 1030, 54,456]);
         
         Lava::ColumnChart('ProductosInteraccionesDiasDeLaSemana', $grafica, [
-            'title' => 'Interacciones durante los dias de la semana',
+            // 'title' => 'Interacciones durante los dias de la semana',
             'colors'=> ['#01B8AA', '#374649', '#FD625E', '#F2C80F', '#5F6B6D'],
             'titleTextStyle' => [
                 'color'    => '#eb6b2c',
@@ -531,6 +623,48 @@ class AnaliticosController extends Controller
             'colors'=> ['#01B8AA', '#374649', '#FD625E', '#F2C80F', '#5F6B6D'],
             'vAxis' => [
                 'title'=>'Interacciones'
+            ],
+            'hAxis' => [
+                'title'=>'Productos'
+            ],
+            'height' => 300,
+            
+            'pieSliceText' => 'value',
+            'is3D'   => true,
+            'slices' => [
+                
+            ],
+            'legend' => 'bottom',
+        ]);
+    }
+    public function TiempoManoHorasGrafica($rows){
+        $grafica = Lava::DataTable();
+            $grafica->addDateTimeColumn('Hour')->setDateTimeFormat('H');
+            $index = 0;
+            foreach ($rows as $row) {
+                $index++;
+                $grafica->addNumberColumn($row['Nombre']);
+            }
+            
+            $DaysMap = [
+                // 0 => '00',1 => '01',2 => '02',3 => '03',4 => '04',5 => '05',6 => '06',
+                7 => '07',8 => '08',9 => '09',10 => '10',11 => '11',12 => '12',13 => '13',
+                14 => '14',15 => '15',16 => '16',17 => '17',18 => '18',19 => '19',20 => '20',
+                21 => '21',22 => '22',23 => '23',
+            ];
+            $indexWeekDay= 7;
+            foreach ($DaysMap as $day) {
+                $arreglo = [$day];    
+                for ($i=0; $i < $index ; $i++) { 
+                    array_push($arreglo, $rows[$i][$DaysMap[$indexWeekDay]]/60);   
+                }
+                $indexWeekDay++;
+                $grafica->addRow($arreglo);
+            }
+        Lava::ColumnChart('TiemposInteraccionesHorasAlDia', $grafica, [
+            'colors'=> ['#123EAB', '#009999', '#FF7400', '#FFAB00', '#744E00'],
+            'vAxis' => [
+                'title'=>'Minutos'
             ],
             'hAxis' => [
                 'title'=>'Productos'

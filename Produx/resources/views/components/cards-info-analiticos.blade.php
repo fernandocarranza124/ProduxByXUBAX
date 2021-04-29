@@ -1,5 +1,5 @@
 <!-- Card Component -->
-<div class="transition-all duration-150 flex w-full px-4 py-6 md:w-1/2 lg:w-1/6 h-30">
+<div class="transition-all duration-150 flex w-full px-4 py-6 md:w-1/2 lg:w-1/6" style="height: 12.2rem;">
     <div class="flex flex-col items-stretch min-h-full pb-4 mb-6 transition-all duration-150 bg-white rounded-lg shadow-lg hover:shadow-2xl w-full" >
     <hr class="border-gray-300" />
     <div class="flex items-center text-center">

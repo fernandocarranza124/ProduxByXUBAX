@@ -7,7 +7,13 @@
       </svg> --}}
       {!! $icono !!}
       
-        <div class="ml-4 text-md text-center text-gray-600 leading-7 font-semibold"><p class="text-center">{{$titulo}}</p></div>
+        <div class="ml-4 text-md text-center text-gray-600 leading-7 font-semibold">
+          <div class="tooltip">
+            <p class="text-center">{{$titulo}}</p>
+          <span class="tooltiptext"><small>{{$tooltip}}</small></span>  
+          </div>
+          
+        </div>
     </div>
     <hr class="border-gray-300" />
     <div class="row">

@@ -17,8 +17,10 @@ class ChartInfoAnaliticos extends Component
     public $nombreDeGraficaLava;
     public $titulo;
     public $icono;
-    public function __construct($id , $tipoDeGrafica, $nombreDeGraficaLava, $titulo)
+    public $tooltip;
+    public function __construct($id , $tipoDeGrafica, $nombreDeGraficaLava, $titulo, $tooltip)
     {
+        $this->tooltip = $tooltip;
         $this->divId = $id;
         $this->tipoDeGrafica = $tipoDeGrafica;
         switch ($tipoDeGrafica) {
