@@ -87,7 +87,9 @@ class DashboardController extends Controller
         $tiempoFinal = 0;
         $diff = null;
         $contador = 1;
-
+        $productosRobadosMes = 0;
+        $productosRobadosDia = 0;
+        $productosRobadosTotal = 0;
         $productoEnMano = 0;
         $productoEnAnaquel = 0;
         $productoMayorDia = collect();
@@ -103,11 +105,35 @@ class DashboardController extends Controller
 
             $accion = Accion::where('device_id', '=', $device->id)->get();
             $ultimaAccion = Accion::where('device_id', '=', $device->id)->orderByDesc('created_at')->first();
+            $fechaVendido = Carbon::parse($device->fecha_vendido);
+            $fechaActual = Carbon::now();
+            if ($device->fecha_vendido != null) {
+                $productosRobadosTotal++;
+            }
+            // dd(($fechaVendido->diff($fechaActual))->m);
+            // dd($fechaActual);
+            $mesesDiferencia = ($fechaVendido->diff($fechaActual))->m;
+            $diasDiferencia = ($fechaVendido->diff($fechaActual))->d;
+            
+            if($mesesDiferencia > "1"){
+                $productosRobadosMes++;
+                
+            }
+            if($diasDiferencia > "1"){
+                $productosRobadosDia++;
+            }
             if ($ultimaAccion != null) {
                 if ($ultimaAccion->tipo == 1) {
-                    $productoEnMano++;
+                    if($device->vendido == 0){
+                        
+                        $productoEnMano++;
+                    }
+                    
                 } else {
-                    $productoEnAnaquel++;
+                    if($device->vendido == 0){
+                        $productoEnAnaquel++;
+                    }
+                    
                 }    
             }
             
@@ -176,13 +202,15 @@ class DashboardController extends Controller
                 }
             }
         }
+        
         $porcentajeDia = 0;
         $porcentajeMes = 0;
+        
         if($accionesDia != 0){
-            $porcentajeDia = ($vendidosPorDia/$accionesDia);    
+            $porcentajeDia = ($productosRobadosDia/$dispositivos->count());    
         }
         if($accionesMes != 0){
-            $porcentajeMes = ($vendidosPorMes/$accionesMes);    
+            $porcentajeMes = ($productosRobadosMes/$dispositivos->count());    
         }
         // echo ($diff."<strong>".$contador."</strong><br>");
 
@@ -205,12 +233,14 @@ class DashboardController extends Controller
         
         $acciones->productosEnMano = $productoEnMano;
         $acciones->productosEnAnaquel = $productoEnAnaquel;
-        $acciones->productosRobados = 0;
+        $acciones->productosRobados = $productosRobadosTotal;
         $acciones->productoMayorInteraccionDia = $productoMayorDia;
         $acciones->productoMayorInteraccionMes = $productoMayorMes;
         $acciones->tiempoPromedioInteraccion = $sumaInteraccionConcluida;
         $acciones->porcentajeDia = $porcentajeDia;
         $acciones->porcentajeMes = $porcentajeMes;
+        $acciones->productosRobadosMes = $productosRobadosMes;
+        $acciones->productosRobadosDia = $productosRobadosDia;
 
         return $acciones;
     }

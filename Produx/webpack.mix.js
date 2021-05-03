@@ -28,4 +28,3 @@ mix.js('resources/js/app.js', 'public/js')
     .webpackConfig(require('./webpack.config'))
     .sass('resources/sass/custom.scss', 'public/css');
 
-mix.js('public/js/chartjs/LineChart.js', 'public/js/chartjs.line_chart.js');

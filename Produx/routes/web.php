@@ -65,5 +65,6 @@ Route::get('/Api/LiftAndLearn/getPIN/{idDevice}', [ApiController::class, 'getPin
 Route::get('/Api/LiftAndLearn/action/{tipo}/{pin}', [ApiController::class, 'insertActionByPin']);
 Route::get('/Api/LiftAndLearn/getDataset/{idCategoria}', [ApiController::class, 'getDatasetByCategoria']);
 Route::get('/Api/LiftAndLearn/getAction/{idDevice}', [ApiController::class, 'getActionByDevice']);
+Route::get('/Api/LiftAndLearn/soldProduct/{idDevice}', [devicesController::class, 'soldProduct']);
 
 

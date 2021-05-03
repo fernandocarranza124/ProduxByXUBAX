@@ -451,7 +451,8 @@ class AnaliticosController extends Controller
             'slices' => [
                 
             ],
-            'legend' => 'bottom',
+            'legend' => ['position'=> 'top', 'maxLines'=> 3],
+            // 'isStacked' => 'true',
         ]);
     }
     
@@ -478,7 +479,7 @@ class AnaliticosController extends Controller
                         'slices' => [
                             
                         ],
-                        'legend' => 'bottom'
+                        'legend' => ['position'=> 'top', 'maxLines'=> 3],
                         // ['offset' => 0.2],
                         // ['offset' => 0.25],
                         // ['offset' => 0.3]
@@ -486,19 +487,24 @@ class AnaliticosController extends Controller
                     ]);
     }
     public function TopProductosGrafica($rows){
+        unset($rows[count($rows)-1]);
+        
         $grafica = Lava::DataTable();
-            $grafica->addNumberColumn('Interacciones');
+            $grafica->addStringColumn('Interacciones');
+            $grafica->setDateTimeFormat('l');
             $index = 0;
         foreach ($rows as $row) {
             $grafica->addNumberColumn($row['dispositivo']);
             $index++;
         }
-        $arreglo = [];    
+        $arreglo = ["Productos"];    
                 for ($i=0; $i < $index ; $i++) { 
                     array_push($arreglo, $rows[$i]['cantidad']);   
                 }
+                // dd($arreglo);
          
                 $grafica->addRow($arreglo);
+                // dd($grafica);
                 // dd($grafica);
         Lava::ColumnChart('TopMasInteracciones', $grafica, [
             // 'title' => 'Productos con mayor interacción',
@@ -508,10 +514,7 @@ class AnaliticosController extends Controller
                 'fontSize' => 14
             ],
             'vAxis' => [
-                'title'=>'Interacciones'
-            ],
-            'hAxis' => [
-                'title'=>'Productos'
+                'display'=>'Interacciones'
             ],
             'height' => 300,
             'pieSliceText' => 'value',
@@ -519,7 +522,7 @@ class AnaliticosController extends Controller
             'slices' => [
                 
             ],
-            'legend' => 'bottom',
+            'legend' => ['position'=> 'top', 'maxLines'=> 3],
         ]);
     }
     public function DiasDeLaSemanaGrafica($rows){
@@ -579,7 +582,7 @@ class AnaliticosController extends Controller
             'slices' => [
                 
             ],
-            'legend' => 'bottom',
+            'legend' => ['position'=> 'top', 'maxLines'=> 3],
         ]);
     }
 
@@ -621,6 +624,7 @@ class AnaliticosController extends Controller
         
         Lava::ColumnChart('ProductosInteraccionesHorasAlDia', $grafica, [
             'colors'=> ['#01B8AA', '#374649', '#FD625E', '#F2C80F', '#5F6B6D'],
+            'isStacked' => 'true',
             'vAxis' => [
                 'title'=>'Interacciones'
             ],
@@ -634,7 +638,7 @@ class AnaliticosController extends Controller
             'slices' => [
                 
             ],
-            'legend' => 'bottom',
+            'legend' => ['position'=> 'top', 'maxLines'=> 3],
         ]);
     }
     public function TiempoManoHorasGrafica($rows){
@@ -661,8 +665,11 @@ class AnaliticosController extends Controller
                 $indexWeekDay++;
                 $grafica->addRow($arreglo);
             }
+            // $legendStyle = Lava::textStyle()->color('#F3BB00')->fontName('Arial')->fontSize(20);
+
         Lava::ColumnChart('TiemposInteraccionesHorasAlDia', $grafica, [
             'colors'=> ['#123EAB', '#009999', '#FF7400', '#FFAB00', '#744E00'],
+            'isStacked' => 'true',
             'vAxis' => [
                 'title'=>'Minutos'
             ],
@@ -676,7 +683,10 @@ class AnaliticosController extends Controller
             'slices' => [
                 
             ],
-            'legend' => 'bottom',
+            // 'legend' => 'bottom',
+            'legend' => ['position'=> 'top', 'maxLines'=> 3],
+
+            // position('bottom')->alignment('start')->textStyle($legendStyle);
         ]);
     }
     public function create()
