@@ -51,8 +51,11 @@ class AnaliticosController extends Controller
         if($categorias == 0){
             $currentTeamId = Auth::user()->current_team_id;
             $categoriasPorEquipo = Categoria::where('team_id','=',$currentTeamId)->get();
+            $DispositivosTodos = collect();
             foreach ($categoriasPorEquipo as $categoria) {
                 $devices = Device::where('categoria_id','=',$categoria->id)->get();
+                $DispositivosTodos = $DispositivosTodos->merge($devices);
+                
                 $productosTotales = $productosTotales + $devices->count();
                 foreach ($devices as $device) {
                     
@@ -359,6 +362,7 @@ class AnaliticosController extends Controller
             
         }
         // dd($total);
+        
         $infos = collect();
         $infos->productosTotales =  (int)(($productosTotales));
         $rows = collect([
@@ -393,13 +397,14 @@ class AnaliticosController extends Controller
         }
         
         // dd($infos);
+        
         $this->TopProductosGrafica($masLevantados);
         $this->DiasDeLaSemanaGrafica($DispositivosDiasDeLaSemana);
         $this->HorasGrafica($DispositivosHorasDelDia);
         $this->TiempoMano_TiempoAnaquel($rows);
         $this->TiempoManoSemanaGrafica($MinutosDiasDeLaSemana);
         $this->TiempoManoHorasGrafica($MinutosHorasDelDia);
-        return view ('analiticos',compact('infos'));
+        return view ('analiticos',compact('infos', 'categoriasPorEquipo','DispositivosTodos'));
     }
 
 
@@ -516,6 +521,7 @@ class AnaliticosController extends Controller
             'vAxis' => [
                 'display'=>'Interacciones'
             ],
+            
             'height' => 300,
             'pieSliceText' => 'value',
             'is3D'   => true,
@@ -689,9 +695,9 @@ class AnaliticosController extends Controller
             // position('bottom')->alignment('start')->textStyle($legendStyle);
         ]);
     }
-    public function create()
+    public function filtrarAnaliticos()
     {
-        //
+        dd("sii");
     }
 
     /**

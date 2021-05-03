@@ -13,9 +13,13 @@ class GeneralAnaliticos extends Component
      */
     
     public $infos;
-    public function __construct($infos)
+    public $dispositivos;
+    public $categorias;
+    public function __construct($infos, $dispositivos, $categorias)
     {
         $this->infos = $infos;
+        $this->dispositivos = $dispositivos;
+        $this->categorias = $categorias;
     }
 
     /**

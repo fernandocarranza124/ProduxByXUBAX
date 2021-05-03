@@ -19,11 +19,18 @@
   
   </script>
   <section class="flex flex-row flex-wrap sm:mx-auto items-left" id="filtros">
-    <x-filtro-analiticos titulo="Fecha inicial"  />
+    <form action="{{ route('Analiticos.filter')}}" method="GET" accept-charset="utf-8">
+    
+    
+    
+    
     {{-- <x-filtro-analiticos titulo="Fecha final"  /> --}}
     {{-- <x-opciones-filtro-analiticos titulo="Categoria"  /> --}}
     <div class="pt-2 relative mx-auto text-gray-600">
-      Categorias
+      Categorias: 
+      <x-filtro-analiticos titulo="Categorias" :rows="$categorias" />
+      {{-- <x-filtro-analiticos titulo="Dispositivos" :rows="$dispositivos" /> --}}
+      {{-- Categorias
     <select class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
       type="search" name="search" placeholder="Categorias">
       <option value="s"></option>
@@ -35,10 +42,12 @@
   <select class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
     type="search" name="search" placeholder="Dispositivos">
     <option value="s"></option>
-  </select>
+  </select> --}}
   
 </div>
+
   <div class="pt-2 relative mx-auto text-gray-600">
+    Etiquetas: <br>
     <input class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
       type="search" name="search" placeholder="Etiquetas">
     <button type="submit" class="absolute right-0 top-0 mt-5 mr-4">
@@ -51,6 +60,8 @@
       </svg>
     </button>
   </div>
+  <button type="submit">Filtrar</button>
+</form>
   </section>
   <a href="#analiticos" ></a>
   

@@ -56,7 +56,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('Etiquetas', EtiquetasController::class);
     Route::resource('Categorias', CategoriasController::class);
     Route::resource('Analiticos', AnaliticosController::class);
-
+    Route::get('Analiticos/Filtrar/', [AnaliticosController::class, 'filtrarAnaliticos'])->name('Analiticos.filter');
     
 
 });

@@ -12,9 +12,11 @@ class filtroAnaliticos extends Component
      * @return void
      */
     public $titulo;
-    public function __construct($titulo)
+    public $rows;
+    public function __construct($titulo ,$rows)
     {
         $this->titulo = $titulo;
+        $this->rows = $rows;
     }
 
     /**
