@@ -24,10 +24,15 @@
     <div class="pt-2 relative mx-auto text-gray-600 flex">
       
       @php
-      $fechaActual = $fechaActual->format('Y-m-d');
+      
+      
+      
       @endphp
-      <x-filtro-analiticos titulo="Fecha inicial" :rows="$categorias" id="fechaInicial" fechaActual="{{$fechaActual}}"/>
-      <x-filtro-analiticos titulo="Fecha final" :rows="$categorias" id="fechaFinal"  fechaActual="{{$fechaActual}}"/>
+      {{-- @php
+          dd($infos->fechaInicial);
+      @endphp --}}
+      <x-filtro-analiticos titulo="Fecha inicial" :rows="$categorias" id="fechaInicial" fechaActual="{{$infos->fechaInicial}}"/>
+      <x-filtro-analiticos titulo="Fecha final" :rows="$categorias" id="fechaFinal"  fechaActual="{{$infos->fechaFinal}}"/>
       <x-filtrar-categorias titulo="Categorias" :rows="$categorias" id="categorias" />
     </div>
   <button type="submit">Filtrar</button>
@@ -43,8 +48,8 @@
     <x-cards-info-analiticos titulo="Productos totales" icono="chip" :valor="$infos->productosTotales" extra="" color="" />    
     <x-cards-info-analiticos titulo="Productos con interaccion" icono="chip" :valor="$infos->productosConInteraccion" extra="" color="" />    
     <x-cards-info-analiticos titulo="Porcentaje de interacciones" icono="stick" :valor="$infos->porcentajeInteracciones" extra="%" color="true" />    
-    <x-cards-info-analiticos titulo="Tiempo promedio en anaquel" icono="clock" :valor="$infos->tiempoEnAnaquel" extra="segundos" color="" />    
-    <x-cards-info-analiticos titulo="Tiempo promedio en mano" icono="clock" :valor="$infos->tiempoEnMano" extra="segundos" color="" />    
+    <x-cards-info-analiticos titulo="Tiempo en anaquel" icono="clock" :valor="$infos->tiempoEnAnaquel" extra="segundos" color="" />    
+    <x-cards-info-analiticos titulo="Tiempo en mano" icono="clock" :valor="$infos->tiempoEnMano" extra="segundos" color="" />    
     <x-cards-info-analiticos titulo="Porcentaje de tiempo" icono="stick" :valor="$infos->porcentajeDeTiempo" extra="%" color="true" />    
 </section>
 

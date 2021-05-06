@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Khill\Lavacharts\Laravel\LavachartsFacade;
 use Khill\Lavacharts\Lavacharts;
-
-
+use Symfony\Component\VarDumper\VarDumper;
 
 class AnaliticosController extends Controller
 {
@@ -321,11 +320,11 @@ class AnaliticosController extends Controller
                             $fechaBase = Carbon::parse("2021-".$mes."-".$dia)->toDateString();
                             $from = $fechaBase."T00:00:00.00";
                             $to   = $fechaBase."T23:59:59.999";
-                            $PrimerAccionEnDia = Accion::whereBetween('created_at', [$from, $to])->orderBy('created_at','ASC')
+                            $PrimerAccionEnDia = Accion::where('device_id','=',$device->id)->whereBetween('created_at', [$from, $to])->orderBy('created_at','ASC')
                             ->first(); 
                             if($PrimerAccionGeneral == null){
                                 if($PrimerAccionEnDia != null){
-                                    $UltimaAccionEnDia = Accion::whereBetween('created_at', [$from, $to])
+                                    $UltimaAccionEnDia = Accion::where('device_id','=',$device->id)->whereBetween('created_at', [$from, $to])
                                                 ->orderBy('created_at','DESC')
                                                 ->first();
                                     if(
@@ -362,8 +361,13 @@ class AnaliticosController extends Controller
             
         }
         // dd($total);
-        
+        $fechaInicial=Accion::where('device_id','=',$device->id)->orderBy('created_at','ASC')->first();
+        $fechaInicial = $fechaInicial->created_at;
+        $fechaFinal=Accion::where('device_id','=',$device->id)->orderBy('created_at','DESC')->first();
+        $fechaFinal = $fechaFinal->created_at;
         $infos = collect();
+        $infos->fechaInicial = $fechaInicial->addDay(1)->format("Y-m-d");
+        $infos->fechaFinal = $fechaFinal->addDay(1)->format("Y-m-d");
         $infos->productosTotales =  (int)(($productosTotales));
         $rows = collect([
             ['Minutos en mano', $diff],
@@ -711,6 +715,8 @@ class AnaliticosController extends Controller
         }
         $fechaInicial = $request->fechaInicial;
         $fechaFinal = $request->fechaFinal;
+        $fechaInicialAuxiliar = $fechaInicial;
+        $fechaFinalAuxiliar = $fechaFinal;
         // $this->index($fechaInicial, $fechaFinal, $categorias)
         
         $tiempoEnMano = 0;
@@ -784,6 +790,7 @@ class AnaliticosController extends Controller
                         $acciones = Accion::where('device_id','=',$device->id)->get();
                         
                     }else{
+                        
                         $acciones = Accion::where('device_id','=',$device->id)->whereBetween('created_at', [Carbon::parse($fechaInicial), Carbon::parse($fechaFinal)])->get();
                     }
                     
@@ -823,6 +830,7 @@ class AnaliticosController extends Controller
                         $masLevantados[4]['dispositivo'] = $device->nombre;
                     }
                     foreach ($acciones as $accion) {
+                        // dd($acciones);
                         if ($accion->tipo == 1) {
                             $tiempoInicial = $accion->created_at;
                             $dayOfTheWeek = $tiempoInicial->dayOfWeek;
@@ -891,6 +899,7 @@ class AnaliticosController extends Controller
                                 
                                 
                                 $diff = $diff +  $diferenciaSegundos;
+                                
                                 $dayOfTheWeek = $tiempoInicial->dayOfWeek;
                                 $hourOfTheDay = $tiempoInicial->hour;
                                 // echo $diff."-\-\-".$tiempoInicial->diffInSeconds($tiempoFinal)."///// ".$tiempoInicial."---".$tiempoFinal."<br>";
@@ -1018,11 +1027,11 @@ class AnaliticosController extends Controller
                                 $fechaBase = Carbon::parse("2021-".$mes."-".$dia)->toDateString();
                                 $from = $fechaBase."T00:00:00.00";
                                 $to   = $fechaBase."T23:59:59.999";
-                                $PrimerAccionEnDia = Accion::whereBetween('created_at', [$from, $to])->orderBy('created_at','ASC')
+                                $PrimerAccionEnDia = Accion::where('device_id','=',$device->id)->whereBetween('created_at', [$from, $to])->orderBy('created_at','ASC')
                                 ->first(); 
                                 if($PrimerAccionGeneral == null){
                                     if($PrimerAccionEnDia != null){
-                                        $UltimaAccionEnDia = Accion::whereBetween('created_at', [$from, $to])
+                                        $UltimaAccionEnDia = Accion::where('device_id','=',$device->id)->whereBetween('created_at', [$from, $to])
                                                     ->orderBy('created_at','DESC')
                                                     ->first();
                                         if(
@@ -1041,7 +1050,18 @@ class AnaliticosController extends Controller
                             }
                         }
                     }else{
-                        
+                        if($fechaInicial == "aN-aN-NaN"){
+                            $fechaInicial=Accion::where('device_id','=',$device->id)->orderBy('created_at','ASC')
+                            ->first();
+                            $fechaInicial = $fechaInicial->created_at;
+                            
+                        }
+                        if($fechaFinal == "aN-aN-NaN"){
+                            $fechaFinal=Accion::where('device_id','=',$device->id)->orderBy('created_at','DESC')
+                            ->first();
+                            $fechaFinal = $fechaFinal->created_at;
+                        }
+
                         $fechaInicial = (Carbon::parse($fechaInicial));
                         $fechaFinal = (Carbon::parse($fechaFinal));
                         $fechaCalculada = $fechaInicial->hour(0)->minute(0)->second(0);
@@ -1096,7 +1116,12 @@ class AnaliticosController extends Controller
         
         // dd($total);
         
+        
         $infos = collect();
+        $fechaInicial = Carbon::parse($fechaInicialAuxiliar);
+        $fechaFinal = Carbon::parse($fechaFinalAuxiliar);
+        $infos->fechaInicial = $fechaInicial->addDay(1)->format("Y-m-d");
+        $infos->fechaFinal = $fechaFinal->addDay(1)->format("Y-m-d");
         $infos->productosTotales =  (int)(($productosTotales));
         $rows = collect([
             ['Minutos en mano', $diff],
@@ -1115,7 +1140,7 @@ class AnaliticosController extends Controller
             $infos->tiempoEnMano = 0;
         }else {
             
-        $infos->tiempoEnAnaquel =  (int)(($rows[1][1])/1);
+        $infos->tiempoEnAnaquel =  (int)(($rows[1][1])/$infos->productosConInteraccion);
         $infos->tiempoEnMano =  (int)(($rows[0][1])/$infos->productosConInteraccion);
         }
         if($infos->tiempoEnAnaquel == 0){

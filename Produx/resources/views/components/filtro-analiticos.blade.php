@@ -1,5 +1,5 @@
 <div class="sans-serif">
-    <div x-data="app()" x-init="[initDate(), getNoOfDays()]" x-cloak>
+    <div x-data="app('{{$fechaActual}}')" x-init="[initDate(), getNoOfDays()]" x-cloak>
       <div class="container mx-auto px-0 py-2 md:py-10 px-2">
         <div class="mb-5 w-auto">
           <label for="datepicker" class="font-bold mb-1 text-gray-700 block">{{$titulo}}</label>
@@ -104,11 +104,13 @@
       ];
       const DAYS = ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"];
   
-      function app() {
+      function app($fecha) {
+        
+        console.log($fecha);
         return {
           showDatepicker: false,
           datepickerValue: "",
-          selectedDate: "2021-12-15",
+          selectedDate: $fecha,
           dateFormat: "DD-MM-YYYY",
           month: "",
           year: "",

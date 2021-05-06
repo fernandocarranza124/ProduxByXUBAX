@@ -28,9 +28,9 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('Analiticos.index') }}" :active="request()->routeIs('Analiticos.index')">
                         @if (request()->routeIs('Analiticos.index'))
-                            <p class="text-lg">{{ __('Analiticos') }}</p>
+                            <p class="text-lg">{{ __('Analíticos') }}</p>
                         @else
-                            <p class="text-md">{{ __('Analiticos') }}</p>
+                            <p class="text-md">{{ __('Analíticos') }}</p>
                         @endif
                     </x-jet-nav-link>
                 </div>
@@ -48,7 +48,7 @@
                         @if (request()->routeIs('users.index'))
                             <p class="text-lg">{{ __('Usuarios') }}</p>
                         @else
-                            <p class="text-md">{{ __('usuarios') }}</p>
+                            <p class="text-md">{{ __('Usuarios') }}</p>
                         @endif
                     </x-jet-nav-link>
                 </div>
