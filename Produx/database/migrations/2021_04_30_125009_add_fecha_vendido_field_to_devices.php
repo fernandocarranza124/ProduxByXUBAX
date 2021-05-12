@@ -13,7 +13,7 @@ class AddFechaVendidoFieldToDevices extends Migration
      */
     public function up()
     {
-        Schema::table('Devices', function (Blueprint $table) {
+        Schema::table('devices', function (Blueprint $table) {
             $table->dateTime("fecha_vendido")->nullable();
         });
     }

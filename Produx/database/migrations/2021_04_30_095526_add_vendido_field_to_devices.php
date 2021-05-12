@@ -13,7 +13,7 @@ class AddVendidoFieldToDevices extends Migration
      */
     public function up()
     {
-        Schema::table('Devices', function (Blueprint $table) {
+        Schema::table('devices', function (Blueprint $table) {
             $table->Integer("vendido");
         });
     }
