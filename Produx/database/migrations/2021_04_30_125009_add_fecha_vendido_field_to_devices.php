@@ -25,7 +25,7 @@ class AddFechaVendidoFieldToDevices extends Migration
      */
     public function down()
     {
-        Schema::table('Devices', function (Blueprint $table) {
+        Schema::table('devices', function (Blueprint $table) {
             //
         });
     }
