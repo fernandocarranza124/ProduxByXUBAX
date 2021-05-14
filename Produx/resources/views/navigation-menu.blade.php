@@ -7,38 +7,67 @@
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
                         <x-jet-application-mark class="block h-9 w-auto" />
+                        {{-- <x-slot name="logo"> --}}
+                            {{-- <img src="Produx.png" class="block h-12 w-auto" /> --}}
+                        {{-- </x-slot> --}}
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-jet-nav-link href="{{ route('Dashboard.index') }}" :active="request()->routeIs('Dashboard.index')">
+                        @if (request()->routeIs('Dashboard.index'))
+                            <p class="text-lg">{{ __('Dashboard') }}</p>
+                        @else
+                            <p class="text-md">{{ __('Dashboard') }}</p>
+                        @endif
+                            
+                        
                     </x-jet-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Analiticos') }}
+                    <x-jet-nav-link href="{{ route('Analiticos.index') }}" :active="request()->routeIs('Analiticos.index')">
+                        @if (request()->routeIs('Analiticos.index'))
+                            <p class="text-lg">{{ __('Analíticos') }}</p>
+                        @else
+                            <p class="text-md">{{ __('Analíticos') }}</p>
+                        @endif
                     </x-jet-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('Devices.index') }}" :active="request()->routeIs('Devices.index')">
-                        {{ __('Dispositivos') }}
+                        @if (request()->routeIs('Devices.index'))
+                            <p class="text-lg">{{ __('Dispositivos') }}</p>
+                        @else
+                            <p class="text-md">{{ __('Dispositivos') }}</p>
+                        @endif
                     </x-jet-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
-                        {{ __('Usuarios') }}
+                        @if (request()->routeIs('users.index'))
+                            <p class="text-lg">{{ __('Usuarios') }}</p>
+                        @else
+                            <p class="text-md">{{ __('Usuarios') }}</p>
+                        @endif
                     </x-jet-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('Categorias.index') }}" :active="request()->routeIs('Categorias.index')">
-                        {{ __('Categorias') }}
+                        @if (request()->routeIs('Categorias.index'))
+                            <p class="text-lg">{{ __('Categorias') }}</p>
+                        @else
+                            <p class="text-md">{{ __('Categorias') }}</p>
+                        @endif
                     </x-jet-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('Etiquetas.index') }}" :active="request()->routeIs('Etiquetas.index')">
-                        {{ __('Etiquetas') }}
+                        @if (request()->routeIs('Etiquetas.index'))
+                            <p class="text-lg">{{ __('Etiquetas') }}</p>
+                        @else
+                            <p class="text-md">{{ __('Etiquetas') }}</p>
+                        @endif
                     </x-jet-nav-link>
                 </div>
             </div>

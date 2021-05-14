@@ -13,7 +13,7 @@ class AccionesDispositivo extends Migration
      */
     public function up()
     {
-        Schema::create('Acciones', function (Blueprint $table) {
+        Schema::create('acciones', function (Blueprint $table) {
             $table->id();
             $table->foreignId('device_id')->constrained()->cascadeOnDelete();
             $table->timestamps();

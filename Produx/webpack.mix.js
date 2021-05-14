@@ -27,3 +27,6 @@ mix.js('resources/js/app.js', 'public/js')
     ])
     .webpackConfig(require('./webpack.config'))
     .sass('resources/sass/custom.scss', 'public/css');
+mix.js('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js');
+
+

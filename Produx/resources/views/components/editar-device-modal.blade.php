@@ -38,7 +38,7 @@
           x-transition:leave-end="scale-0"
         >
           <header class="flex flex-col justify-center items-center p-3 text-blue-600">
-            <h2 class="font-semibold text-2xl">Modificar categoria</h2>
+            <h2 class="font-semibold text-2xl">Modificar dispositivo</h2>
           </header>
           <form action="{{route('Devices.update', $id)}}" method="POST" accept-charset="utf-8" style="width: auto">
           <main class="p-3 text-center">
@@ -56,7 +56,7 @@
                     
                       <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
                         <p>
-                        <label for="nameDevice" class="bg-white text-gray-600 px-1"> Nombre de la Categoria</label>
+                        <label for="nameDevice" class="bg-white text-gray-600 px-1"> Nombre del dispositivo</label>
                         </p>
                       </div>
                         <p>

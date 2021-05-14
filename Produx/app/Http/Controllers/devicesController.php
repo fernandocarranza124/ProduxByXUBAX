@@ -12,6 +12,8 @@ use App\Models\Etiquetas_Pivote;
 use App\Models\Pin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
 
 
 class devicesController extends Controller
@@ -178,7 +180,7 @@ class devicesController extends Controller
             $indice++; 
             
         }
-        return ($colors[rand(0,6)]."-".$gradientes[rand(0,8)]);
+        return ($colors[rand(0,6)]."-".$gradientes[rand(0,6)]);
         
     }
 
@@ -280,5 +282,14 @@ class devicesController extends Controller
         $device->delete();
         
         return redirect()->route(('Devices.index'));
+    }
+    public function soldProduct($idDevice){
+        Carbon::setLocale('es');
+        
+        $device=Device::findOrFail($idDevice);
+            $device->fecha_vendido = Carbon::now();
+            $device->vendido = 1;
+        $device->save();
+        return "ok";
     }
 }
