@@ -207,10 +207,10 @@
             <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-jet-responsive-nav-link>
-            <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+            <x-jet-responsive-nav-link href="{{ route('Analiticos.index') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Analiticos') }}
             </x-jet-responsive-nav-link>
-            <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('Devices.index')">
+            <x-jet-responsive-nav-link href="{{ route('Devices.index') }}" :active="request()->routeIs('Devices.index')">
                 {{ __('Dispositivos') }}
             </x-jet-responsive-nav-link>
             <x-jet-responsive-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
