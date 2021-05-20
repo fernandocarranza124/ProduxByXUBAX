@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\Device;
 use App\Models\Accion;
 use App\Models\Pin;
@@ -101,6 +102,7 @@ class ApiController extends Controller
             $emocionId = $this->getEmocionId($request->emotion);
             $generoId = $this->getGeneroId($request->gender);
             $atento = $this->IsAttentive($request->attentive);
+            
             $demograficos = new Demografico;
                 $demograficos->emocion_id=$emocionId;
                 $demograficos->edad_id=$edadId;
@@ -122,8 +124,9 @@ class ApiController extends Controller
     }
 
     public function storeDataFromAnalitix($id, Request $request)
-    {
-
+    {   
+        $fechaActual = (Carbon::now()->toDateString());
+        dd ($fechaActual);
         if($request->All()){
 
             $existePersonaRegistrada= $this->checkIfPersonIsRegistered($request);

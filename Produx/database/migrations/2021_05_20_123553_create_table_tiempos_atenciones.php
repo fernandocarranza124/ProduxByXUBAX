@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAtencionCamposToDemograficos extends Migration
+class CreateTableTiemposAtenciones extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class AddAtencionCamposToDemograficos extends Migration
      */
     public function up()
     {
-        Schema::table('demograficos', function (Blueprint $table) {
+        Schema::create('tiempos_atenciones', function (Blueprint $table) {
+            $table->unsignedBigInteger('persona_id');
+            $table->unsignedBigInteger('atencion_id');
             $table->unsignedBigInteger('duracion');
-            $table->boolean('atencion');
-            $table->text('persona_id');
+            $table->timestamps();
         });
     }
 
@@ -27,8 +28,6 @@ class AddAtencionCamposToDemograficos extends Migration
      */
     public function down()
     {
-        Schema::table('demograficos', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('tiempos_atenciones');
     }
 }
