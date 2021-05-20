@@ -78,4 +78,21 @@ class ApiController extends Controller
         return ($accion);
 
     }
+
+
+
+    // ////////////// SCRIPTS ANALITIX //////////////
+    public function storeDataFromAnalitix($id, Request $request)
+    {
+        if($request!= null){
+            return $request;
+        }else{
+            return "no";
+        }
+        
+    }
+    public function showToken() {
+        echo csrf_token(); 
+  
+      }
 }
