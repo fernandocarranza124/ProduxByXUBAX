@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Device;
 use App\Models\Accion;
 use App\Models\Pin;
+use App\Models\Demograficos;
+use App\Model\Emocion;
+use App\Models\Edad;
 
 
 
@@ -84,12 +87,37 @@ class ApiController extends Controller
     // ////////////// SCRIPTS ANALITIX //////////////
     public function storeDataFromAnalitix($id, Request $request)
     {
-        if($request!= null){
-            return $request;
+
+        if($request->All()){
+            $edadId = $this->getEdadId($request);
+            $demograficos = new Demograficos;
+                
         }else{
             return "no";
         }
         
+    }
+    public function getEdadId($edad){
+        switch ($edad) {
+            case 'old':
+                $return 4;
+                break;
+            case 'adult':
+                $return 3;
+                break;
+            case 'kid':
+                $return 1;
+                break;
+            case 'undefinied':
+                $return 3;
+                break;
+            case 'young':
+                $return 2;
+                break;
+            default:
+                $return 2;
+                break;
+        }
     }
     public function showToken() {
         echo csrf_token(); 
