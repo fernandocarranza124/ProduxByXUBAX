@@ -14,7 +14,7 @@ class CreateTableTiemposEmociones extends Migration
     public function up()
     {
         Schema::create('tiempos_emociones', function (Blueprint $table) {
-            $table->unsignedBigInteger('persona_id');
+            $table->text('persona_id');
             $table->unsignedBigInteger('emocion_id');
             $table->unsignedBigInteger('duracion');
 

@@ -126,9 +126,9 @@ class ApiController extends Controller
     public function storeDataFromAnalitix($id, Request $request)
     {   
         $fechaActual = (Carbon::now()->toDateString());
-        dd ($fechaActual);
+        $codigoPersona = $fechaActual."-".$request->id;
+        $request->id = $codigoPersona;
         if($request->All()){
-
             $existePersonaRegistrada= $this->checkIfPersonIsRegistered($request);
             if( $existePersonaRegistrada == false){
                 $this->storeNewPersonDetected($request);

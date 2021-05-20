@@ -14,7 +14,7 @@ class CreateTableTiemposAtenciones extends Migration
     public function up()
     {
         Schema::create('tiempos_atenciones', function (Blueprint $table) {
-            $table->unsignedBigInteger('persona_id');
+            $table->text('persona_id');
             $table->unsignedBigInteger('atencion_id');
             $table->unsignedBigInteger('duracion');
             $table->timestamps();
