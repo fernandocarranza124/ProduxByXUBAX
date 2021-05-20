@@ -11,6 +11,8 @@ class Demografico extends Model
     protected $table = "demograficos";
 
     protected $fillable = [
+        'id',
+        'categoria_id',
         'accion_id',
         'created_at',
         'genero_id',

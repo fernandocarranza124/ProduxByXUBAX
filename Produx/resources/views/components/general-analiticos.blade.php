@@ -85,7 +85,7 @@
           </div>
           <div x-show="activeTab===1">Demograficos</div>
           <div x-show="activeTab===2">Prouductos</div>
-          <div x-show="activeTab===3">Categorias</div>
+          <div x-show="activeTab===3">Emociones</div>
         </div>
       </div>
       <!--actual component end-->

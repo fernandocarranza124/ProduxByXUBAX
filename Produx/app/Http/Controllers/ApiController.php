@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Device;
 use App\Models\Accion;
 use App\Models\Pin;
-use App\Models\Demograficos;
+use App\Models\Demografico;
 use App\Model\Emocion;
 use App\Models\Edad;
 
@@ -85,42 +85,127 @@ class ApiController extends Controller
 
 
     // ////////////// SCRIPTS ANALITIX //////////////
+    public function checkIfPersonIsRegistered($request)
+    {
+        $demografico = Demografico::where('categoria_id','=',$request->categoria)
+                                        ->where('persona_id','=',$request->id)
+                                        ->orderBy('created_at','DESC')->first();
+        if($demografico == null){
+            return false;
+        }else{
+            return $demografico;
+        }
+    }
+    public function storeNewPersonDetected($request){
+        $edadId = $this->getEdadId($request->age);
+            $emocionId = $this->getEmocionId($request->emotion);
+            $generoId = $this->getGeneroId($request->gender);
+            $atento = $this->IsAttentive($request->attentive);
+            $demograficos = new Demografico;
+                $demograficos->emocion_id=$emocionId;
+                $demograficos->edad_id=$edadId;
+                $demograficos->genero_id=$generoId;
+                $demograficos->duracion=$request->duration;
+                $demograficos->atencion=$atento;
+                $demograficos->categoria_id=$request->categoria;
+                $demograficos->persona_id=$request->id;
+            $demograficos->save();
+            return "newPerson";
+    }   
+    public function updateRecordOfPersonDetected($request, $registro)
+    {
+        $atento = $this->IsAttentive($request->attentive);        
+        $registro->duracion = $request->duration;
+        $registro->atencion = $atento;
+        $registro->save();
+        return "update";
+    }
+
     public function storeDataFromAnalitix($id, Request $request)
     {
 
         if($request->All()){
-            $edadId = $this->getEdadId($request->age);
-            $emocionId = $this->getEmocionId($request->emotion);
-            $generoID = $this->getGeneroId($request->gender);
-            $demograficos = new Demograficos;
-                $demograficos->emocion_id=$emocionId;
-                $demograficos->edad_id=$edadId;
-                $demograficos->genero_id=
-                
+
+            $existePersonaRegistrada= $this->checkIfPersonIsRegistered($request);
+            if( $existePersonaRegistrada == false){
+                $this->storeNewPersonDetected($request);
+            }else{
+                $this->updateRecordOfPersonDetected($request, $existePersonaRegistrada);
+            }
+            return "ok";
         }else{
             return "no";
         }
         
     }
+    public function IsAttentive($atento){
+        switch ($atento) {
+            case true:
+                return 1;
+                break;
+            case false:
+                return 0;
+                break;
+            
+            default:
+                return 0;
+                break;
+        }
+    }
+    public function getEmocionId($emocion){
+        switch ($emocion) {
+            case 'neutral':
+                return 2;
+                break;
+            case 'angry':
+                return 1;
+                break;            
+            case 'happy':
+                return 3;
+                break;
+            case 'surprised':
+                return 4;
+                break;
+            case 'undefined':
+                return 2;
+                break;
+            default:
+                return 2;
+                break;
+        }
+    }
+    public function getGeneroId($genero){
+        switch ($genero) {
+            case 'male':
+                return 1;
+                break;
+            case 'female':
+                return 0;
+                break;            
+            default:
+                return 2;
+                break;
+        }
+    }
     public function getEdadId($edad){
         switch ($edad) {
             case 'old':
-                $return 4;
+                return 4;
                 break;
             case 'adult':
-                $return 3;
+                return 3;
                 break;
             case 'kid':
-                $return 1;
+                return 1;
                 break;
             case 'undefinied':
-                $return 3;
+                return 3;
                 break;
             case 'young':
-                $return 2;
+                return 2;
                 break;
             default:
-                $return 2;
+                return 2;
                 break;
         }
     }
