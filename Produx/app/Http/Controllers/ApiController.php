@@ -89,8 +89,13 @@ class ApiController extends Controller
     {
 
         if($request->All()){
-            $edadId = $this->getEdadId($request);
+            $edadId = $this->getEdadId($request->age);
+            $emocionId = $this->getEmocionId($request->emotion);
+            $generoID = $this->getGeneroId($request->gender);
             $demograficos = new Demograficos;
+                $demograficos->emocion_id=$emocionId;
+                $demograficos->edad_id=$edadId;
+                $demograficos->genero_id=
                 
         }else{
             return "no";

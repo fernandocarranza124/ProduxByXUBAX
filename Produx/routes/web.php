@@ -41,7 +41,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 
 Auth::routes();
-Route::get('/Analiticos/Filtrar', [AnaliticosController::class, 'filtrarAnaliticos'])->name('Analiticos.filter');
+Route::get('/Analitics/Filtrar', [AnaliticosController::class, 'filtrarAnaliticos'])->name('Analiticos.filter');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('Dashboard', DashboardController::class);
