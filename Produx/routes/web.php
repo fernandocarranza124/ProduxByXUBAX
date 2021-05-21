@@ -66,5 +66,6 @@ Route::get('/Api/LiftAndLearn/action/{tipo}/{pin}', [ApiController::class, 'inse
 Route::get('/Api/LiftAndLearn/getDataset/{idCategoria}', [ApiController::class, 'getDatasetByCategoria']);
 Route::get('/Api/LiftAndLearn/getAction/{idDevice}', [ApiController::class, 'getActionByDevice']);
 Route::get('/Api/LiftAndLearn/soldProduct/{idDevice}', [devicesController::class, 'soldProduct']);
+Route::get('/Api/Seemetrix', [ApiController::class, 'Seemetrix']);
 
 

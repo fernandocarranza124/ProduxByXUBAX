@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Accion;
 use App\Models\Categoria;
 use App\Models\Device;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Khill\Lavacharts\Laravel\LavachartsFacade;
@@ -409,7 +410,16 @@ class AnaliticosController extends Controller
         $this->TiempoManoSemanaGrafica($MinutosDiasDeLaSemana);
         $this->TiempoManoHorasGrafica($MinutosHorasDelDia);
         $fechaActual = (Carbon::now());
-        return view ('analiticos',compact('infos', 'categoriasPorEquipo','DispositivosTodos', 'fechaActual'));
+
+        // Api SEEMETRIX
+        $idUserSeemetrix = 2409;
+        $keyUserSeemetrix = "807cd9496b9f46ecaa08d7cf3f4451b6";
+        $DevicesIds = new Collection();
+        $DevicesIds->push(8006);
+        $seemetrix = app('App\Http\Controllers\SeemetrixController')->getDataFromSeemetrix($idUserSeemetrix,$keyUserSeemetrix, $DevicesIds, $infos->fechaInicial, $infos->fechaFinal);
+        // dd($seemetrix);
+
+        return view ('analiticos',compact('infos', 'categoriasPorEquipo','DispositivosTodos', 'fechaActual', 'seemetrix'));
     }
 
 
@@ -1179,6 +1189,8 @@ class AnaliticosController extends Controller
         $fechaActual = (Carbon::now());
         $currentTeamId = Auth::user()->current_team_id;
         $categoriasPorEquipo = Categoria::where('team_id','=',$currentTeamId)->get();
+
+
         return view ('analiticos',compact('infos', 'categoriasPorEquipo','DispositivosTodos', 'fechaActual'));
     }
 

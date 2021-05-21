@@ -16,12 +16,14 @@ class GeneralAnaliticos extends Component
     public $dispositivos;
     public $categorias;
     public $fechaActual;
-    public function __construct($infos, $dispositivos, $categorias, $fechaActual)
+    public $seemetrix;
+    public function __construct($infos, $dispositivos, $categorias, $fechaActual, $seemetrix)
     {
         $this->infos = $infos;
         $this->dispositivos = $dispositivos;
         $this->categorias = $categorias;
         $this->fechaActual = $fechaActual;
+        $this->seemetrix = $seemetrix;
     }
 
     /**

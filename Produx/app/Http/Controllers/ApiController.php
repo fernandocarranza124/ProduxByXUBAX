@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Device;
 use App\Models\Accion;
 use App\Models\Pin;
+use GuzzleHttp\Client;
+
 
 
 
@@ -77,5 +79,15 @@ class ApiController extends Controller
         $accion = json_encode($accion);
         return ($accion);
 
+    }
+    public function Seemetrix()
+    {
+        $client = new Client();
+        $url = "https://analytics.3divi.ru/api/v2/statistics/user/2409/devices/dates/?key=807cd9496b9f46ecaa08d7cf3f4451b6&tzo=0&b=2021/05/01%2000:00:00&e=2021/05/21%2000:00:00&d=8006";
+        $response = $client->request('GET', $url, [
+            'verify'  => false,
+        ]);
+        $responseBody = json_decode($response->getBody());
+            dd($responseBody);
     }
 }
