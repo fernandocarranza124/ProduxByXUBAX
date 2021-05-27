@@ -76,16 +76,21 @@
       @php
       $porcentajeInteracciones = number_format(($seemetrix[0]->data->v)/($seemetrix[0]->data->ots)*100, 2);
       @endphp
+      @php
+      $seemetrix[0]->data->vd = substr($seemetrix[0]->data->vd,0,-3);
+      $seemetrix[0]->data->otsd = substr($seemetrix[0]->data->otsd,0,-3);
+      $porcentajeAtencion = number_format(($seemetrix[0]->data->vd)/($seemetrix[0]->data->otsd)*100, 2);
+      
+      @endphp
     <x-cards-info-analiticos titulo="Porcentaje de impactos" icono="stick" :valor="$porcentajeInteracciones" extra="%" color="true" />    
     <x-cards-info-analiticos titulo="Tiempo de inactividad" icono="clock" :valor="$seemetrix[0]->data->otsd" extra="segundos" color="" />    
     <x-cards-info-analiticos titulo="Tiempo de atencion" icono="clock" :valor="$seemetrix[0]->data->vd" extra="segundos" color="" />    
-      @php
-      $porcentajeAtencion = number_format(($seemetrix[0]->data->vd)/($seemetrix[0]->data->otsd)*100, 2);
-      @endphp
+      
     <x-cards-info-analiticos titulo="Porcentaje de atraccion" icono="stick" :valor="$infos->porcentajeDeTiempo" extra="%" color="true" />    
 </section>
 
 <section class="flex flex-row flex-wrap mx-auto">
+    <x-chart-info-analiticos id="ODP - Impactos comparación" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="ODP - Impactos comparación" titulo="Comparación de ODP - Impactos" tooltip="Oportunidades de impacto - Impactos" />
     @php
         
     @endphp
