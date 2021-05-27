@@ -547,7 +547,7 @@ class AnaliticosController extends Controller
         ]);
     }
     public function DiasDeLaSemanaGrafica($rows){
-
+        // dd($rows);
         $grafica = Lava::DataTable();
             $grafica->addStringColumn('Day');
             $index = 0;
@@ -629,6 +629,7 @@ class AnaliticosController extends Controller
                 for ($i=0; $i < $index ; $i++) { 
                     array_push($arreglo, $rows[$i][$DaysMap[$indexWeekDay]]);   
                 }
+
                 $indexWeekDay++;
                 $grafica->addRow($arreglo);
             }
@@ -664,6 +665,7 @@ class AnaliticosController extends Controller
         ]);
     }
     public function TiempoManoHorasGrafica($rows){
+        // dd($rows);
         $grafica = Lava::DataTable();
             $grafica->addDateTimeColumn('Hour')->setDateTimeFormat('H');
             $index = 0;

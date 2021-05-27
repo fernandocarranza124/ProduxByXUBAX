@@ -90,7 +90,14 @@
 </section>
 
 <section class="flex flex-row flex-wrap mx-auto">
-    <x-chart-info-analiticos id="ODP - Impactos comparación" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="ODP - Impactos comparación" titulo="Comparación de ODP - Impactos" tooltip="Oportunidades de impacto - Impactos" />
+    <x-chart-info-analiticos id="Cantidades de ODI - Impactos" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Cantidades de ODI - Impactos" titulo="Comparación de ODI - Impactos" tooltip="Oportunidades de impacto - Impactos" />
+    <x-chart-info-analiticos id="Cantidades de impactos por Dia" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Cantidades de impactos por Dia" titulo="Comparación de ODP - Impactos por dia" tooltip="Oportunidades de impacto - Impactos" />
+    <x-chart-info-analiticos id="Cantidad de impactos por hora" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Cantidad de impactos por hora" titulo="Comparación de ODI - Impactos por hora" tooltip="Oportunidades de impacto - Impactos" />
+
+    <x-chart-info-analiticos id="Tiempo de atencion ODI - Impactos" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Tiempo de atencion ODI - Impactos" titulo="Tiempo de atenciom ODI - Impactos" tooltip="Oportunidades de impacto - Impactos" />
+    <x-chart-info-analiticos id="Tiempo de impactos por dia de la semana" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Tiempo de impactos por dia de la semana" titulo="Tiempo de impactos por dia de la semana" tooltip="Oportunidades de impacto - Impactos" />
+    <x-chart-info-analiticos id="Duracion de impactos por hora" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Duracion de impactos por hora" titulo="Duracion de impactos por hora" tooltip="Oportunidades de impacto - Impactos" />
+    
     @php
         
     @endphp
