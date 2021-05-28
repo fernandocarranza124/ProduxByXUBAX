@@ -21,7 +21,7 @@ class SeemetrixController extends Controller
         $fechaFinal = $this->FechaToFormat($fechaFinal);
         foreach ($DevicesIds as $id) {
             $url = "https://analytics.3divi.ru/api/v2/statistics/user/".$idUserSeemetrix."/devices/dates/?key=".$keyUserSeemetrix."&tzo=0&dt_format=YYYY-MM-DD HH&b=".$fechaInicial."&e=2021/05/21%2000:00:00&d=".$id;
-            // dd($url);
+            dd($url);
         $response = $client->request('GET', $url, [
             'verify'  => false,
         ]);
