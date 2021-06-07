@@ -417,6 +417,7 @@ class AnaliticosController extends Controller
         $DevicesIds = new Collection();
         $DevicesIds->push(8006);
         $seemetrix = app('App\Http\Controllers\SeemetrixController')->getDataFromSeemetrix($idUserSeemetrix,$keyUserSeemetrix, $DevicesIds, $infos->fechaInicial, $infos->fechaFinal);
+        
         // dd($seemetrix);
 
         return view ('analiticos',compact('infos', 'categoriasPorEquipo','DispositivosTodos', 'fechaActual', 'seemetrix'));
@@ -521,11 +522,7 @@ class AnaliticosController extends Controller
                 for ($i=0; $i < $index ; $i++) { 
                     array_push($arreglo, $rows[$i]['cantidad']);   
                 }
-                // dd($arreglo);
-         
                 $grafica->addRow($arreglo);
-                // dd($grafica);
-                // dd($grafica);
         Lava::ColumnChart('TopMasInteracciones', $grafica, [
             // 'title' => 'Productos con mayor interacción',
             'colors'=> ['#01B8AA', '#374649', '#FD625E', '#F2C80F', '#5F6B6D'],

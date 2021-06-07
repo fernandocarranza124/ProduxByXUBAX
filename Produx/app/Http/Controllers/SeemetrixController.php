@@ -16,26 +16,93 @@ class SeemetrixController extends Controller
         
         $client = new Client();
         $analiticos = new Collection();
+        $demograficos = new Collection();
+        $infosCards = new Collection();
         $fechaInicial = $this->FechaToFormat($fechaInicial);
         
         $fechaFinal = $this->FechaToFormat($fechaFinal);
         foreach ($DevicesIds as $id) {
             $url = "https://analytics.3divi.ru/api/v2/statistics/user/".$idUserSeemetrix."/devices/dates/?key=".$keyUserSeemetrix."&tzo=0&dt_format=YYYY-MM-DD HH&b=".$fechaInicial."&e=2021/05/21%2000:00:00&d=".$id;
-            dd($url);
         $response = $client->request('GET', $url, [
             'verify'  => false,
         ]);
         $responseBody = json_decode($response->getBody());
             $analiticos->push($responseBody);
+            // ////////////////
+            $url = "https://analytics.3divi.ru/api/v2/statistics/user/".$idUserSeemetrix."/devices/genders/ages/emotions/dates/?key=".$keyUserSeemetrix."&tzo=0&dt_format=YYYY-MM-DD HH&b=".$fechaInicial."&e=2021/05/21%2000:00:00&d=".$id;
+        $response = $client->request('GET', $url, [
+            'verify'  => false,
+        ]);
+        $responseBody = json_decode($response->getBody());
+            $demograficos->push($responseBody);
+        
+            // ////////////////
+            $url = "https://analytics.3divi.ru/api/v2/statistics/user/".$idUserSeemetrix."/genders/ages/?key=".$keyUserSeemetrix."&tzo=0&dt_format=YYYY-MM-DD HH&b=".$fechaInicial."&e=2021/05/21%2000:00:00&d=".$id;
+        $response = $client->request('GET', $url, [
+            'verify'  => false,
+        ]);
+        $responseBody = json_decode($response->getBody());
+            $infosCards->push($responseBody);
         }
-        $this->makeGraphs($analiticos);
+
+        $this->makeGraphs($analiticos, $demograficos);
+
+        $infosCards = $this->makeInfoCards($infosCards);
         return $analiticos;
         
     }
-    public function makeGraphs($data)
+    public function makeInfoCards($infos)
+    {
+        $EdadesPorGenero = 
+            ['female'=>["kid"=>["v"=>0,"vd"=>0],"young"=>["v"=>0,"vd"=>0],"adult"=>["v"=>0,"vd"=>0],"old"=>["v"=>0,"vd"=>0],"undefined"=>["v"=>0,"vd"=>0]],
+             'male'=>["kid"=>["v"=>0,"vd"=>0],"young"=>["v"=>0,"vd"=>0],"adult"=>["v"=>0,"vd"=>0],"old"=>["v"=>0,"vd"=>0],"undefined"=>["v"=>0,"vd"=>0]],
+             'desconocido'=>["kid"=>["v"=>0,"vd"=>0],"young"=>["v"=>0,"vd"=>0],"adult"=>["v"=>0,"vd"=>0],"old"=>["v"=>0,"vd"=>0],"undefined"=>["v"=>0,"vd"=>0]],
+            ];
+        $femaleViews=($infos[0]->data->o[0]->v);
+        $femaleViewsDuration=($infos[0]->data->o[0]->vd);
+        $maleViews=($infos[0]->data->o[1]->v);
+        $maleViewsDuration=($infos[0]->data->o[1]->vd);
+        dd($infos[0]->data->o);
+        foreach ($infos[0]->data->o as $genero) {
+            switch ($genero->n) {
+                case "female":
+                    $indice = "female";       
+                    break;
+                case "male":
+                    $indice = "male";
+                    break;
+                default:
+                    $indice = 'desconocido';
+                    break;
+            }
+            foreach ($genero->o as $edad) {
+                $EdadesPorGenero[$indice][$edad->n]['v'] = $EdadesPorGenero[$indice][$edad->n]['v'] + $edad->v;
+                $EdadesPorGenero[$indice][$edad->n]['vd'] = $EdadesPorGenero[$indice][$edad->n]['vd'] + $edad->vd;
+            }
+        }
+        $femaleViews = $EdadesPorGenero["female"]["kid"]['v'] + $EdadesPorGenero["female"]["young"]['v'] +$EdadesPorGenero["female"]["adult"]['v'] + $EdadesPorGenero["female"]["old"]['v'];
+        $maleViews = $EdadesPorGenero["male"]["kid"]['v'] + $EdadesPorGenero["male"]["young"]['v'] +$EdadesPorGenero["male"]["adult"]['v'] + $EdadesPorGenero["male"]["old"]['v'];
+        $femaleViewsDuration = $EdadesPorGenero["female"]["kid"]['vd'] + $EdadesPorGenero["female"]["young"]['vd'] +$EdadesPorGenero["female"]["adult"]['vd'] + $EdadesPorGenero["female"]["old"]['vd'];
+        $maleViewsDuration = $EdadesPorGenero["male"]["kid"]['vd'] + $EdadesPorGenero["male"]["young"]['vd'] +$EdadesPorGenero["male"]["adult"]['vd'] + $EdadesPorGenero["male"]["old"]['vd'];
+        $totalViews = $femaleViews + $maleViews;
+
+
+
+        $infosCards = new Collection();
+        $infosCards->femaleViews = round(($femaleViews)*(100)/($totalViews),1);
+        $infosCards->maleViews = round(($maleViews)*(100)/($totalViews),1);
+        $infosCards->maleAverageAttention = round(($maleViewsDuration/$maleViews)/1000);
+        $infosCards->femaleAverageAttention = round(($femaleViewsDuration/$femaleViews)/1000);
+        dd($infosCards);
+
+        return $infosCards;
+    }
+    public function makeGraphs($data, $demograph)
     {
         $this->otsVSwatchers($data);
+        $this->GenderEmotions($demograph);
     }
+
     public function otsVSwatchers($data)
     {
         $totalOTS=0;
@@ -108,6 +175,104 @@ class SeemetrixController extends Controller
         $this->DiasDeLaSemanaGrafica($TimeDuringImpactsdaysOfWeek,'Tiempo de impactos por dia de la semana','Tiempos Dia',['#2d6b22','#8AB446']);
         $this->HorasDelDia($TimeDuringImpactsHoursOfDay, 'Duracion de impactos por hora',['#2d6b22','#8AB446']);
     }
+    public function GenderEmotions($data)
+    {
+        $genderAgeSplit = [
+            ["Nombre" => "Infante barón","cantidad" => 0],
+            ["Nombre" => "Joven barón","cantidad" => 0],
+            ["Nombre" => "Adulto barón","cantidad" => 0],
+            ["Nombre" => "Anciano barón","cantidad" => 0],
+            ["Nombre" => "Infante fémina","cantidad" => 0],
+            ["Nombre" => "Joven fémina","cantidad" => 0],
+            ["Nombre" => "Adulto fémina","cantidad" => 0],
+            ["Nombre" => "Anciano fémina","cantidad" => 0],
+        ];
+
+            foreach ($data as $key) {
+                foreach ($key->data->o as $row) {
+                    foreach ($row->o as $genero) {
+                        switch ($genero->n) {
+                            case 'male':
+                                $indexEdad = 0;
+                                foreach ($genero->o as $edad) {
+                                    // dd($edad);
+                                    switch ($edad->n) {
+                                        case 'child':
+                                            $genderAgeSplit[$indexEdad]['cantidad']=$edad->v;
+                                            break;
+                                        case 'young':
+                                            $genderAgeSplit[$indexEdad+1]['cantidad']=$edad->v;
+                                            break;
+                                        case 'adult':
+                                            $genderAgeSplit[$indexEdad+2]['cantidad']=$edad->v;
+                                            break;
+                                        case 'senior':
+                                            $genderAgeSplit[$indexEdad+3]['cantidad']=$edad->v;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                                break;
+                            case 'female':
+                                $indexEdad = 4;
+                                foreach ($genero->o as $edad) {
+                                    switch ($edad->n) {
+                                        case 'child':
+                                            $genderAgeSplit[$indexEdad]['cantidad']=$edad->v;
+                                            break;
+                                        case 'young':
+                                            $genderAgeSplit[$indexEdad+1]['cantidad']=$edad->v;
+                                            break;
+                                        case 'adult':
+                                            $genderAgeSplit[$indexEdad+2]['cantidad']=$edad->v;
+                                            break;
+                                        case 'senior':
+                                            $genderAgeSplit[$indexEdad+3]['cantidad']=$edad->v;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        
+                    }
+                }
+            }
+            $this->genderAgeSplit($genderAgeSplit);
+    }
+    
+    public function genderAgeSplit($rows)
+    {
+        $grafica = Lava::DataTable();
+            // $grafica->addStringColumn('Day');
+            $index = 0;
+            
+        // foreach ($rows as $row) {
+            $grafica->addStringColumn('Impactos');
+            $grafica->setDateTimeFormat('l');
+            $grafica->addNumberColumn('Oportunidades de impacto');
+            $grafica->addNumberColumn('Impactos');
+            $grafica->addRow(['',45, 78]);
+            // $this->makeColumnChart("gender age split", $grafica, $colores,'impactos');
+        // }   
+        // $arreglo = [];
+        // for ($i=0; $i < count($rows) ; $i++) {         
+        //     $arreglo = [$rows[$i]['Nombre']];
+        //     array_push($arreglo, $rows[$i]['cantidad']);   
+        //     $grafica->addRow($arreglo);
+        // }
+        
+        // dd($grafica);
+        $this->makeColumnChart('Comparacion de edades por género', $grafica, ['#D4F4FF','#85C1E5','#337AB7','#254E7B','#FFDFEE','#E98195','#CF0029','#7B000B'],'Edades por genero');
+        
+    }    
+
+    
+
     public function getDayOfTheWeekInNumber($diaDeSemanaEnString)
     {
         // dd($diaDeSemanaEnString);
@@ -167,7 +332,8 @@ class SeemetrixController extends Controller
             }
             $this->makeColumnChart($nombre, $grafica, $colores,$label);
         }
-    public function HorasDelDia($rows,$nombreGrafica,$colores){
+    public function HorasDelDia($rows,$nombreGrafica,$colores)
+    {
         $grafica = Lava::DataTable();
             $grafica->addDateTimeColumn('Hour')->setDateTimeFormat('H');
             $index = 0;
@@ -175,7 +341,6 @@ class SeemetrixController extends Controller
                 $index++;
                 $grafica->addNumberColumn($row['Nombre']);
             }
-            
             $DaysMap = [
                 // 0 => '00',1 => '01',2 => '02',3 => '03',4 => '04',5 => '05',6 => '06',
                 7 => '07',8 => '08',9 => '09',10 => '10',11 => '11',12 => '12',13 => '13',
@@ -188,16 +353,11 @@ class SeemetrixController extends Controller
                 for ($i=0; $i < $index ; $i++) { 
                     array_push($arreglo, $rows[$i][$DaysMap[$indexWeekDay]]);   
                 }
-
                 $indexWeekDay++;
                 $grafica->addRow($arreglo);
-            
             }
             $this->makeColumnChart($nombreGrafica, $grafica, $colores,'impactos');
         }
-    
-                    
-    
     public function SimpleVersus($totalOTS, $totalWatchers,$nombreGrafica, $colores)
     {
         $grafica = Lava::DataTable();
@@ -225,7 +385,7 @@ class SeemetrixController extends Controller
                 'fontSize' => 14
             ],
             'vAxis' => [
-                'display'=>$displayVaxis
+                'display'=>'Interacciones'
             ],
             
             'height' => 300,
