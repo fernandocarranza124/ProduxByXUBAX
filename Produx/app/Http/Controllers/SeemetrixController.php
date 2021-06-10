@@ -22,14 +22,14 @@ class SeemetrixController extends Controller
         
         $fechaFinal = $this->FechaToFormat($fechaFinal);
         foreach ($DevicesIds as $id) {
-            $url = "https://analytics.3divi.ru/api/v2/statistics/user/".$idUserSeemetrix."/devices/dates/?key=".$keyUserSeemetrix."&tzo=0&dt_format=YYYY-MM-DD HH&b=".$fechaInicial."&e=2021/05/21%2000:00:00&d=".$id;
+            $url = "https://analytics.3divi.ru/api/v2/statistics/user/".$idUserSeemetrix."/devices/dates/?key=".$keyUserSeemetrix."&tzo=0&dt_format=YYYY-MM-DD HH&b=".$fechaInicial."&e=".$fechaFinal."&d=".$id;
         $response = $client->request('GET', $url, [
             'verify'  => false,
         ]);
         $responseBody = json_decode($response->getBody());
             $analiticos->push($responseBody);
             // ////////////////
-            $url = "https://analytics.3divi.ru/api/v2/statistics/user/".$idUserSeemetrix."/devices/genders/ages/emotions/dates/?key=".$keyUserSeemetrix."&tzo=0&dt_format=YYYY-MM-DD HH&b=".$fechaInicial."&e=2021/05/21%2000:00:00&d=".$id;
+            $url = "https://analytics.3divi.ru/api/v2/statistics/user/".$idUserSeemetrix."/devices/genders/ages/emotions/dates/?key=".$keyUserSeemetrix."&tzo=0&dt_format=YYYY-MM-DD HH&b=".$fechaInicial."&e=".$fechaFinal."&d=".$id;
         $response = $client->request('GET', $url, [
             'verify'  => false,
         ]);
@@ -37,22 +37,32 @@ class SeemetrixController extends Controller
             $demograficos->push($responseBody);
         
             // ////////////////
-            $url = "https://analytics.3divi.ru/api/v2/statistics/user/".$idUserSeemetrix."/genders/ages/?key=".$keyUserSeemetrix."&tzo=0&dt_format=YYYY-MM-DD HH&b=".$fechaInicial."&e=2021/05/21%2000:00:00&d=".$id;
+            $url = "https://analytics.3divi.ru/api/v2/statistics/user/".$idUserSeemetrix."/genders/ages/?key=".$keyUserSeemetrix."&tzo=0&dt_format=YYYY-MM-DD HH&b=".$fechaInicial."&e=".$fechaFinal."&d=".$id;
+        $response = $client->request('GET', $url, [
+            'verify'  => false,
+        ]);
+        $responseBody = json_decode($response->getBody());
+            $infosCards->push($responseBody);
+        
+            // ////////////////
+            $url = "https://analytics.3divi.ru/api/v2/statistics/user/".$idUserSeemetrix."/ages/genders/?key=".$keyUserSeemetrix."&tzo=0&dt_format=YYYY-MM-DD HH&b=".$fechaInicial."&e=2021/05/21%2000:00:00&d=".$id;
         $response = $client->request('GET', $url, [
             'verify'  => false,
         ]);
         $responseBody = json_decode($response->getBody());
             $infosCards->push($responseBody);
         }
-
         $this->makeGraphs($analiticos, $demograficos);
 
         $infosCards = $this->makeInfoCards($infosCards);
+
         return $analiticos;
         
     }
     public function makeInfoCards($infos)
     {
+        // dd($infos);
+        
         $EdadesPorGenero = 
             ['female'=>["kid"=>["v"=>0,"vd"=>0],"young"=>["v"=>0,"vd"=>0],"adult"=>["v"=>0,"vd"=>0],"old"=>["v"=>0,"vd"=>0],"undefined"=>["v"=>0,"vd"=>0]],
              'male'=>["kid"=>["v"=>0,"vd"=>0],"young"=>["v"=>0,"vd"=>0],"adult"=>["v"=>0,"vd"=>0],"old"=>["v"=>0,"vd"=>0],"undefined"=>["v"=>0,"vd"=>0]],
@@ -62,7 +72,6 @@ class SeemetrixController extends Controller
         $femaleViewsDuration=($infos[0]->data->o[0]->vd);
         $maleViews=($infos[0]->data->o[1]->v);
         $maleViewsDuration=($infos[0]->data->o[1]->vd);
-        dd($infos[0]->data->o);
         foreach ($infos[0]->data->o as $genero) {
             switch ($genero->n) {
                 case "female":
@@ -80,19 +89,41 @@ class SeemetrixController extends Controller
                 $EdadesPorGenero[$indice][$edad->n]['vd'] = $EdadesPorGenero[$indice][$edad->n]['vd'] + $edad->vd;
             }
         }
+        $indiceConMayorNumero = 0;
+        $Mayorcantidad = 0;
+        $indice = 0;
+        // dd(($infos[1]->data->o));
+        for($indice = 0; $indice < count($infos[1]->data->o); $indice++){
+            $edad = $infos[1]->data->o[$indice];
+            if($edad->v > $Mayorcantidad){
+                $Mayorcantidad = $edad->v;
+                $indiceConMayorNumero = $indice;
+            }
+        }
+        // dd($infos[1]->data->o[$indiceConMayorNumero]);
+        $edadConMayor =$infos[1]->data->o[$indiceConMayorNumero];
+        $generoConMayorNumero=0;
+        $generoConMayorTipo='female';
+        for ($i=0; $i < count($edadConMayor->o); $i++) { 
+            if($edadConMayor->o[$i]->v > $generoConMayorNumero){
+                
+                $generoConMayorTipo = $edadConMayor->o[$i]->n;
+                $generoConMayorNumero = $edadConMayor->o[$i]->v;
+            }
+        }
         $femaleViews = $EdadesPorGenero["female"]["kid"]['v'] + $EdadesPorGenero["female"]["young"]['v'] +$EdadesPorGenero["female"]["adult"]['v'] + $EdadesPorGenero["female"]["old"]['v'];
         $maleViews = $EdadesPorGenero["male"]["kid"]['v'] + $EdadesPorGenero["male"]["young"]['v'] +$EdadesPorGenero["male"]["adult"]['v'] + $EdadesPorGenero["male"]["old"]['v'];
         $femaleViewsDuration = $EdadesPorGenero["female"]["kid"]['vd'] + $EdadesPorGenero["female"]["young"]['vd'] +$EdadesPorGenero["female"]["adult"]['vd'] + $EdadesPorGenero["female"]["old"]['vd'];
         $maleViewsDuration = $EdadesPorGenero["male"]["kid"]['vd'] + $EdadesPorGenero["male"]["young"]['vd'] +$EdadesPorGenero["male"]["adult"]['vd'] + $EdadesPorGenero["male"]["old"]['vd'];
         $totalViews = $femaleViews + $maleViews;
 
-
-
         $infosCards = new Collection();
         $infosCards->femaleViews = round(($femaleViews)*(100)/($totalViews),1);
         $infosCards->maleViews = round(($maleViews)*(100)/($totalViews),1);
         $infosCards->maleAverageAttention = round(($maleViewsDuration/$maleViews)/1000);
         $infosCards->femaleAverageAttention = round(($femaleViewsDuration/$femaleViews)/1000);
+        $infosCards->generoConMayorTipo = $generoConMayorTipo;
+        $infosCards->generoConMayorNumero = round($generoConMayorNumero*100/$totalViews);
         dd($infosCards);
 
         return $infosCards;

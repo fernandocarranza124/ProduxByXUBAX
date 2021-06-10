@@ -25,6 +25,7 @@ class AnaliticosController extends Controller
      */
     public function index($tiempoInicial = 0, $tiempoFinal = 0, $categorias = 0)
     {   
+        $DevicesIds = new Collection();
         $tiempoEnMano = 0;
         $tiempoEnAnaquel = 0;
         $PrimerAccionGeneral = null;
@@ -354,8 +355,10 @@ class AnaliticosController extends Controller
                     
                 }
                 
-                    
-            }
+                $DevicesIds->put("device",["api_user_id"=>$categoria->api_user_id,"api_key_id"=>$categoria->api_key_id]);            
+                
+                $seemetrix = app('App\Http\Controllers\SeemetrixController')->getDataFromSeemetrix($categoria->api_user_id,$categoria->api_key_id, $DevicesIds, $infos->fechaInicial, $infos->fechaFinal);
+            } ////
             
         }else{
             
@@ -412,11 +415,13 @@ class AnaliticosController extends Controller
         $fechaActual = (Carbon::now());
 
         // Api SEEMETRIX
-        $idUserSeemetrix = 2409;
-        $keyUserSeemetrix = "807cd9496b9f46ecaa08d7cf3f4451b6";
-        $DevicesIds = new Collection();
-        $DevicesIds->push(8006);
-        $seemetrix = app('App\Http\Controllers\SeemetrixController')->getDataFromSeemetrix($idUserSeemetrix,$keyUserSeemetrix, $DevicesIds, $infos->fechaInicial, $infos->fechaFinal);
+        // $idUserSeemetrix = 2409;   Usuario Cris
+        // $keyUserSeemetrix = "807cd9496b9f46ecaa08d7cf3f4451b6"; Clave antigua
+        $keyUserSeemetrix = "e0bd06b9b5f047108d401ba61b331871";
+        $idUserSeemetrix = 8033;
+        
+        
+        
         
         // dd($seemetrix);
 
