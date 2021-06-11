@@ -355,9 +355,9 @@ class AnaliticosController extends Controller
                     
                 }
                 
-                // $DevicesIds->put("device",["api_user_id"=>$categoria->api_user_id,"api_key_id"=>$categoria->api_key_id]);            
+                $DevicesIds->put("device",["api_user_id"=>$categoria->api_user_id,"api_key_id"=>$categoria->api_key_id,"api_device_id"=>$categoria->api_device_id]);            
                 
-                $seemetrix = app('App\Http\Controllers\SeemetrixController')->getDataFromSeemetrix($categoria->api_user_id,$categoria->api_key_id,$categoria->api_device_id , $infos->fechaInicial, $infos->fechaFinal);
+                
             } ////
             
         }else{
@@ -405,7 +405,11 @@ class AnaliticosController extends Controller
         }
         
         // dd($infos);
-        
+        //////Semmetrix api
+        $seemetrix = app('App\Http\Controllers\SeemetrixController')->getDataFromSeemetrix($DevicesIds , $infos->fechaInicial, $infos->fechaFinal);
+        // /////
+        dd($seemetrix);
+        // 
         $this->TopProductosGrafica($masLevantados);
         $this->DiasDeLaSemanaGrafica($DispositivosDiasDeLaSemana);
         $this->HorasGrafica($DispositivosHorasDelDia);

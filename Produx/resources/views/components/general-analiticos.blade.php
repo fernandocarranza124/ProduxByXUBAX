@@ -104,7 +104,7 @@
           </section>
         </div>
 			  <div x-show="activeTab===2">
-          Content 3
+          <?php print file_get_contents("https://analytics.3divi.ru/user/2409/device/7777/?&key=807cd9496b9f46ecaa08d7cf3f4451b6"); ?>
         </div>
 			  <div x-show="activeTab===3">
           Content 4
