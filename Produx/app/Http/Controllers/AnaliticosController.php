@@ -357,7 +357,7 @@ class AnaliticosController extends Controller
 
                 // $DevicesIds->put("device",["api_user_id"=>$categoria->api_user_id,"api_key_id"=>$categoria->api_key_id]);            
                 
-                $seemetrix = app('App\Http\Controllers\SeemetrixController')->getDataFromSeemetrix($categoria->api_user_id,$categoria->api_key_id,$categoria->api_device_id , $fechaInicial, $fechaFinal);
+                
             } ////
 
                     
@@ -373,6 +373,7 @@ class AnaliticosController extends Controller
         $fechaInicial = $fechaInicial->created_at;
         $fechaFinal=Accion::where('device_id','=',$device->id)->orderBy('created_at','DESC')->first();
         $fechaFinal = $fechaFinal->created_at;
+        $seemetrix = app('App\Http\Controllers\SeemetrixController')->getDataFromSeemetrix($categoria->api_user_id,$categoria->api_key_id,$categoria->api_device_id , $fechaInicial, $fechaFinal);
         $infos = collect();
         $infos->fechaInicial = $fechaInicial->addDay(1)->format("Y-m-d");
         $infos->fechaFinal = $fechaFinal->addDay(1)->format("Y-m-d");
