@@ -354,15 +354,8 @@ class AnaliticosController extends Controller
                     
                 }
                 
-
-                // $DevicesIds->put("device",["api_user_id"=>$categoria->api_user_id,"api_key_id"=>$categoria->api_key_id]);            
-                
-                
-            } ////
-
                     
-            
-
+            }
             
         }else{
             
@@ -373,7 +366,6 @@ class AnaliticosController extends Controller
         $fechaInicial = $fechaInicial->created_at;
         $fechaFinal=Accion::where('device_id','=',$device->id)->orderBy('created_at','DESC')->first();
         $fechaFinal = $fechaFinal->created_at;
-        $seemetrix = app('App\Http\Controllers\SeemetrixController')->getDataFromSeemetrix($categoria->api_user_id,$categoria->api_key_id,$categoria->api_device_id , $fechaInicial, $fechaFinal);
         $infos = collect();
         $infos->fechaInicial = $fechaInicial->addDay(1)->format("Y-m-d");
         $infos->fechaFinal = $fechaFinal->addDay(1)->format("Y-m-d");
@@ -423,9 +415,8 @@ class AnaliticosController extends Controller
         $idUserSeemetrix = 2409;
         $keyUserSeemetrix = "807cd9496b9f46ecaa08d7cf3f4451b6";
         $DevicesIds = new Collection();
-        $DevicesIds->push(8006);
+        $DevicesIds->push(7777);
         $seemetrix = app('App\Http\Controllers\SeemetrixController')->getDataFromSeemetrix($idUserSeemetrix,$keyUserSeemetrix, $DevicesIds, $infos->fechaInicial, $infos->fechaFinal);
-        
         // dd($seemetrix);
 
         return view ('analiticos',compact('infos', 'categoriasPorEquipo','DispositivosTodos', 'fechaActual', 'seemetrix'));
@@ -530,7 +521,11 @@ class AnaliticosController extends Controller
                 for ($i=0; $i < $index ; $i++) { 
                     array_push($arreglo, $rows[$i]['cantidad']);   
                 }
+                // dd($arreglo);
+         
                 $grafica->addRow($arreglo);
+                // dd($grafica);
+                // dd($grafica);
         Lava::ColumnChart('TopMasInteracciones', $grafica, [
             // 'title' => 'Productos con mayor interacción',
             'colors'=> ['#01B8AA', '#374649', '#FD625E', '#F2C80F', '#5F6B6D'],
@@ -552,7 +547,7 @@ class AnaliticosController extends Controller
         ]);
     }
     public function DiasDeLaSemanaGrafica($rows){
-        // dd($rows);
+
         $grafica = Lava::DataTable();
             $grafica->addStringColumn('Day');
             $index = 0;
@@ -634,7 +629,6 @@ class AnaliticosController extends Controller
                 for ($i=0; $i < $index ; $i++) { 
                     array_push($arreglo, $rows[$i][$DaysMap[$indexWeekDay]]);   
                 }
-
                 $indexWeekDay++;
                 $grafica->addRow($arreglo);
             }
@@ -670,7 +664,6 @@ class AnaliticosController extends Controller
         ]);
     }
     public function TiempoManoHorasGrafica($rows){
-        // dd($rows);
         $grafica = Lava::DataTable();
             $grafica->addDateTimeColumn('Hour')->setDateTimeFormat('H');
             $index = 0;
