@@ -24,7 +24,7 @@
     <div class="pt-2 relative mx-auto text-gray-600 flex">
       
       @php
-      
+    // dd($seemetrix);
       
       
       @endphp
@@ -95,16 +95,20 @@
         </div>
 			  <div x-show="activeTab===1">
           <section class="flex flex-row flex-wrap mx-auto" id="Demograficos">
-            <x-cards-info-analiticos titulo="Hombres" icono="chip" :valor="$infos->productosTotales" extra="" color="" />    
-            <x-cards-info-analiticos titulo="Mujeres" icono="chip" :valor="$infos->productosConInteraccion" extra="" color="" />    
-            <x-cards-info-analiticos titulo="Top rango de edad" icono="stick" :valor="$infos->porcentajeInteracciones" extra="%" color="true" />    
-            <x-cards-info-analiticos titulo="Atencion de los hombres" icono="clock" :valor="$infos->tiempoEnAnaquel" extra="segundos" color="" />    
-            <x-cards-info-analiticos titulo="Atencion de las mujeres" icono="clock" :valor="$infos->tiempoEnMano" extra="segundos" color="" />    
-            <x-cards-info-analiticos titulo="Mayor tiempo de atención" icono="stick" :valor="$infos->porcentajeDeTiempo" extra="%" color="true" />    
+            <x-cards-info-analiticos titulo="Hombres" icono="people" :valor="$seemetrix->cards->maleViews" extra="%" color="true" />    
+            <x-cards-info-analiticos titulo="Mujeres" icono="people" :valor="$seemetrix->cards->femaleViews" extra="%" color="true" />    
+            <x-cards-info-analiticos titulo="Top grupo demografico" icono="stick" :valor="$seemetrix->cards->topDemograficGroup" extra="%" color="true" />    
+            <x-cards-info-analiticos titulo="Promedio de atencion de los hombres" icono="eye" :valor="$seemetrix->cards->maleAverageAttention" extra="segundos" color="" />    
+            <x-cards-info-analiticos titulo="Promedio de atencion de las mujeres" icono="eye" :valor="$seemetrix->cards->femaleAverageAttention" extra="segundos" color="" />    
+            <x-cards-info-analiticos titulo="Top de tiempo de atencion" icono="stick" :valor="$seemetrix->cards->topAttentionTime" extra="segundos" color="" />    
+          </section>
+          <section class="flex flex-row flex-wrap mx-auto" id="demograficChart">
+            <x-chart-info-analiticos id="Comparacion de edades por género" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Comparacion de edades por género" titulo="Comparacion de edades por género" tooltip="Oportunidades de impacto entre hombres y mujeres" />
+            <x-chart-info-analiticos id="Comparacion de impactos por género" tipoDeGrafica="PieChart" nombreDeGraficaLava="Comparacion de impactos por género" titulo="Comparacion de impactos por género" tooltip="Oportunidades de impacto entre hombres y mujeres" />
           </section>
         </div>
-			  <div x-show="activeTab===2">
-          Content 3
+			  <div x-show="activeTab===2">zz                               
+
         </div>
 			  <div x-show="activeTab===3">
           Content 4

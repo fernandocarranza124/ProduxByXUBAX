@@ -523,6 +523,7 @@ class AnaliticosController extends Controller
                     array_push($arreglo, $rows[$i]['cantidad']);   
                 }
                 $grafica->addRow($arreglo);
+            // dd($grafica);
         Lava::ColumnChart('TopMasInteracciones', $grafica, [
             // 'title' => 'Productos con mayor interacción',
             'colors'=> ['#01B8AA', '#374649', '#FD625E', '#F2C80F', '#5F6B6D'],

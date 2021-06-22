@@ -29,3 +29,6 @@
         
         $responseBody = json_decode($response->getBody());
             $infosCards->push($responseBody);
+
+
+        

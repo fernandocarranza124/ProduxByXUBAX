@@ -17,6 +17,7 @@ class SeemetrixController extends Controller
         $client = new Client();
         $analiticos = new Collection();
         $demograficos = new Collection();
+        $edades = new Collection();
         $infosCards = new Collection();
         $fechaInicial = $this->FechaToFormat($fechaInicial);
         
@@ -43,16 +44,25 @@ class SeemetrixController extends Controller
         ]);
         $responseBody = json_decode($response->getBody());
             $infosCards->push($responseBody);
+            // ////////////////
+            $url = "https://analytics.3divi.ru/api/v2/statistics/user/".$idUserSeemetrix."/ages/?key=".$keyUserSeemetrix."&tzo=0&dt_format=YYYY-MM-DD HH&b=".$fechaInicial."&e=2021/05/21%2000:00:00&d=".$id;
+        $response = $client->request('GET', $url, [
+            'verify'  => false,
+        ]);
+        $responseBody = json_decode($response->getBody());
+            $edades->push($responseBody);
         }
-
         $this->makeGraphs($analiticos, $demograficos);
 
-        $infosCards = $this->makeInfoCards($infosCards);
+        $infosCards = $this->makeInfoCards($infosCards, $edades);
+        // dd($infosCards);
+            $analiticos->cards = $infosCards;
         return $analiticos;
         
     }
-    public function makeInfoCards($infos)
+    public function makeInfoCards($infos, $edades)
     {
+        // dd($infos);
         $EdadesPorGenero = 
             ['female'=>["kid"=>["v"=>0,"vd"=>0],"young"=>["v"=>0,"vd"=>0],"adult"=>["v"=>0,"vd"=>0],"old"=>["v"=>0,"vd"=>0],"undefined"=>["v"=>0,"vd"=>0]],
              'male'=>["kid"=>["v"=>0,"vd"=>0],"young"=>["v"=>0,"vd"=>0],"adult"=>["v"=>0,"vd"=>0],"old"=>["v"=>0,"vd"=>0],"undefined"=>["v"=>0,"vd"=>0]],
@@ -80,27 +90,49 @@ class SeemetrixController extends Controller
                 $EdadesPorGenero[$indice][$edad->n]['vd'] = $EdadesPorGenero[$indice][$edad->n]['vd'] + $edad->vd;
             }
         }
+        
+
+
         $femaleViews = $EdadesPorGenero["female"]["kid"]['v'] + $EdadesPorGenero["female"]["young"]['v'] +$EdadesPorGenero["female"]["adult"]['v'] + $EdadesPorGenero["female"]["old"]['v'];
         $maleViews = $EdadesPorGenero["male"]["kid"]['v'] + $EdadesPorGenero["male"]["young"]['v'] +$EdadesPorGenero["male"]["adult"]['v'] + $EdadesPorGenero["male"]["old"]['v'];
         $femaleViewsDuration = $EdadesPorGenero["female"]["kid"]['vd'] + $EdadesPorGenero["female"]["young"]['vd'] +$EdadesPorGenero["female"]["adult"]['vd'] + $EdadesPorGenero["female"]["old"]['vd'];
         $maleViewsDuration = $EdadesPorGenero["male"]["kid"]['vd'] + $EdadesPorGenero["male"]["young"]['vd'] +$EdadesPorGenero["male"]["adult"]['vd'] + $EdadesPorGenero["male"]["old"]['vd'];
         $totalViews = $femaleViews + $maleViews;
+        $topDemograficGroup = "Joven 45 ";
+        $topAttentionTime = "Adulto 45.2";
 
-
+        $this->makeGenderSplitGraph($maleViews, $femaleViews);
 
         $infosCards = new Collection();
         $infosCards->femaleViews = round(($femaleViews)*(100)/($totalViews),1);
         $infosCards->maleViews = round(($maleViews)*(100)/($totalViews),1);
         $infosCards->maleAverageAttention = round(($maleViewsDuration/$maleViews)/1000);
         $infosCards->femaleAverageAttention = round(($femaleViewsDuration/$femaleViews)/1000);
+        $infosCards->topDemograficGroup = $topDemograficGroup;
+        $infosCards->topAttentionTime = $topAttentionTime;
         // dd($infosCards);
 
         return $infosCards;
     }
+    public function makeGenderSplitGraph($maleViews, $femaleViews){
+        $grafica = Lava::DataTable();
+            $grafica->addStringColumn('Day');
+            $index = 0;
+            $grafica->setDateTimeFormat('d');
+            $grafica->addNumberColumn('En hombre');
+            $grafica->addRow(["Impactos en hombres",$maleViews]);
+            $grafica->addRow(["Impactos en mujeres",$femaleViews]);
+            // $grafica->addRow($femaleViews);
+            // dd($grafica);
+            
+            $this->makePieChart('Comparacion de impactos por género', $grafica, ['#85C1E5','#E98195','#337AB7','#254E7B','#FFDFEE','#E98195','#CF0029','#7B000B'],'Comparacion de impactos por género');
+    }
+
     public function makeGraphs($data, $demograph)
     {
         $this->otsVSwatchers($data);
         $this->GenderEmotions($demograph);
+        
     }
 
     public function otsVSwatchers($data)
@@ -195,10 +227,11 @@ class SeemetrixController extends Controller
                             case 'male':
                                 $indexEdad = 0;
                                 foreach ($genero->o as $edad) {
-                                    // dd($edad);
+                                    
                                     switch ($edad->n) {
-                                        case 'child':
+                                        case 'kid':
                                             $genderAgeSplit[$indexEdad]['cantidad']=$edad->v;
+                                            // dd($edad);
                                             break;
                                         case 'young':
                                             $genderAgeSplit[$indexEdad+1]['cantidad']=$edad->v;
@@ -242,23 +275,23 @@ class SeemetrixController extends Controller
                     }
                 }
             }
+            // dd($genderAgeSplit);
             $this->genderAgeSplit($genderAgeSplit);
     }
     
     public function genderAgeSplit($rows)
     {
         $grafica = Lava::DataTable();
-            // $grafica->addStringColumn('Day');
+            $grafica->addStringColumn('impactos');
             $index = 0;
-            
-        // foreach ($rows as $row) {
-            $grafica->addStringColumn('Impactos');
-            $grafica->setDateTimeFormat('l');
-            $grafica->addNumberColumn('Oportunidades de impacto');
-            $grafica->addNumberColumn('Impactos');
-            $grafica->addRow(['',45, 78]);
-            // $this->makeColumnChart("gender age split", $grafica, $colores,'impactos');
-        // }   
+        $arreglo =  array();
+        foreach ($rows as $row) {
+            array_push($arreglo, $row['cantidad']);
+            $grafica->addNumberColumn($row['Nombre']);    
+        }   
+        $grafica->addRow(["Impactos",$arreglo[0],$arreglo[1],$arreglo[2],$arreglo[3],$arreglo[4],$arreglo[5],$arreglo[6],$arreglo[7]]);
+        // dd($grafica);
+        // $grafica->addRow([$row['Nombre'], $row['cantidad']]);
         // $arreglo = [];
         // for ($i=0; $i < count($rows) ; $i++) {         
         //     $arreglo = [$rows[$i]['Nombre']];
@@ -390,11 +423,36 @@ class SeemetrixController extends Controller
             
             'height' => 300,
             'pieSliceText' => 'value',
-            'is3D'   => true,
+            // 'is3D'   => true,
             'slices' => [
                 
             ],
-            'legend' => ['position'=> 'top', 'maxLines'=> 3],
+            // 'legend' => ['position'=> 'top', 'maxLines'=> 3],
+        ]);
+    }
+    public function makePieChart($nombre, $grafica, $colores, $displayVaxis)
+    {
+        Lava::PieChart($nombre, $grafica, [
+            // 'title' => 'Productos con mayor interacción',
+            'colors'=> $colores,
+            'titleTextStyle' => [
+                'color'    => '#eb6b2c',
+                'fontSize' => 14
+            ],
+            'vAxis' => [
+                'display'=>'Interacciones'
+            ],
+            
+            'height' => 300,
+            // 'pieSliceText' => 'value',
+            'is3D'   => true,
+            'slices' => [
+                ['offset' => 0.2],
+                ['offset' => 0.25],
+                ['offset' => 0.3]
+            ],
+            
+            // 'legend' => ['position' => 'in'],
         ]);
     }
 
