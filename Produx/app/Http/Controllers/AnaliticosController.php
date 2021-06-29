@@ -368,7 +368,7 @@ class AnaliticosController extends Controller
         $fechaFinal = $fechaFinal->created_at;
         $infos = collect();
         $infos->fechaInicial = $fechaInicial->addDay(1)->format("Y-m-d");
-        $infos->fechaFinal = $fechaFinal->addDay(1)->format("Y-m-d");
+        $infos->fechaFinal = $fechaFinal->addDay(2)->format("Y-m-d");
         $infos->productosTotales =  (int)(($productosTotales));
         $rows = collect([
             ['Minutos en mano', $diff],
@@ -412,10 +412,11 @@ class AnaliticosController extends Controller
         $fechaActual = (Carbon::now());
 
         // Api SEEMETRIX
-        $idUserSeemetrix = 2409;
-        $keyUserSeemetrix = "807cd9496b9f46ecaa08d7cf3f4451b6";
+        // dd($categoria);
+        $idUserSeemetrix = $categoria->api_user_id;
+        $keyUserSeemetrix = $categoria->api_key_id;
         $DevicesIds = new Collection();
-        $DevicesIds->push(7777);
+        $DevicesIds->push($categoria->api_device_id);
         $seemetrix = app('App\Http\Controllers\SeemetrixController')->getDataFromSeemetrix($idUserSeemetrix,$keyUserSeemetrix, $DevicesIds, $infos->fechaInicial, $infos->fechaFinal);
         
         // dd($seemetrix);
@@ -571,15 +572,8 @@ class AnaliticosController extends Controller
                 $indexWeekDay++;
                 $grafica->addRow($arreglo);
             }
-            
-            
             $grafica->setDateTimeFormat('l');
-
-            // ->addRow(['Mie', 660, 1120,1])
-            // ->addRow(['Jue', 660, 1120,123])
-            // ->addRow(['Vie', 660, 1120,908])
-            // ->addRow(['Sab', 660, 1120,346])
-            // ->addRow(['Dom', 1030, 54,456]);
+// dd($grafica);
         
         Lava::ColumnChart('ProductosInteraccionesDiasDeLaSemana', $grafica, [
             // 'title' => 'Interacciones durante los dias de la semana',
@@ -607,6 +601,7 @@ class AnaliticosController extends Controller
     }
 
     public function HorasGrafica($rows){
+        // dd($rows);
         $grafica = Lava::DataTable();
             $grafica->addDateTimeColumn('Hour')->setDateTimeFormat('H');
             $index = 0;
@@ -631,18 +626,6 @@ class AnaliticosController extends Controller
                 $indexWeekDay++;
                 $grafica->addRow($arreglo);
             }
-            // $grafica->addNumberColumn('iPhone 12 Pro')
-            // ->addNumberColumn('Huawei Mate 10 Pro')
-            // ->addNumberColumn('Xiaomi Mi10T Pro')
-            
-            // ->addRow(['08', 1000, 400,300])
-            // ->addRow(['09', 1170, 460,450])
-            // ->addRow(['10', 660, 1120,1])
-            // ->addRow(['11', 660, 1120,123])
-            // ->addRow(['12', 660, 1120,908])
-            // ->addRow(['13', 660, 1120,346])
-            // ->addRow(['14', 1030, 54,456]);
-        
         Lava::ColumnChart('ProductosInteraccionesHorasAlDia', $grafica, [
             'colors'=> ['#01B8AA', '#374649', '#FD625E', '#F2C80F', '#5F6B6D'],
             'isStacked' => 'true',
@@ -1141,7 +1124,12 @@ class AnaliticosController extends Controller
         
         $infos->productosConInteraccion =  (int)(($productosConInteraccion));
         // if($productosTotales != 0){
-            $infos->porcentajeInteracciones =  (int)(($productosConInteraccion*100)/ $productosTotales);
+            if($productosTotales != 0){
+                $infos->porcentajeInteracciones =  (int)(($productosConInteraccion*100)/ $productosTotales);
+            }else{
+                $infos->porcentajeInteracciones = 0;
+            }
+            
         // }
         // $infos->porcentajeInteracciones = 0;
         
@@ -1190,8 +1178,15 @@ class AnaliticosController extends Controller
         $currentTeamId = Auth::user()->current_team_id;
         $categoriasPorEquipo = Categoria::where('team_id','=',$currentTeamId)->get();
 
+        // Api SEEMETRIX
 
-        return view ('analiticos',compact('infos', 'categoriasPorEquipo','DispositivosTodos', 'fechaActual'));
+        $idUserSeemetrix = $categoria->api_user_id;
+        $keyUserSeemetrix = $categoria->api_key_id;
+        $DevicesIds = new Collection();
+        $DevicesIds->push($categoria->api_device_id);
+        
+        $seemetrix = app('App\Http\Controllers\SeemetrixController')->getDataFromSeemetrix($idUserSeemetrix,$keyUserSeemetrix, $DevicesIds, $infos->fechaInicial, $infos->fechaFinal);
+        return view ('analiticos',compact('infos', 'categoriasPorEquipo','DispositivosTodos', 'fechaActual', 'seemetrix'));
     }
 
     /**

@@ -28,9 +28,9 @@
       
       
       @endphp
-      {{-- @php
-          dd($infos->fechaInicial);
-      @endphp --}}
+      @php
+          
+      @endphp
       <x-filtro-analiticos titulo="Fecha inicial" :rows="$categorias" id="fechaInicial" fechaActual="{{$infos->fechaInicial}}"/>
       <x-filtro-analiticos titulo="Fecha final" :rows="$categorias" id="fechaFinal"  fechaActual="{{$infos->fechaFinal}}"/>
       <x-filtrar-categorias titulo="Categorias" :rows="$categorias" id="categorias" />
@@ -71,7 +71,7 @@
             {{-- TiemposInteraccionesHorasAlDia --}}
           </section>
           <section class="flex flex-row flex-wrap mx-auto" id="seemetrix">
-            <x-cards-info-analiticos titulo="Oportunidades de imapcto" icono="people" :valor="$seemetrix[0]->data->ots" extra="" color="" />    
+            <x-cards-info-analiticos titulo="Oportunidades de impacto" icono="people" :valor="$seemetrix[0]->data->ots" extra="" color="" />    
             <x-cards-info-analiticos titulo="Total de impactos generados" icono="eye" :valor="$seemetrix[0]->data->v" extra="" color="" />    
               @php
               $porcentajeInteracciones = number_format(($seemetrix[0]->data->v)/($seemetrix[0]->data->ots)*100, 2);
@@ -81,30 +81,41 @@
               @endphp
             <x-cards-info-analiticos titulo="Porcentaje de impactos" icono="stick" :valor="$porcentajeInteracciones" extra="%" color="true" />    
             <x-cards-info-analiticos titulo="Tiempo de inactividad" icono="clock" :valor="$seemetrix[0]->data->otsd" extra="segundos" color="" />    
-            <x-cards-info-analiticos titulo="Tiempo de atencion" icono="clock" :valor="$seemetrix[0]->data->vd" extra="segundos" color="" />      
-            <x-cards-info-analiticos titulo="Porcentaje de atraccion" icono="stick" :valor="$infos->porcentajeDeTiempo" extra="%" color="true" />    
+            <x-cards-info-analiticos titulo="Tiempo de atención" icono="clock" :valor="$seemetrix[0]->data->vd" extra="segundos" color="" />      
+            <x-cards-info-analiticos titulo="Porcentaje de atracción" icono="stick" :valor="$infos->porcentajeDeTiempo" extra="%" color="true" />    
           </section>
           <section class="flex flex-row flex-wrap mx-auto">
             <x-chart-info-analiticos id="Cantidades de ODI - Impactos" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Cantidades de ODI - Impactos" titulo="Comparación de ODI - Impactos" tooltip="Oportunidades de impacto - Impactos" />
-            <x-chart-info-analiticos id="Cantidades de impactos por Dia" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Cantidades de impactos por Dia" titulo="Comparación de ODP - Impactos por dia" tooltip="Oportunidades de impacto - Impactos" />
+            <x-chart-info-analiticos id="Cantidades de impactos por Dia" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Cantidades de impactos por Dia" titulo="Comparación de ODI - Impactos por dia" tooltip="Oportunidades de impacto - Impactos" />
             <x-chart-info-analiticos id="Cantidad de impactos por hora" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Cantidad de impactos por hora" titulo="Comparación de ODI - Impactos por hora" tooltip="Oportunidades de impacto - Impactos" />
-            <x-chart-info-analiticos id="Tiempo de atencion ODI - Impactos" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Tiempo de atencion ODI - Impactos" titulo="Tiempo de atenciom ODI - Impactos" tooltip="Oportunidades de impacto - Impactos" />
+            <x-chart-info-analiticos id="Tiempo de atencion ODI - Impactos" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Tiempo de atencion ODI - Impactos" titulo="Tiempo de atención ODI - Impactos" tooltip="Oportunidades de impacto - Impactos" />
             <x-chart-info-analiticos id="Tiempo de impactos por dia de la semana" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Tiempo de impactos por dia de la semana" titulo="Tiempo de impactos por dia de la semana" tooltip="Oportunidades de impacto - Impactos" />
-            <x-chart-info-analiticos id="Duracion de impactos por hora" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Duracion de impactos por hora" titulo="Duracion de impactos por hora" tooltip="Oportunidades de impacto - Impactos" />
+            <x-chart-info-analiticos id="Duracion de impactos por hora" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Duracion de impactos por hora" titulo="Duración de impactos por hora" tooltip="Oportunidades de impacto - Impactos" />
+            
           </section>
         </div>
 			  <div x-show="activeTab===1">
           <section class="flex flex-row flex-wrap mx-auto" id="Demograficos">
             <x-cards-info-analiticos titulo="Hombres" icono="people" :valor="$seemetrix->cards->maleViews" extra="%" color="true" />    
             <x-cards-info-analiticos titulo="Mujeres" icono="people" :valor="$seemetrix->cards->femaleViews" extra="%" color="true" />    
-            <x-cards-info-analiticos titulo="Top grupo demografico" icono="stick" :valor="$seemetrix->cards->topDemograficGroup" extra="%" color="true" />    
-            <x-cards-info-analiticos titulo="Promedio de atencion de los hombres" icono="eye" :valor="$seemetrix->cards->maleAverageAttention" extra="segundos" color="" />    
-            <x-cards-info-analiticos titulo="Promedio de atencion de las mujeres" icono="eye" :valor="$seemetrix->cards->femaleAverageAttention" extra="segundos" color="" />    
-            <x-cards-info-analiticos titulo="Top de tiempo de atencion" icono="stick" :valor="$seemetrix->cards->topAttentionTime" extra="segundos" color="" />    
+            <x-cards-info-analiticos titulo="Top atención" icono="stick" :valor="$seemetrix->cards->topDemograficGroup" extra="%" color="true" />    
+            <x-cards-info-analiticos titulo="Promedio atención hombre" icono="eye" :valor="$seemetrix->cards->maleAverageAttention" extra="segundos" color="" />    
+            <x-cards-info-analiticos titulo="Promedio atención mujeres" icono="eye" :valor="$seemetrix->cards->femaleAverageAttention" extra="segundos" color="" />    
+            <x-cards-info-analiticos titulo="Top tiempo" icono="stick" :valor="$seemetrix->cards->topAttentionTime" extra="segundos" color="" />    
           </section>
           <section class="flex flex-row flex-wrap mx-auto" id="demograficChart">
-            <x-chart-info-analiticos id="Comparacion de edades por género" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Comparacion de edades por género" titulo="Comparacion de edades por género" tooltip="Oportunidades de impacto entre hombres y mujeres" />
-            <x-chart-info-analiticos id="Comparacion de impactos por género" tipoDeGrafica="PieChart" nombreDeGraficaLava="Comparacion de impactos por género" titulo="Comparacion de impactos por género" tooltip="Oportunidades de impacto entre hombres y mujeres" />
+            <x-chart-info-analiticos id="Comparacion de edades por género" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Comparacion de edades por género" titulo="Comparación de edades por género" tooltip="Impactos entre hombres y mujeres" />
+            <x-chart-info-analiticos id="Comparacion de impactos por género" tipoDeGrafica="DonutChart" nombreDeGraficaLava="Comparacion de impactos por género" titulo="Comparación de impactos por género" tooltip="Impactos entre hombres y mujeres" />
+            <x-chart-info-analiticos id="Comparacion de impactos por edad" tipoDeGrafica="DonutChart" nombreDeGraficaLava="Comparacion de impactos por edad" titulo="Comparación de impactos por edad" tooltip="Impactos por edaes" />
+            
+            <x-chart-info-analiticos id="DemograficosImpactosPorSemana" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="DemograficosImpactosPorSemana" titulo="Impactos durante la semana" tooltip="Impactos por edades y genero durante la semana" width="1/2" />
+            <x-chart-info-analiticos id="ImpactosInteraccionesHorasAlDia" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="ImpactosInteraccionesHorasAlDia" titulo="Impactos durante el dia" tooltip="" width="1/2" />
+            <x-chart-info-analiticos id="DuracionDemograficosImpactosPorSemana" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="DuracionDemograficosImpactosPorSemana" titulo="Duración semanal de los impactos " tooltip="" width="1/2" />
+            <x-chart-info-analiticos id="DuracionImpactosInteraccionesHorasAlDia" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="DuracionImpactosInteraccionesHorasAlDia" titulo="Duración diaria de los impactos" tooltip="" width="1/2" />
+
+            <x-chart-info-analiticos id="Emociones" tipoDeGrafica="DonutChart" nombreDeGraficaLava="Emociones" titulo="Emociones gener" tooltip="" />
+            <x-chart-info-analiticos id="Emociones por genero" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Emociones por genero" titulo="Emociones por genero" tooltip="" />
+            <x-chart-info-analiticos id="Emociones por edad" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Emociones por edad" titulo="Emociones por edad" tooltip="" />
           </section>
         </div>
 			  <div x-show="activeTab===2">zz                               

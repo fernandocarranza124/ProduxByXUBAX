@@ -18,8 +18,10 @@ class ChartInfoAnaliticos extends Component
     public $titulo;
     public $icono;
     public $tooltip;
-    public function __construct($id , $tipoDeGrafica, $nombreDeGraficaLava, $titulo, $tooltip)
+    public $width;
+    public function __construct($id , $tipoDeGrafica, $nombreDeGraficaLava, $titulo, $tooltip, $width = "1/3")
     {
+      $this->width = $width;
         $this->tooltip = $tooltip;
         $this->divId = $id;
         $this->tipoDeGrafica = $tipoDeGrafica;

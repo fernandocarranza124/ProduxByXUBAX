@@ -1,4 +1,4 @@
-<div class="transition-all duration-150 flex w-full px-2 py-6 md:w-1/1 lg:w-1/3 h-1/3 ">
+<div class="transition-all duration-150 flex w-full px-2 py-6 md:w-1/1 lg:w-{{$width}} h-1/3 ">
     <div class="flex flex-col items-stretch min-h-full pb-4 mb-6 transition-all duration-150 bg-white rounded-lg shadow-lg hover:shadow-2xl w-full" >
     <hr class="border-gray-300" />
     <div class="flex items-center text-center">
