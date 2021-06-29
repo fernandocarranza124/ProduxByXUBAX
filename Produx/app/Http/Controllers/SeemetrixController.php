@@ -139,7 +139,9 @@ class SeemetrixController extends Controller
         $maleViewsDuration = $EdadesPorGenero["male"]["kid"]['vd'] + $EdadesPorGenero["male"]["young"]['vd'] +$EdadesPorGenero["male"]["adult"]['vd'] + $EdadesPorGenero["male"]["old"]['vd'];
         $totalViews = $femaleViews + $maleViews;
         
-        $topDemograficGroup = $mayorgrupo['grupo']." ".$mayorgrupo['cantidad'] = $mayorgrupo['cantidad'] * 100 / $totalViews;
+        $mayorgrupo["cantidad"] =  (round($mayorgrupo['cantidad'] * 100 / $totalViews));
+        $topDemograficGroup = $mayorgrupo['grupo']." ".$mayorgrupo['cantidad'];
+        
         $topAttentionTime = "Adulto 45.2";
 
         $this->makeGenderSplitGraph($maleViews, $femaleViews);
@@ -243,8 +245,9 @@ class SeemetrixController extends Controller
         $grafica->addStringColumn('Emocion');
         $grafica->addNumberColumn('cantidad');
         foreach ($SolamenteEmociones as $emocion) {
-            
-            $grafica->addRow([$emocion["Nombre"], $emocion["cantidad"]]);
+            if($emocion["Nombre"] != "No definido"){
+                $grafica->addRow([$emocion["Nombre"], $emocion["cantidad"]]);
+            }
         }
         $this->makeDonutChart('Emociones', $grafica, ["#D05F3D",'#ACD864','#A5D1E5','#E97595','#7B000B','#FFDFEE','#E98195','#CF0029','#7B000B'],'Emociones');
     }
@@ -352,14 +355,14 @@ class SeemetrixController extends Controller
     {
         
         $genderAgeSplit = [
-            ["Nombre" => "Infante barón","cantidad" => 0],
-            ["Nombre" => "Joven barón","cantidad" => 0],
-            ["Nombre" => "Adulto barón","cantidad" => 0],
-            ["Nombre" => "Anciano barón","cantidad" => 0],
-            ["Nombre" => "Infante fémina","cantidad" => 0],
-            ["Nombre" => "Joven fémina","cantidad" => 0],
-            ["Nombre" => "Adulto fémina","cantidad" => 0],
-            ["Nombre" => "Anciano fémina","cantidad" => 0],
+            ["Nombre" => "Hombre niño","cantidad" => 0],
+            ["Nombre" => "Hombre joven","cantidad" => 0],
+            ["Nombre" => "Hombre adulto","cantidad" => 0],
+            ["Nombre" => "Hombre anciano","cantidad" => 0],
+            ["Nombre" => "Mujer niña","cantidad" => 0],
+            ["Nombre" => "Mujer joven","cantidad" => 0],
+            ["Nombre" => "Mujer adulta","cantidad" => 0],
+            ["Nombre" => "Mujer anciana","cantidad" => 0],
         ];
 
             foreach ($data as $key) {
@@ -420,63 +423,63 @@ class SeemetrixController extends Controller
             
             // //////////////////// dias de la semana
             $ImpactosDiasDeLaSemana = [
-                ["Nombre" => "Infante barón", "gender" => "male", "age"=>"kid","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,],
-                ["Nombre" => "joven barón", "gender" => "male", "age"=>"young","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
-                ["Nombre" => "adulto barón", "gender" => "male", "age"=>"adult","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
-                ["Nombre" => "anciano barón", "gender" => "male", "age"=>"old","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
+                ["Nombre" => "Hombre niño", "gender" => "male", "age"=>"kid","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,],
+                ["Nombre" => "Hombre joven", "gender" => "male", "age"=>"young","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
+                ["Nombre" => "Hombre adulto", "gender" => "male", "age"=>"adult","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
+                ["Nombre" => "Hombre anciano", "gender" => "male", "age"=>"old","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
 
-                ["Nombre" => "Infante mujer", "gender" => "female", "age"=>"kid","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,],
-                ["Nombre" => "joven mujer", "gender" => "female", "age"=>"young","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
-                ["Nombre" => "adulto mujer", "gender" => "female", "age"=>"adult","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
-                ["Nombre" => "anciano mujer", "gender" => "female", "age"=>"old","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
+                ["Nombre" => "Mujer niña", "gender" => "female", "age"=>"kid","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,],
+                ["Nombre" => "Mujer joven", "gender" => "female", "age"=>"young","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
+                ["Nombre" => "Mujer adulto", "gender" => "female", "age"=>"adult","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
+                ["Nombre" => "Mujer anciano", "gender" => "female", "age"=>"old","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
             ];
             $DuracionDiasDeLaSemana = [
-                ["Nombre" => "Infante barón", "gender" => "male", "age"=>"kid","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,],
-                ["Nombre" => "joven barón", "gender" => "male", "age"=>"young","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
-                ["Nombre" => "adulto barón", "gender" => "male", "age"=>"adult","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
-                ["Nombre" => "anciano barón", "gender" => "male", "age"=>"young","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
+                ["Nombre" => "Hombre niño", "gender" => "male", "age"=>"kid","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,],
+                ["Nombre" => "Hombre joven", "gender" => "male", "age"=>"young","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
+                ["Nombre" => "Hombre adulto", "gender" => "male", "age"=>"adult","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
+                ["Nombre" => "Hombre anciano", "gender" => "male", "age"=>"young","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
 
-                ["Nombre" => "Infante mujer", "gender" => "female", "age"=>"kid","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,],
-                ["Nombre" => "joven mujer", "gender" => "female", "age"=>"young","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
-                ["Nombre" => "adulto mujer", "gender" => "female", "age"=>"adult","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
-                ["Nombre" => "anciano mujer", "gender" => "female", "age"=>"young","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
+                ["Nombre" => "Mujer niño", "gender" => "female", "age"=>"kid","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,],
+                ["Nombre" => "Mujer joven", "gender" => "female", "age"=>"young","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
+                ["Nombre" => "Mujer adulta", "gender" => "female", "age"=>"adult","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
+                ["Nombre" => "Mujer anciana", "gender" => "female", "age"=>"young","Dom"=>0,"Lun"=>0,"Mar"=>0,"Mie"=>0,"Jue"=>0,"Vie"=>0,"Sab"=>0,], 
             ];
             $interaccionesHorasDelDia = [
-                ["Nombre" => "Infante barón","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Hombre niño","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
-                ["Nombre" => "joven barón","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Hombre joven","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
-                ["Nombre" => "adulto barón","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Hombre adulto","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
-                ["Nombre" => "anciano barón","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Hombre anciano","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
 
-                ["Nombre" => "Infante mujer","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Mujer niño","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
-                ["Nombre" => "joven mujer","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Mujer joven","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
-                ["Nombre" => "adulto mujer","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Mujer adulta","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
-                ["Nombre" => "anciano mujer","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Mujer anciana","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
             ];
             $TiempoHorasDelDia = [
-                ["Nombre" => "Infante barón","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Hombre niño","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
-                ["Nombre" => "joven barón","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Hombre joven","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
-                ["Nombre" => "adulto barón","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Hombre adulto","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
-                ["Nombre" => "anciano barón","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Hombre anciano","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
 
-                ["Nombre" => "Infante mujer","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Mujer niño","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
-                ["Nombre" => "joven mujer","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Mujer joven","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
-                ["Nombre" => "adulto mujer","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Mujer adulta","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
-                ["Nombre" => "anciano mujer","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
+                ["Nombre" => "Mujer anciana","00"=>0,"01"=>0,"02"=>0,"03"=>0,"04"=>0,"05"=>0,"06"=>0,"07"=>0,"08"=>0,"09"=>0,"10"=>0,"11"=>0,
                 "12"=>0,"13"=>0,"14"=>0,"15"=>0,"16"=>0,"17"=>0,"18"=>0,"19"=>0,"20"=>0,"21"=>0,"22"=>0,"23"=>0],
             ];
 

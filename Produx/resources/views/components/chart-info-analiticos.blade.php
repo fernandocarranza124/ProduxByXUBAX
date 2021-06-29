@@ -10,7 +10,7 @@
         <div class="ml-4 text-md text-center text-gray-600 leading-7 font-semibold">
           <div class="tooltip">
             <p class="text-center">{{$titulo}}</p>
-          <span class="tooltiptext"><small>{{$tooltip}}</small></span>  
+          <span class="tooltiptext text-gray-500"><small>{{$tooltip}}</small></span>  
           </div>
           
         </div>

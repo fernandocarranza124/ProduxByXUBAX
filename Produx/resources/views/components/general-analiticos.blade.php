@@ -66,35 +66,38 @@
             <x-chart-info-analiticos id="ProductosInteraccionesDiasDeLaSemana" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="ProductosInteraccionesDiasDeLaSemana" titulo="Interacciones durante los dias de la semana" tooltip="Interacciones de los dipositivos en cada dia de la semana" />    
             <x-chart-info-analiticos id="ProductosInteraccionesHorasAlDia" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="ProductosInteraccionesHorasAlDia" titulo="Interacciones durante las horas del dia" tooltip="Interacciones de los dipositivos en cada hora del día" />
             <x-chart-info-analiticos id="levantamientos" tipoDeGrafica="PieChart" nombreDeGraficaLava="levantamientosVSReposo" titulo="Tiempo de productos en mano y en anaquel" tooltip="Tiempo en mano y en anaquel de los dispositivos" />
-            <x-chart-info-analiticos id="TiemposDiasDeLaSemana" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="TiemposDiasDeLaSemana" titulo="Minutos de interacción durante la semana" tooltip="Tiempo de interacciones de los dipositivos en cada dia de la semana" />
-            <x-chart-info-analiticos id="TiemposInteraccionesHorasAlDia" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="TiemposInteraccionesHorasAlDia" titulo="Minutos de interacción durante las horas del dia" tooltip="Segundos de interacciones de los dipositivos durante las horas del dia" />
+            <x-chart-info-analiticos id="TiemposDiasDeLaSemana" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="TiemposDiasDeLaSemana" titulo="Minutos de interacción durante la semana" tooltip="Interacciones de los dipositivos durante la semana" />
+            <x-chart-info-analiticos id="TiemposInteraccionesHorasAlDia" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="TiemposInteraccionesHorasAlDia" titulo="Minutos de interacción durante el dia" tooltip="Interacciones de los dipositivos durante el dia" />
             {{-- TiemposInteraccionesHorasAlDia --}}
           </section>
+          
+        </div>
+			  <div x-show="activeTab===1">
           <section class="flex flex-row flex-wrap mx-auto" id="seemetrix">
-            <x-cards-info-analiticos titulo="Oportunidades de impacto" icono="people" :valor="$seemetrix[0]->data->ots" extra="" color="" />    
-            <x-cards-info-analiticos titulo="Total de impactos generados" icono="eye" :valor="$seemetrix[0]->data->v" extra="" color="" />    
+            <x-cards-info-analiticos titulo="ODI" icono="people" :valor="$seemetrix[0]->data->ots" extra="" color="" />    
+            <x-cards-info-analiticos titulo="Impactos" icono="eye" :valor="$seemetrix[0]->data->v" extra="" color="" />    
               @php
               $porcentajeInteracciones = number_format(($seemetrix[0]->data->v)/($seemetrix[0]->data->ots)*100, 2);
               $seemetrix[0]->data->vd = substr($seemetrix[0]->data->vd,0,-3);
               $seemetrix[0]->data->otsd = substr($seemetrix[0]->data->otsd,0,-3);
               $porcentajeAtencion = number_format(($seemetrix[0]->data->vd)/($seemetrix[0]->data->otsd)*100, 2);
               @endphp
-            <x-cards-info-analiticos titulo="Porcentaje de impactos" icono="stick" :valor="$porcentajeInteracciones" extra="%" color="true" />    
+            <x-cards-info-analiticos titulo="Conversión de impactos" icono="stick" :valor="$porcentajeInteracciones" extra="%" color="true" />    
             <x-cards-info-analiticos titulo="Tiempo de inactividad" icono="clock" :valor="$seemetrix[0]->data->otsd" extra="segundos" color="" />    
             <x-cards-info-analiticos titulo="Tiempo de atención" icono="clock" :valor="$seemetrix[0]->data->vd" extra="segundos" color="" />      
-            <x-cards-info-analiticos titulo="Porcentaje de atracción" icono="stick" :valor="$infos->porcentajeDeTiempo" extra="%" color="true" />    
+            <x-cards-info-analiticos titulo="Conversión de atracción" icono="stick" :valor="$infos->porcentajeDeTiempo" extra="%" color="true" />    
           </section>
           <section class="flex flex-row flex-wrap mx-auto">
-            <x-chart-info-analiticos id="Cantidades de ODI - Impactos" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Cantidades de ODI - Impactos" titulo="Comparación de ODI - Impactos" tooltip="Oportunidades de impacto - Impactos" />
-            <x-chart-info-analiticos id="Cantidades de impactos por Dia" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Cantidades de impactos por Dia" titulo="Comparación de ODI - Impactos por dia" tooltip="Oportunidades de impacto - Impactos" />
-            <x-chart-info-analiticos id="Cantidad de impactos por hora" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Cantidad de impactos por hora" titulo="Comparación de ODI - Impactos por hora" tooltip="Oportunidades de impacto - Impactos" />
-            <x-chart-info-analiticos id="Tiempo de atencion ODI - Impactos" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Tiempo de atencion ODI - Impactos" titulo="Tiempo de atención ODI - Impactos" tooltip="Oportunidades de impacto - Impactos" />
-            <x-chart-info-analiticos id="Tiempo de impactos por dia de la semana" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Tiempo de impactos por dia de la semana" titulo="Tiempo de impactos por dia de la semana" tooltip="Oportunidades de impacto - Impactos" />
-            <x-chart-info-analiticos id="Duracion de impactos por hora" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Duracion de impactos por hora" titulo="Duración de impactos por hora" tooltip="Oportunidades de impacto - Impactos" />
+            <x-chart-info-analiticos id="Cantidades de ODI - Impactos" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Cantidades de ODI - Impactos" titulo="Comparación de ODI - Impactos" tooltip="ODI - Impactos general" />
+            <x-chart-info-analiticos id="Cantidades de impactos por Dia" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Cantidades de impactos por Dia" titulo="Comparación de ODI - Impactos por dia" tooltip="ODI - Impactos semanal" />
+            <x-chart-info-analiticos id="Cantidad de impactos por hora" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Cantidad de impactos por hora" titulo="Comparación de ODI - Impactos por hora" tooltip="ODI - Impactos diario" />
+            <x-chart-info-analiticos id="Tiempo de atencion ODI - Impactos" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Tiempo de atencion ODI - Impactos" titulo="Tiempo de atención ODI - Impactos" tooltip="ODI - Impactos general" />
+            <x-chart-info-analiticos id="Tiempo de impactos por dia de la semana" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Tiempo de impactos por dia de la semana" titulo="Tiempo de impactos por dia de la semana" tooltip="Segundos de ODI - Impactos semanal " />
+            <x-chart-info-analiticos id="Duracion de impactos por hora" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Duracion de impactos por hora" titulo="Duración de impactos por hora" tooltip="Segundos de ODI  - Impactos diario" />
             
           </section>
         </div>
-			  <div x-show="activeTab===1">
+			  <div x-show="activeTab===2">
           <section class="flex flex-row flex-wrap mx-auto" id="Demograficos">
             <x-cards-info-analiticos titulo="Hombres" icono="people" :valor="$seemetrix->cards->maleViews" extra="%" color="true" />    
             <x-cards-info-analiticos titulo="Mujeres" icono="people" :valor="$seemetrix->cards->femaleViews" extra="%" color="true" />    
@@ -118,11 +121,11 @@
             <x-chart-info-analiticos id="Emociones por edad" tipoDeGrafica="ColumnChart" nombreDeGraficaLava="Emociones por edad" titulo="Emociones por edad" tooltip="" />
           </section>
         </div>
-			  <div x-show="activeTab===2">zz                               
-
-        </div>
 			  <div x-show="activeTab===3">
-          Content 4
+          En desarrollo
+        </div>
+        <div x-show="activeTab===4">
+          En desarrollo
         </div>
 		  </div>
 	  </div>
@@ -134,7 +137,8 @@
         activeTab: 0,
         tabs: [
           "General",
-          "Demograficos",
+          "Impactos",
+          "Demográficos",
           "Dispositivos",
           "Entorno",
         ]
